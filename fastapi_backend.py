@@ -1,4 +1,34 @@
+"""
+FastAPI backend for the Odds Analysis project.
 
+Tämä moduuli tarjoaa HTTP-API:n, jolla voidaan lukea valmiiksi
+laskettuja ja PostgreSQL-tietokantaan tallennettuja tietoja:
+
+- EV-vedot (ev_results)
+- arbitraasit (arb_results)
+- ottelut (matches)
+- nykyiset kertoimet (current_odds)
+- fair probabilities / no-vig odds (fair_probs)
+
+Itse kerääminen ja laskenta tehdään erillisissä skripteissä
+(main.py, ev_calc.py, arb_bot.py jne.). Tämä backend EI laske
+mitään itse, vaan lukee dataa tietokannasta ja palauttaa
+sen JSON-muodossa frontendille, Telegram-botille tms.
+
+TÄRKEÄT OPTIMOINTI-KOHDAT TÄSSÄ VERSIOSSA
+----------------------------------------
+1. PostgreSQL-yhteyspooli (SimpleConnectionPool) → ei avata
+   / suljeta yhteyttä joka kutsulla → nopeampi ja skaalautuvampi.
+2. READ COMMITTED -eristystaso → luetaan vain valmiiksi commitattua
+   dataa, kun main.py kirjoittaa samaan aikaan.
+3. API-avain (header: X-API-Key) → jos ODDSBANK_API_KEY on asetettu,
+   kaikki API-reitit vaativat oikean avaimen.
+4. Yksinkertainen rate limiting per IP → estää spämmin
+   (429 Too Many Requests).
+5. Pagination EV- ja arb-reiteille (limit + offset).
+6. Pydantic-mallit (response_model) → selkeä & vakaa JSON-rakenne,
+   parempi dokumentaatio ja validation.
+"""
 
 from __future__ import annotations
 
@@ -25,10 +55,6 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-import uvicorn
-
 
 
 # ---------------------------------------------------------------------------
@@ -45,7 +71,7 @@ def _get_db_config() -> Dict[str, Any]:
         "port": int(os.getenv("ODDSBANK_DB_PORT", "5432")),
         "dbname": os.getenv("ODDSBANK_DB_NAME", "Oddsbank"),
         "user": os.getenv("ODDSBANK_DB_USER", "postgres"),
-        "password": os.getenv("ODDSBANK_DB_PASSWORD",'Goala411'),
+        "password": os.getenv("ODDSBANK_DB_PASSWORD", 'ABC!"#'),
     }
 
 
@@ -166,7 +192,7 @@ class FairItem(BaseModel):
 # API-avain (header: X-API-Key)
 # ---------------------------------------------------------------------------
 
-API_KEY: Optional[str] = '2e8d543a5b51c920a1ca3281e58aff7c'
+API_KEY: Optional[str] = os.getenv("ODDS_API_KEY")
 
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
@@ -433,5 +459,3 @@ async def get_latest_fair_probabilities(
     """
     rows = fetch_query(sql, (match_id,))
     return rows
-if __name__ == "__main__":
-    uvicorn.run("fastapi_backend:app", host="0.0.0.0", port=8000)
