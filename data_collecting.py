@@ -208,12 +208,27 @@ def build_all_matches_once():
     all_matches = []
 
     for sport in SPORT_KEYS:
+        print(f"[INFO] Aloitetaan haku sportille: {sport}")
+
         try:
             events = fetch_events(sport)
+            print(f"[DEBUG] Events ladattu: {len(events)}")
+
             odds = fetch_base_odds(sport)
+            print(f"[DEBUG] Odds ladattu: {len(odds)}")
+
             combined = combine_data(events, odds)
-            all_matches.extend(build_matches_for_sport(combined, sport))
-        except:
+            matches = build_matches_for_sport(combined, sport)
+            print(f"[INFO] Valmiita kohteita sportista {sport}: {len(matches)}")
+
+            all_matches.extend(matches)
+
+        except Exception as e:
+            print(f"[ERROR] Sport {sport} käsittely epäonnistui: {e}")
             continue
+
+    print(f"[INFO] Koko ottelumäärä: {len(all_matches)}")
+    return all_matches
+
 
     return all_matches
