@@ -166,7 +166,7 @@ class FairItem(BaseModel):
 # API-avain (header: X-API-Key)
 # ---------------------------------------------------------------------------
 
-API_KEY: Optional[str] = os.getenv("ODDS_API_KEY")
+API_KEY: Optional[str] = '2e8d543a5b51c920a1ca3281e58aff7c'
 
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
