@@ -51,12 +51,32 @@ def normalize_bookmaker_name(name: str) -> str:
         return "Unibet"
     return name
 
-
 def fetch_events(sport: str):
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/events/?apiKey={API_KEY}"
-    r = requests.get(url, timeout=12)
-    r.raise_for_status()
-    return r.json()
+    try:
+        print(f"[DEBUG] Haetaan events: {sport}")
+        r = requests.get(url, timeout=3)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        print(f"[ERROR] Events haku epäonnistui sportissa {sport}: {e}")
+        return []
+
+
+def fetch_base_odds(sport: str):
+    url = (
+        f"https://api.the-odds-api.com/v4/sports/{sport}/odds/?"
+        f"apiKey={API_KEY}&markets={BASE_MARKETS}&oddsFormat=decimal&regions={REGIONS}"
+    )
+    try:
+        print(f"[DEBUG] Haetaan odds: {sport}")
+        r = requests.get(url, timeout=3)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        print(f"[ERROR] Odds haku epäonnistui sportissa {sport}: {e}")
+        return []
+
 
 
 def fetch_base_odds(sport: str):
