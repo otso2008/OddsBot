@@ -45,7 +45,7 @@ def _get_db_config() -> Dict[str, Any]:
         "port": int(os.getenv("ODDSBANK_DB_PORT", "5432")),
         "dbname": os.getenv("ODDSBANK_DB_NAME", "Oddsbank"),
         "user": os.getenv("ODDSBANK_DB_USER", "postgres"),
-        "password": os.getenv("ODDSBANK_DB_PASSWORD",'ABC!"#'),
+        "password": os.getenv("ODDSBANK_DB_PASSWORD",'Goala411'),
     }
 
 
