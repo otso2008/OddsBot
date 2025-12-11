@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 
 import os
 
-from fastapi_backend import API_KEY
+from dotenv import load_dotenv
+load_dotenv()
 
 load_dotenv()  # lataa .env-tiedoston sisällön
 SPORT_KEYS: List[str] = [
