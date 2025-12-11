@@ -7,6 +7,9 @@ from alerts import notify   # <-- LISÄTTY
 from no_vig_calc import compute_fair_and_no_vig
 from db_managert import save_to_database
 from closing_odds import collect_closing_odds_and_eval_ev
+import sys
+sys.stdout.reconfigure(line_buffering=True)
+
 
 
 REFRESH_INTERVAL = 600  # sekuntia
