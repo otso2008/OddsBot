@@ -1,34 +1,4 @@
-"""
-FastAPI backend for the Odds Analysis project.
 
-Tämä moduuli tarjoaa HTTP-API:n, jolla voidaan lukea valmiiksi
-laskettuja ja PostgreSQL-tietokantaan tallennettuja tietoja:
-
-- EV-vedot (ev_results)
-- arbitraasit (arb_results)
-- ottelut (matches)
-- nykyiset kertoimet (current_odds)
-- fair probabilities / no-vig odds (fair_probs)
-
-Itse kerääminen ja laskenta tehdään erillisissä skripteissä
-(main.py, ev_calc.py, arb_bot.py jne.). Tämä backend EI laske
-mitään itse, vaan lukee dataa tietokannasta ja palauttaa
-sen JSON-muodossa frontendille, Telegram-botille tms.
-
-TÄRKEÄT OPTIMOINTI-KOHDAT TÄSSÄ VERSIOSSA
-----------------------------------------
-1. PostgreSQL-yhteyspooli (SimpleConnectionPool) → ei avata
-   / suljeta yhteyttä joka kutsulla → nopeampi ja skaalautuvampi.
-2. READ COMMITTED -eristystaso → luetaan vain valmiiksi commitattua
-   dataa, kun main.py kirjoittaa samaan aikaan.
-3. API-avain (header: X-API-Key) → jos ODDSBANK_API_KEY on asetettu,
-   kaikki API-reitit vaativat oikean avaimen.
-4. Yksinkertainen rate limiting per IP → estää spämmin
-   (429 Too Many Requests).
-5. Pagination EV- ja arb-reiteille (limit + offset).
-6. Pydantic-mallit (response_model) → selkeä & vakaa JSON-rakenne,
-   parempi dokumentaatio ja validation.
-"""
 
 from __future__ import annotations
 
@@ -196,7 +166,7 @@ class FairItem(BaseModel):
 # API-avain (header: X-API-Key)
 # ---------------------------------------------------------------------------
 
-API_KEY: Optional[str] = os.getenv("ODDSBANK_API_KEY")
+API_KEY: Optional[str] = os.getenv("ODDS_API_KEY")
 
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
