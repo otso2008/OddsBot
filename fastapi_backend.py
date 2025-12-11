@@ -55,6 +55,10 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+import uvicorn
+
 
 
 # ---------------------------------------------------------------------------
@@ -459,3 +463,5 @@ async def get_latest_fair_probabilities(
     """
     rows = fetch_query(sql, (match_id,))
     return rows
+if __name__ == "__main__":
+    uvicorn.run("fastapi_backend:app", host="0.0.0.0", port=8000)
