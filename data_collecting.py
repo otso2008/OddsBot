@@ -8,8 +8,7 @@ from dotenv import load_dotenv
 
 import os
 
-from dotenv import load_dotenv
-load_dotenv()
+from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
 SPORT_KEYS: List[str] = [
@@ -18,7 +17,7 @@ SPORT_KEYS: List[str] = [
 ]
 
 
-API_KEY: str = os.environ.get("ODDS_API_KEY")
+API_KEY: str = os.environ.get("ODDS_API_KEY", os.getenv('ODDS_API_KEY'))
 REGIONS: str = os.environ.get("Regions", "eu",)
 BASE_MARKETS: str = os.environ.get("BASE_MARKETS", "h2h,totals,spreads")
 
@@ -52,32 +51,12 @@ def normalize_bookmaker_name(name: str) -> str:
         return "Unibet"
     return name
 
+
 def fetch_events(sport: str):
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/events/?apiKey={API_KEY}"
-    try:
-        print(f"[DEBUG] Haetaan events: {sport}")
-        r = requests.get(url, timeout=3)
-        r.raise_for_status()
-        return r.json()
-    except Exception as e:
-        print(f"[ERROR] Events haku epäonnistui sportissa {sport}: {e}")
-        return []
-
-
-def fetch_base_odds(sport: str):
-    url = (
-        f"https://api.the-odds-api.com/v4/sports/{sport}/odds/?"
-        f"apiKey={API_KEY}&markets={BASE_MARKETS}&oddsFormat=decimal&regions={REGIONS}"
-    )
-    try:
-        print(f"[DEBUG] Haetaan odds: {sport}")
-        r = requests.get(url, timeout=3)
-        r.raise_for_status()
-        return r.json()
-    except Exception as e:
-        print(f"[ERROR] Odds haku epäonnistui sportissa {sport}: {e}")
-        return []
-
+    r = requests.get(url, timeout=12)
+    r.raise_for_status()
+    return r.json()
 
 
 def fetch_base_odds(sport: str):
@@ -209,27 +188,12 @@ def build_all_matches_once():
     all_matches = []
 
     for sport in SPORT_KEYS:
-        print(f"[INFO] Aloitetaan haku sportille: {sport}")
-
         try:
             events = fetch_events(sport)
-            print(f"[DEBUG] Events ladattu: {len(events)}")
-
             odds = fetch_base_odds(sport)
-            print(f"[DEBUG] Odds ladattu: {len(odds)}")
-
             combined = combine_data(events, odds)
-            matches = build_matches_for_sport(combined, sport)
-            print(f"[INFO] Valmiita kohteita sportista {sport}: {len(matches)}")
-
-            all_matches.extend(matches)
-
-        except Exception as e:
-            print(f"[ERROR] Sport {sport} käsittely epäonnistui: {e}")
+            all_matches.extend(build_matches_for_sport(combined, sport))
+        except:
             continue
-
-    print(f"[INFO] Koko ottelumäärä: {len(all_matches)}")
-    return all_matches
-
 
     return all_matches
