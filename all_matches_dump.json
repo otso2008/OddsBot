@@ -1,0 +1,4742 @@
+[
+  {
+    "match": "Liverpool vs Brighton and Hove Albion",
+    "home": "Liverpool",
+    "away": "Brighton and Hove Albion",
+    "start_time": "2025-12-13T15:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.65,
+          "away": 4.25,
+          "draw": 4.05
+        },
+        "Betclic (FR)": {
+          "home": 1.66,
+          "away": 4.3,
+          "draw": 4.05
+        },
+        "Unibet": {
+          "home": 1.71,
+          "away": 4.8,
+          "draw": 4.35
+        },
+        "Pinnacle": {
+          "home": 1.72,
+          "away": 4.59,
+          "draw": 4.22
+        },
+        "Winamax (FR)": {
+          "home": 1.66,
+          "away": 4.3,
+          "draw": 4.1
+        },
+        "Winamax (DE)": {
+          "home": 1.7,
+          "away": 4.4,
+          "draw": 4.2
+        },
+        "Tipico": {
+          "home": 1.65,
+          "away": 4.5,
+          "draw": 4.3
+        },
+        "LeoVegas (SE)": {
+          "home": 1.68,
+          "away": 4.7,
+          "draw": 4.25
+        },
+        "Betfair": {
+          "home": 1.73,
+          "away": 5.0,
+          "draw": 4.4
+        },
+        "Marathon Bet": {
+          "home": 1.72,
+          "away": 4.65,
+          "draw": 4.25
+        },
+        "888sport": {
+          "home": 1.7,
+          "away": 4.5,
+          "draw": 3.9
+        },
+        "William Hill": {
+          "home": 1.7,
+          "away": 4.4,
+          "draw": 4.0
+        },
+        "Betsson": {
+          "home": 1.72,
+          "away": 4.5,
+          "draw": 4.25
+        },
+        "Nordic Bet": {
+          "home": 1.72,
+          "away": 4.5,
+          "draw": 4.25
+        },
+        "Matchbook": {
+          "home": 1.73,
+          "away": 5.0,
+          "draw": 4.4
+        },
+        "Coolbet": {
+          "home": 1.71,
+          "away": 4.88,
+          "draw": 4.34
+        }
+      },
+      "over_under_3_0": {
+        "Pinnacle": {
+          "over": 1.85,
+          "under": 2.04
+        },
+        "Coolbet": {
+          "over": 1.83,
+          "under": 2.05
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 2.15,
+          "under": 1.65
+        },
+        "Unibet": {
+          "over": 2.32,
+          "under": 1.61
+        },
+        "LeoVegas (SE)": {
+          "over": 2.33,
+          "under": 1.62
+        },
+        "Betsson": {
+          "over": 2.28,
+          "under": 1.62
+        },
+        "Nordic Bet": {
+          "over": 2.28,
+          "under": 1.62
+        },
+        "Matchbook": {
+          "over": 2.46,
+          "under": 1.66
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.53,
+          "under": 2.4
+        }
+      }
+    }
+  },
+  {
+    "match": "Chelsea vs Everton",
+    "home": "Chelsea",
+    "away": "Everton",
+    "start_time": "2025-12-13T15:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.6,
+          "away": 4.95,
+          "draw": 3.8
+        },
+        "Betclic (FR)": {
+          "home": 1.62,
+          "away": 4.95,
+          "draw": 3.83
+        },
+        "Unibet": {
+          "home": 1.66,
+          "away": 5.75,
+          "draw": 4.1
+        },
+        "Pinnacle": {
+          "home": 1.68,
+          "away": 5.23,
+          "draw": 4.0
+        },
+        "Winamax (FR)": {
+          "home": 1.62,
+          "away": 4.9,
+          "draw": 3.9
+        },
+        "Winamax (DE)": {
+          "home": 1.66,
+          "away": 5.1,
+          "draw": 4.0
+        },
+        "Tipico": {
+          "home": 1.62,
+          "away": 5.2,
+          "draw": 4.0
+        },
+        "LeoVegas (SE)": {
+          "home": 1.63,
+          "away": 5.5,
+          "draw": 4.0
+        },
+        "Betfair": {
+          "home": 1.74,
+          "away": 5.5,
+          "draw": 4.0
+        },
+        "Marathon Bet": {
+          "home": 1.69,
+          "away": 5.25,
+          "draw": 4.0
+        },
+        "888sport": {
+          "home": 1.67,
+          "away": 4.8,
+          "draw": 3.8
+        },
+        "William Hill": {
+          "home": 1.67,
+          "away": 4.8,
+          "draw": 3.8
+        },
+        "Betsson": {
+          "home": 1.68,
+          "away": 5.15,
+          "draw": 4.0
+        },
+        "Nordic Bet": {
+          "home": 1.68,
+          "away": 5.15,
+          "draw": 4.0
+        },
+        "Matchbook": {
+          "home": 1.74,
+          "away": 5.5,
+          "draw": 4.0
+        },
+        "Coolbet": {
+          "home": 1.72,
+          "away": 5.38,
+          "draw": 3.95
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 1.91,
+          "under": 1.98
+        },
+        "Tipico": {
+          "over": 1.8,
+          "under": 1.95
+        },
+        "LeoVegas (SE)": {
+          "over": 1.83,
+          "under": 2.0
+        },
+        "Unibet": {
+          "over": 1.82,
+          "under": 1.97
+        },
+        "William Hill": {
+          "over": 1.83,
+          "under": 1.91
+        },
+        "Betsson": {
+          "over": 1.85,
+          "under": 1.95
+        },
+        "Nordic Bet": {
+          "over": 1.85,
+          "under": 1.95
+        },
+        "Matchbook": {
+          "over": 1.94,
+          "under": 2.04
+        },
+        "Coolbet": {
+          "over": 1.89,
+          "under": 1.98
+        }
+      }
+    }
+  },
+  {
+    "match": "Burnley vs Fulham",
+    "home": "Burnley",
+    "away": "Fulham",
+    "start_time": "2025-12-13T17:30:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 3.6,
+          "away": 1.92,
+          "draw": 3.4
+        },
+        "Unibet": {
+          "home": 4.1,
+          "away": 2.0,
+          "draw": 3.6
+        },
+        "Betclic (FR)": {
+          "home": 3.83,
+          "away": 1.89,
+          "draw": 3.45
+        },
+        "Pinnacle": {
+          "home": 3.94,
+          "away": 1.98,
+          "draw": 3.62
+        },
+        "Winamax (FR)": {
+          "home": 3.8,
+          "away": 1.9,
+          "draw": 3.5
+        },
+        "Winamax (DE)": {
+          "home": 3.9,
+          "away": 1.94,
+          "draw": 3.6
+        },
+        "Tipico": {
+          "home": 3.9,
+          "away": 1.93,
+          "draw": 3.5
+        },
+        "LeoVegas (SE)": {
+          "home": 4.0,
+          "away": 1.96,
+          "draw": 3.5
+        },
+        "Betfair": {
+          "home": 4.2,
+          "away": 2.0,
+          "draw": 3.65
+        },
+        "Marathon Bet": {
+          "home": 3.95,
+          "away": 1.99,
+          "draw": 3.62
+        },
+        "888sport": {
+          "home": 3.7,
+          "away": 2.0,
+          "draw": 3.4
+        },
+        "William Hill": {
+          "home": 3.75,
+          "away": 1.95,
+          "draw": 3.4
+        },
+        "Betsson": {
+          "home": 3.85,
+          "away": 1.98,
+          "draw": 3.6
+        },
+        "Nordic Bet": {
+          "home": 3.85,
+          "away": 1.98,
+          "draw": 3.6
+        },
+        "Matchbook": {
+          "home": 4.2,
+          "away": 2.0,
+          "draw": 3.65
+        },
+        "Coolbet": {
+          "home": 4.18,
+          "away": 1.98,
+          "draw": 3.62
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.84,
+          "under": 2.06
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.05,
+          "under": 1.75
+        },
+        "LeoVegas (SE)": {
+          "over": 2.12,
+          "under": 1.74
+        },
+        "Unibet": {
+          "over": 2.1,
+          "under": 1.73
+        },
+        "William Hill": {
+          "over": 1.95,
+          "under": 1.75
+        },
+        "Betsson": {
+          "over": 2.05,
+          "under": 1.78
+        },
+        "Nordic Bet": {
+          "over": 2.05,
+          "under": 1.78
+        },
+        "Matchbook": {
+          "over": 2.12,
+          "under": 1.88
+        },
+        "Coolbet": {
+          "over": 2.05,
+          "under": 1.83
+        }
+      }
+    }
+  },
+  {
+    "match": "Arsenal vs Wolverhampton Wanderers",
+    "home": "Arsenal",
+    "away": "Wolverhampton Wanderers",
+    "start_time": "2025-12-13T20:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.16,
+          "away": 19.37,
+          "draw": 7.98
+        },
+        "Parions Sport (FR)": {
+          "home": 1.13,
+          "away": 17.0,
+          "draw": 6.9
+        },
+        "Unibet": {
+          "home": 1.16,
+          "away": 23.0,
+          "draw": 8.0
+        },
+        "Betclic (FR)": {
+          "home": 1.13,
+          "away": 17.5,
+          "draw": 7.0
+        },
+        "Winamax (DE)": {
+          "home": 1.14,
+          "away": 19.0,
+          "draw": 7.75
+        },
+        "Winamax (FR)": {
+          "home": 1.13,
+          "away": 18.0,
+          "draw": 7.25
+        },
+        "Tipico": {
+          "home": 1.12,
+          "away": 18.0,
+          "draw": 9.0
+        },
+        "LeoVegas (SE)": {
+          "home": 1.15,
+          "away": 21.0,
+          "draw": 8.0
+        },
+        "Betfair": {
+          "home": 1.15,
+          "away": 25.0,
+          "draw": 10.0
+        },
+        "Marathon Bet": {
+          "home": 1.14,
+          "away": 32.0,
+          "draw": 8.0
+        },
+        "888sport": {
+          "home": 1.14,
+          "away": 29.0,
+          "draw": 7.0
+        },
+        "William Hill": {
+          "home": 1.14,
+          "away": 26.0,
+          "draw": 7.0
+        },
+        "Betsson": {
+          "home": 1.15,
+          "away": 22.0,
+          "draw": 7.8
+        },
+        "Nordic Bet": {
+          "home": 1.15,
+          "away": 22.0,
+          "draw": 7.8
+        },
+        "Matchbook": {
+          "home": 1.15,
+          "away": 26.0,
+          "draw": 10.0
+        },
+        "Coolbet": {
+          "home": 1.15,
+          "away": 22.0,
+          "draw": 9.5
+        }
+      },
+      "over_under_3_0": {
+        "Pinnacle": {
+          "over": 1.94,
+          "under": 1.93
+        },
+        "Coolbet": {
+          "over": 1.95,
+          "under": 1.92
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 2.15,
+          "under": 1.65
+        },
+        "Betsson": {
+          "over": 2.45,
+          "under": 1.55
+        },
+        "Nordic Bet": {
+          "over": 2.45,
+          "under": 1.55
+        },
+        "Matchbook": {
+          "over": 2.42,
+          "under": 1.63
+        }
+      },
+      "over_under_2_5": {
+        "Unibet": {
+          "over": 1.56,
+          "under": 2.43
+        },
+        "LeoVegas (SE)": {
+          "over": 1.56,
+          "under": 2.45
+        },
+        "William Hill": {
+          "over": 1.53,
+          "under": 2.4
+        }
+      }
+    }
+  },
+  {
+    "match": "West Ham United vs Aston Villa",
+    "home": "West Ham United",
+    "away": "Aston Villa",
+    "start_time": "2025-12-14T14:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 3.74,
+          "away": 2.07,
+          "draw": 3.53
+        },
+        "Parions Sport (FR)": {
+          "home": 3.35,
+          "away": 2.0,
+          "draw": 3.45
+        },
+        "Betclic (FR)": {
+          "home": 3.55,
+          "away": 1.96,
+          "draw": 3.47
+        },
+        "Winamax (DE)": {
+          "home": 3.7,
+          "away": 2.0,
+          "draw": 3.55
+        },
+        "Winamax (FR)": {
+          "home": 3.6,
+          "away": 1.98,
+          "draw": 3.5
+        },
+        "Tipico": {
+          "home": 3.6,
+          "away": 1.97,
+          "draw": 3.6
+        },
+        "LeoVegas (SE)": {
+          "home": 3.8,
+          "away": 2.0,
+          "draw": 3.55
+        },
+        "Unibet": {
+          "home": 3.58,
+          "away": 1.94,
+          "draw": 3.52
+        },
+        "Betfair": {
+          "home": 3.9,
+          "away": 2.1,
+          "draw": 3.65
+        },
+        "Marathon Bet": {
+          "home": 3.7,
+          "away": 2.04,
+          "draw": 3.68
+        },
+        "888sport": {
+          "home": 3.6,
+          "away": 1.95,
+          "draw": 3.5
+        },
+        "William Hill": {
+          "home": 3.5,
+          "away": 2.0,
+          "draw": 3.4
+        },
+        "Betsson": {
+          "home": 3.55,
+          "away": 2.08,
+          "draw": 3.55
+        },
+        "Nordic Bet": {
+          "home": 3.55,
+          "away": 2.08,
+          "draw": 3.55
+        },
+        "Coolbet": {
+          "home": 3.85,
+          "away": 2.06,
+          "draw": 3.63
+        },
+        "Matchbook": {
+          "home": 3.9,
+          "away": 2.1,
+          "draw": 3.65
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 1.87,
+          "under": 2.03
+        },
+        "Tipico": {
+          "over": 1.77,
+          "under": 2.0
+        },
+        "LeoVegas (SE)": {
+          "over": 1.83,
+          "under": 2.0
+        },
+        "Unibet": {
+          "over": 1.82,
+          "under": 1.97
+        },
+        "William Hill": {
+          "over": 1.75,
+          "under": 2.0
+        },
+        "Betsson": {
+          "over": 1.85,
+          "under": 1.95
+        },
+        "Nordic Bet": {
+          "over": 1.85,
+          "under": 1.95
+        },
+        "Coolbet": {
+          "over": 1.85,
+          "under": 2.02
+        },
+        "Matchbook": {
+          "over": 1.89,
+          "under": 2.04
+        }
+      }
+    }
+  },
+  {
+    "match": "Crystal Palace vs Manchester City",
+    "home": "Crystal Palace",
+    "away": "Manchester City",
+    "start_time": "2025-12-14T14:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 4.04,
+          "away": 1.86,
+          "draw": 3.97
+        },
+        "Parions Sport (FR)": {
+          "home": 3.6,
+          "away": 1.83,
+          "draw": 3.75
+        },
+        "Betclic (FR)": {
+          "home": 3.85,
+          "away": 1.8,
+          "draw": 3.78
+        },
+        "Winamax (DE)": {
+          "home": 3.9,
+          "away": 1.84,
+          "draw": 3.9
+        },
+        "Winamax (FR)": {
+          "home": 3.8,
+          "away": 1.82,
+          "draw": 3.8
+        },
+        "Tipico": {
+          "home": 4.0,
+          "away": 1.83,
+          "draw": 3.8
+        },
+        "Unibet": {
+          "home": 3.88,
+          "away": 1.78,
+          "draw": 3.82
+        },
+        "LeoVegas (SE)": {
+          "home": 4.1,
+          "away": 1.85,
+          "draw": 3.8
+        },
+        "Betfair": {
+          "home": 4.2,
+          "away": 1.92,
+          "draw": 4.0
+        },
+        "Marathon Bet": {
+          "home": 4.1,
+          "away": 1.88,
+          "draw": 3.9
+        },
+        "888sport": {
+          "home": 3.8,
+          "away": 1.85,
+          "draw": 3.6
+        },
+        "William Hill": {
+          "home": 3.8,
+          "away": 1.85,
+          "draw": 3.7
+        },
+        "Betsson": {
+          "home": 4.05,
+          "away": 1.85,
+          "draw": 3.95
+        },
+        "Nordic Bet": {
+          "home": 4.05,
+          "away": 1.85,
+          "draw": 3.95
+        },
+        "Coolbet": {
+          "home": 4.16,
+          "away": 1.9,
+          "draw": 3.94
+        },
+        "Matchbook": {
+          "home": 4.2,
+          "away": 1.92,
+          "draw": 4.0
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.88,
+          "under": 2.01
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 1.65,
+          "under": 2.2
+        },
+        "Unibet": {
+          "over": 1.7,
+          "under": 2.15
+        },
+        "LeoVegas (SE)": {
+          "over": 1.71,
+          "under": 2.16
+        },
+        "William Hill": {
+          "over": 1.65,
+          "under": 2.15
+        },
+        "Betsson": {
+          "over": 1.68,
+          "under": 2.2
+        },
+        "Nordic Bet": {
+          "over": 1.68,
+          "under": 2.2
+        },
+        "Matchbook": {
+          "over": 1.73,
+          "under": 2.32
+        }
+      },
+      "over_under_3_0": {
+        "Coolbet": {
+          "over": 2.15,
+          "under": 1.76
+        }
+      }
+    }
+  },
+  {
+    "match": "Sunderland vs Newcastle United",
+    "home": "Sunderland",
+    "away": "Newcastle United",
+    "start_time": "2025-12-14T14:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 3.33,
+          "away": 2.32,
+          "draw": 3.31
+        },
+        "Parions Sport (FR)": {
+          "home": 3.05,
+          "away": 2.2,
+          "draw": 3.25
+        },
+        "Betclic (FR)": {
+          "home": 3.23,
+          "away": 2.15,
+          "draw": 3.28
+        },
+        "Winamax (DE)": {
+          "home": 3.3,
+          "away": 2.2,
+          "draw": 3.4
+        },
+        "Winamax (FR)": {
+          "home": 3.2,
+          "away": 2.15,
+          "draw": 3.35
+        },
+        "Tipico": {
+          "home": 3.2,
+          "away": 2.25,
+          "draw": 3.3
+        },
+        "Unibet": {
+          "home": 3.28,
+          "away": 2.11,
+          "draw": 3.32
+        },
+        "LeoVegas (SE)": {
+          "home": 3.5,
+          "away": 2.16,
+          "draw": 3.4
+        },
+        "Betfair": {
+          "home": 3.45,
+          "away": 2.36,
+          "draw": 3.4
+        },
+        "Marathon Bet": {
+          "home": 3.48,
+          "away": 2.22,
+          "draw": 3.4
+        },
+        "888sport": {
+          "home": 3.4,
+          "away": 2.1,
+          "draw": 3.3
+        },
+        "William Hill": {
+          "home": 3.3,
+          "away": 2.2,
+          "draw": 3.25
+        },
+        "Betsson": {
+          "home": 3.2,
+          "away": 2.35,
+          "draw": 3.3
+        },
+        "Nordic Bet": {
+          "home": 3.2,
+          "away": 2.35,
+          "draw": 3.3
+        },
+        "Coolbet": {
+          "home": 3.45,
+          "away": 2.3,
+          "draw": 3.38
+        },
+        "Matchbook": {
+          "home": 3.45,
+          "away": 2.36,
+          "draw": 3.4
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 1.99,
+          "under": 1.9
+        },
+        "Tipico": {
+          "over": 1.9,
+          "under": 1.85
+        },
+        "Unibet": {
+          "over": 1.96,
+          "under": 1.83
+        },
+        "LeoVegas (SE)": {
+          "over": 1.97,
+          "under": 1.85
+        },
+        "William Hill": {
+          "over": 1.85,
+          "under": 1.85
+        },
+        "Betsson": {
+          "over": 1.95,
+          "under": 1.85
+        },
+        "Nordic Bet": {
+          "over": 1.95,
+          "under": 1.85
+        },
+        "Coolbet": {
+          "over": 1.97,
+          "under": 1.9
+        },
+        "Matchbook": {
+          "over": 2.02,
+          "under": 1.95
+        }
+      }
+    }
+  },
+  {
+    "match": "Nottingham Forest vs Tottenham Hotspur",
+    "home": "Nottingham Forest",
+    "away": "Tottenham Hotspur",
+    "start_time": "2025-12-14T14:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 2.62,
+          "away": 2.82,
+          "draw": 3.37
+        },
+        "Parions Sport (FR)": {
+          "home": 2.4,
+          "away": 2.75,
+          "draw": 3.25
+        },
+        "Betclic (FR)": {
+          "home": 2.42,
+          "away": 2.75,
+          "draw": 3.3
+        },
+        "Winamax (DE)": {
+          "home": 2.5,
+          "away": 2.75,
+          "draw": 3.4
+        },
+        "Winamax (FR)": {
+          "home": 2.45,
+          "away": 2.7,
+          "draw": 3.35
+        },
+        "Tipico": {
+          "home": 2.5,
+          "away": 2.8,
+          "draw": 3.3
+        },
+        "Unibet": {
+          "home": 2.38,
+          "away": 2.78,
+          "draw": 3.32
+        },
+        "LeoVegas (SE)": {
+          "home": 2.55,
+          "away": 2.85,
+          "draw": 3.35
+        },
+        "Betfair": {
+          "home": 2.68,
+          "away": 2.9,
+          "draw": 3.45
+        },
+        "Marathon Bet": {
+          "home": 2.61,
+          "away": 2.84,
+          "draw": 3.38
+        },
+        "888sport": {
+          "home": 2.5,
+          "away": 2.75,
+          "draw": 3.25
+        },
+        "William Hill": {
+          "home": 2.5,
+          "away": 2.75,
+          "draw": 3.25
+        },
+        "Betsson": {
+          "home": 2.6,
+          "away": 2.78,
+          "draw": 3.35
+        },
+        "Nordic Bet": {
+          "home": 2.6,
+          "away": 2.78,
+          "draw": 3.35
+        },
+        "Coolbet": {
+          "home": 2.64,
+          "away": 2.85,
+          "draw": 3.44
+        },
+        "Matchbook": {
+          "home": 2.68,
+          "away": 2.88,
+          "draw": 3.45
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 2.07,
+          "under": 1.83
+        },
+        "Tipico": {
+          "over": 1.97,
+          "under": 1.8
+        },
+        "Unibet": {
+          "over": 1.91,
+          "under": 1.88
+        },
+        "LeoVegas (SE)": {
+          "over": 1.92,
+          "under": 1.91
+        },
+        "William Hill": {
+          "over": 1.85,
+          "under": 1.91
+        },
+        "Betsson": {
+          "over": 2.02,
+          "under": 1.78
+        },
+        "Nordic Bet": {
+          "over": 2.02,
+          "under": 1.78
+        },
+        "Coolbet": {
+          "over": 2.04,
+          "under": 1.83
+        },
+        "Matchbook": {
+          "over": 2.06,
+          "under": 1.9
+        }
+      }
+    }
+  },
+  {
+    "match": "Brentford vs Leeds United",
+    "home": "Brentford",
+    "away": "Leeds United",
+    "start_time": "2025-12-14T16:30:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.99,
+          "away": 3.87,
+          "draw": 3.65
+        },
+        "Parions Sport (FR)": {
+          "home": 1.89,
+          "away": 3.7,
+          "draw": 3.45
+        },
+        "Betclic (FR)": {
+          "home": 1.91,
+          "away": 3.73,
+          "draw": 3.47
+        },
+        "Winamax (DE)": {
+          "home": 1.96,
+          "away": 3.8,
+          "draw": 3.6
+        },
+        "Winamax (FR)": {
+          "home": 1.94,
+          "away": 3.7,
+          "draw": 3.5
+        },
+        "Tipico": {
+          "home": 1.93,
+          "away": 3.9,
+          "draw": 3.5
+        },
+        "LeoVegas (SE)": {
+          "home": 1.93,
+          "away": 3.95,
+          "draw": 3.7
+        },
+        "Unibet": {
+          "home": 1.89,
+          "away": 3.78,
+          "draw": 3.5
+        },
+        "Betfair": {
+          "home": 2.0,
+          "away": 4.1,
+          "draw": 3.65
+        },
+        "Marathon Bet": {
+          "home": 2.04,
+          "away": 3.8,
+          "draw": 3.6
+        },
+        "888sport": {
+          "home": 2.0,
+          "away": 3.5,
+          "draw": 3.5
+        },
+        "William Hill": {
+          "home": 2.0,
+          "away": 3.6,
+          "draw": 3.4
+        },
+        "Betsson": {
+          "home": 1.98,
+          "away": 3.8,
+          "draw": 3.65
+        },
+        "Nordic Bet": {
+          "home": 1.98,
+          "away": 3.8,
+          "draw": 3.65
+        },
+        "Coolbet": {
+          "home": 2.0,
+          "away": 4.08,
+          "draw": 3.63
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 1.96,
+          "under": 1.93
+        },
+        "Tipico": {
+          "over": 1.87,
+          "under": 1.87
+        },
+        "LeoVegas (SE)": {
+          "over": 1.88,
+          "under": 1.93
+        },
+        "Unibet": {
+          "over": 1.88,
+          "under": 1.92
+        },
+        "William Hill": {
+          "over": 1.85,
+          "under": 1.85
+        },
+        "Betsson": {
+          "over": 1.92,
+          "under": 1.88
+        },
+        "Nordic Bet": {
+          "over": 1.92,
+          "under": 1.88
+        },
+        "Coolbet": {
+          "over": 1.95,
+          "under": 1.91
+        }
+      }
+    }
+  },
+  {
+    "match": "Manchester United vs Bournemouth",
+    "home": "Manchester United",
+    "away": "Bournemouth",
+    "start_time": "2025-12-15T20:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.85,
+          "away": 3.9,
+          "draw": 4.18
+        },
+        "Parions Sport (FR)": {
+          "home": 1.76,
+          "away": 3.75,
+          "draw": 3.9
+        },
+        "Winamax (DE)": {
+          "home": 1.82,
+          "away": 3.85,
+          "draw": 4.1
+        },
+        "Winamax (FR)": {
+          "home": 1.8,
+          "away": 3.8,
+          "draw": 4.0
+        },
+        "Tipico": {
+          "home": 1.77,
+          "away": 4.0,
+          "draw": 4.1
+        },
+        "Betclic (FR)": {
+          "home": 1.78,
+          "away": 3.8,
+          "draw": 3.93
+        },
+        "Unibet": {
+          "home": 1.78,
+          "away": 3.8,
+          "draw": 3.92
+        },
+        "LeoVegas (SE)": {
+          "home": 1.83,
+          "away": 3.95,
+          "draw": 4.1
+        },
+        "Betfair": {
+          "home": 1.88,
+          "away": 4.1,
+          "draw": 4.2
+        },
+        "Marathon Bet": {
+          "home": 1.86,
+          "away": 4.05,
+          "draw": 4.05
+        },
+        "888sport": {
+          "home": 1.83,
+          "away": 3.9,
+          "draw": 3.8
+        },
+        "William Hill": {
+          "home": 1.8,
+          "away": 3.9,
+          "draw": 3.9
+        },
+        "Betsson": {
+          "home": 1.85,
+          "away": 3.95,
+          "draw": 4.1
+        },
+        "Nordic Bet": {
+          "home": 1.85,
+          "away": 3.95,
+          "draw": 4.1
+        },
+        "Coolbet": {
+          "home": 1.86,
+          "away": 4.14,
+          "draw": 4.14
+        }
+      },
+      "over_under_3_0": {
+        "Pinnacle": {
+          "over": 1.91,
+          "under": 1.98
+        },
+        "Coolbet": {
+          "over": 1.89,
+          "under": 1.98
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 2.2,
+          "under": 1.6
+        },
+        "Betsson": {
+          "over": 2.42,
+          "under": 1.55
+        },
+        "Nordic Bet": {
+          "over": 2.42,
+          "under": 1.55
+        }
+      },
+      "over_under_2_5": {
+        "Unibet": {
+          "over": 1.56,
+          "under": 2.4
+        },
+        "LeoVegas (SE)": {
+          "over": 1.57,
+          "under": 2.43
+        },
+        "William Hill": {
+          "over": 1.55,
+          "under": 2.38
+        }
+      }
+    }
+  },
+  {
+    "match": "Newcastle United vs Chelsea",
+    "home": "Newcastle United",
+    "away": "Chelsea",
+    "start_time": "2025-12-20T12:30:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 2.2,
+          "away": 2.6,
+          "draw": 3.35
+        },
+        "Winamax (DE)": {
+          "home": 2.35,
+          "away": 2.7,
+          "draw": 3.6
+        },
+        "Winamax (FR)": {
+          "home": 2.3,
+          "away": 2.6,
+          "draw": 3.45
+        },
+        "Unibet": {
+          "home": 2.5,
+          "away": 2.85,
+          "draw": 3.65
+        },
+        "Betclic (FR)": {
+          "home": 2.3,
+          "away": 2.65,
+          "draw": 3.45
+        },
+        "Marathon Bet": {
+          "home": 2.49,
+          "away": 2.8,
+          "draw": 3.66
+        },
+        "Betfair": {
+          "home": 1.06,
+          "away": 2.68,
+          "draw": 3.5
+        },
+        "888sport": {
+          "home": 2.3,
+          "away": 2.88,
+          "draw": 3.4
+        },
+        "William Hill": {
+          "home": 2.4,
+          "away": 2.7,
+          "draw": 3.5
+        },
+        "Tipico": {
+          "home": 2.35,
+          "away": 2.8,
+          "draw": 3.6
+        },
+        "Betsson": {
+          "home": 2.48,
+          "away": 2.78,
+          "draw": 3.6
+        },
+        "Nordic Bet": {
+          "home": 2.48,
+          "away": 2.78,
+          "draw": 3.6
+        },
+        "Pinnacle": {
+          "home": 2.46,
+          "away": 2.74,
+          "draw": 3.6
+        },
+        "LeoVegas (SE)": {
+          "home": 2.45,
+          "away": 2.8,
+          "draw": 3.6
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.7,
+          "under": 2.05
+        },
+        "Tipico": {
+          "over": 1.67,
+          "under": 2.15
+        },
+        "Betsson": {
+          "over": 1.72,
+          "under": 2.12
+        },
+        "Nordic Bet": {
+          "over": 1.72,
+          "under": 2.12
+        },
+        "Unibet": {
+          "over": 1.73,
+          "under": 2.1
+        },
+        "LeoVegas (SE)": {
+          "over": 1.74,
+          "under": 2.12
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.91,
+          "under": 1.93
+        }
+      }
+    }
+  },
+  {
+    "match": "Bournemouth vs Burnley",
+    "home": "Bournemouth",
+    "away": "Burnley",
+    "start_time": "2025-12-20T15:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Winamax (FR)": {
+          "home": 1.44,
+          "away": 5.7,
+          "draw": 4.3
+        },
+        "Parions Sport (FR)": {
+          "home": 1.4,
+          "away": 5.6,
+          "draw": 4.1
+        },
+        "Winamax (DE)": {
+          "home": 1.46,
+          "away": 6.0,
+          "draw": 4.5
+        },
+        "Betclic (FR)": {
+          "home": 1.44,
+          "away": 5.75,
+          "draw": 4.25
+        },
+        "Marathon Bet": {
+          "home": 1.52,
+          "away": 6.7,
+          "draw": 4.45
+        },
+        "Unibet": {
+          "home": 1.55,
+          "away": 6.5,
+          "draw": 4.4
+        },
+        "888sport": {
+          "home": 1.5,
+          "away": 6.0,
+          "draw": 4.0
+        },
+        "William Hill": {
+          "home": 1.5,
+          "away": 6.0,
+          "draw": 4.2
+        },
+        "Tipico": {
+          "home": 1.45,
+          "away": 6.5,
+          "draw": 4.6
+        },
+        "Betfair": {
+          "home": 1.49,
+          "away": 5.5,
+          "draw": 4.0
+        },
+        "Nordic Bet": {
+          "home": 1.49,
+          "away": 6.5,
+          "draw": 4.65
+        },
+        "Betsson": {
+          "home": 1.49,
+          "away": 6.5,
+          "draw": 4.65
+        },
+        "Pinnacle": {
+          "home": 1.49,
+          "away": 6.2,
+          "draw": 4.47
+        },
+        "LeoVegas (SE)": {
+          "home": 1.53,
+          "away": 6.5,
+          "draw": 4.3
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.7,
+          "under": 2.1
+        },
+        "Tipico": {
+          "over": 1.67,
+          "under": 2.15
+        },
+        "Nordic Bet": {
+          "over": 1.65,
+          "under": 2.22
+        },
+        "Betsson": {
+          "over": 1.65,
+          "under": 2.22
+        },
+        "Unibet": {
+          "over": 1.65,
+          "under": 2.23
+        },
+        "LeoVegas (SE)": {
+          "over": 1.66,
+          "under": 2.25
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.86,
+          "under": 1.98
+        }
+      }
+    }
+  },
+  {
+    "match": "Wolverhampton Wanderers vs Brentford",
+    "home": "Wolverhampton Wanderers",
+    "away": "Brentford",
+    "start_time": "2025-12-20T15:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 3.15,
+          "away": 1.94,
+          "draw": 3.25
+        },
+        "Winamax (DE)": {
+          "home": 3.55,
+          "away": 1.98,
+          "draw": 3.45
+        },
+        "Winamax (FR)": {
+          "home": 3.45,
+          "away": 1.94,
+          "draw": 3.35
+        },
+        "Betclic (FR)": {
+          "home": 3.5,
+          "away": 1.94,
+          "draw": 3.35
+        },
+        "Marathon Bet": {
+          "home": 3.65,
+          "away": 2.11,
+          "draw": 3.52
+        },
+        "Betfair": {
+          "home": 3.3,
+          "away": 2.02,
+          "draw": 3.35
+        },
+        "888sport": {
+          "home": 3.4,
+          "away": 2.15,
+          "draw": 3.3
+        },
+        "William Hill": {
+          "home": 3.5,
+          "away": 2.05,
+          "draw": 3.3
+        },
+        "Tipico": {
+          "home": 3.8,
+          "away": 2.0,
+          "draw": 3.4
+        },
+        "Betsson": {
+          "home": 3.7,
+          "away": 2.02,
+          "draw": 3.6
+        },
+        "Nordic Bet": {
+          "home": 3.7,
+          "away": 2.02,
+          "draw": 3.6
+        },
+        "Pinnacle": {
+          "home": 3.68,
+          "away": 2.02,
+          "draw": 3.51
+        },
+        "Unibet": {
+          "home": 3.4,
+          "away": 1.86,
+          "draw": 3.25
+        },
+        "LeoVegas (SE)": {
+          "home": 3.7,
+          "away": 2.04,
+          "draw": 3.5
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.91,
+          "under": 1.83
+        },
+        "Tipico": {
+          "over": 1.97,
+          "under": 1.8
+        },
+        "Betsson": {
+          "over": 1.98,
+          "under": 1.82
+        },
+        "Nordic Bet": {
+          "over": 1.98,
+          "under": 1.82
+        },
+        "Pinnacle": {
+          "over": 2.01,
+          "under": 1.83
+        },
+        "Unibet": {
+          "over": 1.91,
+          "under": 1.88
+        },
+        "LeoVegas (SE)": {
+          "over": 1.92,
+          "under": 1.89
+        }
+      }
+    }
+  },
+  {
+    "match": "Brighton and Hove Albion vs Sunderland",
+    "home": "Brighton and Hove Albion",
+    "away": "Sunderland",
+    "start_time": "2025-12-20T15:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.51,
+          "away": 4.9,
+          "draw": 3.7
+        },
+        "Winamax (DE)": {
+          "home": 1.58,
+          "away": 5.2,
+          "draw": 4.0
+        },
+        "Betclic (FR)": {
+          "home": 1.56,
+          "away": 5.1,
+          "draw": 3.83
+        },
+        "Winamax (FR)": {
+          "home": 1.56,
+          "away": 5.0,
+          "draw": 3.85
+        },
+        "Marathon Bet": {
+          "home": 1.64,
+          "away": 5.7,
+          "draw": 4.05
+        },
+        "Betfair": {
+          "home": 1.65,
+          "away": 5.6,
+          "draw": 4.0
+        },
+        "888sport": {
+          "home": 1.61,
+          "away": 5.0,
+          "draw": 3.9
+        },
+        "William Hill": {
+          "home": 1.62,
+          "away": 5.0,
+          "draw": 3.8
+        },
+        "Tipico": {
+          "home": 1.6,
+          "away": 5.2,
+          "draw": 4.1
+        },
+        "Betsson": {
+          "home": 1.62,
+          "away": 5.3,
+          "draw": 4.3
+        },
+        "Nordic Bet": {
+          "home": 1.62,
+          "away": 5.3,
+          "draw": 4.3
+        },
+        "Unibet": {
+          "home": 1.64,
+          "away": 5.4,
+          "draw": 4.3
+        },
+        "Pinnacle": {
+          "home": 1.6,
+          "away": 5.33,
+          "draw": 4.14
+        },
+        "LeoVegas (SE)": {
+          "home": 1.62,
+          "away": 5.3,
+          "draw": 4.25
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.8,
+          "under": 1.95
+        },
+        "Tipico": {
+          "over": 1.75,
+          "under": 2.05
+        },
+        "Betsson": {
+          "over": 1.72,
+          "under": 2.1
+        },
+        "Nordic Bet": {
+          "over": 1.72,
+          "under": 2.1
+        },
+        "LeoVegas (SE)": {
+          "over": 1.76,
+          "under": 2.1
+        },
+        "Unibet": {
+          "over": 1.75,
+          "under": 2.08
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.97,
+          "under": 1.87
+        }
+      }
+    }
+  },
+  {
+    "match": "Manchester City vs West Ham United",
+    "home": "Manchester City",
+    "away": "West Ham United",
+    "start_time": "2025-12-20T15:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.16,
+          "away": 9.5,
+          "draw": 5.9
+        },
+        "Winamax (DE)": {
+          "home": 1.19,
+          "away": 11.0,
+          "draw": 6.75
+        },
+        "Winamax (FR)": {
+          "home": 1.18,
+          "away": 10.0,
+          "draw": 6.25
+        },
+        "Betclic (FR)": {
+          "home": 1.19,
+          "away": 10.25,
+          "draw": 6.25
+        },
+        "Marathon Bet": {
+          "home": 1.23,
+          "away": 13.25,
+          "draw": 7.0
+        },
+        "888sport": {
+          "home": 1.2,
+          "away": 13.0,
+          "draw": 6.5
+        },
+        "William Hill": {
+          "home": 1.2,
+          "away": 12.0,
+          "draw": 6.5
+        },
+        "Tipico": {
+          "home": 1.18,
+          "away": 12.0,
+          "draw": 7.8
+        },
+        "Betfair": {
+          "home": 1.23,
+          "away": 14.5,
+          "draw": 7.0
+        },
+        "Betsson": {
+          "home": 1.19,
+          "away": 13.5,
+          "draw": 7.8
+        },
+        "Nordic Bet": {
+          "home": 1.19,
+          "away": 13.5,
+          "draw": 7.8
+        },
+        "Unibet": {
+          "home": 1.24,
+          "away": 12.5,
+          "draw": 7.5
+        },
+        "Pinnacle": {
+          "home": 1.19,
+          "away": 11.37,
+          "draw": 7.49
+        },
+        "LeoVegas (SE)": {
+          "home": 1.22,
+          "away": 12.5,
+          "draw": 7.0
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.35,
+          "under": 3.0
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 1.77,
+          "under": 1.95
+        },
+        "Betsson": {
+          "over": 1.92,
+          "under": 1.88
+        },
+        "Nordic Bet": {
+          "over": 1.92,
+          "under": 1.88
+        },
+        "Pinnacle": {
+          "over": 1.89,
+          "under": 1.93
+        },
+        "Unibet": {
+          "over": 1.88,
+          "under": 1.91
+        },
+        "LeoVegas (SE)": {
+          "over": 1.89,
+          "under": 1.92
+        }
+      }
+    }
+  },
+  {
+    "match": "Tottenham Hotspur vs Liverpool",
+    "home": "Tottenham Hotspur",
+    "away": "Liverpool",
+    "start_time": "2025-12-20T17:30:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 2.9,
+          "away": 1.95,
+          "draw": 3.5
+        },
+        "Winamax (DE)": {
+          "home": 3.25,
+          "away": 2.0,
+          "draw": 3.75
+        },
+        "Winamax (FR)": {
+          "home": 3.15,
+          "away": 1.96,
+          "draw": 3.65
+        },
+        "Betclic (FR)": {
+          "home": 3.2,
+          "away": 1.96,
+          "draw": 3.6
+        },
+        "Marathon Bet": {
+          "home": 3.42,
+          "away": 2.09,
+          "draw": 3.84
+        },
+        "Betfair": {
+          "home": 3.3,
+          "away": 2.1,
+          "draw": 3.8
+        },
+        "888sport": {
+          "home": 3.3,
+          "away": 2.0,
+          "draw": 3.6
+        },
+        "William Hill": {
+          "home": 3.25,
+          "away": 2.05,
+          "draw": 3.6
+        },
+        "Tipico": {
+          "home": 3.4,
+          "away": 2.0,
+          "draw": 3.8
+        },
+        "Betsson": {
+          "home": 3.35,
+          "away": 2.05,
+          "draw": 3.95
+        },
+        "Nordic Bet": {
+          "home": 3.35,
+          "away": 2.05,
+          "draw": 3.95
+        },
+        "Pinnacle": {
+          "home": 3.36,
+          "away": 2.03,
+          "draw": 3.84
+        },
+        "LeoVegas (SE)": {
+          "home": 3.5,
+          "away": 2.04,
+          "draw": 3.8
+        },
+        "Unibet": {
+          "home": 3.55,
+          "away": 2.07,
+          "draw": 3.85
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.57,
+          "under": 2.3
+        },
+        "Tipico": {
+          "over": 1.6,
+          "under": 2.3
+        },
+        "Betsson": {
+          "over": 1.62,
+          "under": 2.3
+        },
+        "Nordic Bet": {
+          "over": 1.62,
+          "under": 2.3
+        },
+        "LeoVegas (SE)": {
+          "over": 1.63,
+          "under": 2.3
+        },
+        "Unibet": {
+          "over": 1.62,
+          "under": 2.3
+        }
+      },
+      "over_under_3_0": {
+        "Pinnacle": {
+          "over": 2.03,
+          "under": 1.82
+        }
+      }
+    }
+  },
+  {
+    "match": "Everton vs Arsenal",
+    "home": "Everton",
+    "away": "Arsenal",
+    "start_time": "2025-12-20T20:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Winamax (FR)": {
+          "home": 4.7,
+          "away": 1.66,
+          "draw": 3.5
+        },
+        "Parions Sport (FR)": {
+          "home": 4.2,
+          "away": 1.65,
+          "draw": 3.35
+        },
+        "Winamax (DE)": {
+          "home": 4.9,
+          "away": 1.68,
+          "draw": 3.65
+        },
+        "Betclic (FR)": {
+          "home": 4.75,
+          "away": 1.66,
+          "draw": 3.5
+        },
+        "Betfair": {
+          "home": 5.2,
+          "away": 1.75,
+          "draw": 3.55
+        },
+        "888sport": {
+          "home": 4.8,
+          "away": 1.73,
+          "draw": 3.6
+        },
+        "William Hill": {
+          "home": 4.6,
+          "away": 1.75,
+          "draw": 3.6
+        },
+        "Tipico": {
+          "home": 5.0,
+          "away": 1.72,
+          "draw": 3.6
+        },
+        "Nordic Bet": {
+          "home": 4.95,
+          "away": 1.75,
+          "draw": 3.7
+        },
+        "Betsson": {
+          "home": 4.95,
+          "away": 1.75,
+          "draw": 3.7
+        },
+        "Pinnacle": {
+          "home": 4.82,
+          "away": 1.74,
+          "draw": 3.68
+        },
+        "Marathon Bet": {
+          "home": 4.95,
+          "away": 1.77,
+          "draw": 3.78
+        },
+        "Unibet": {
+          "home": 5.3,
+          "away": 1.76,
+          "draw": 3.7
+        },
+        "LeoVegas (SE)": {
+          "home": 5.2,
+          "away": 1.73,
+          "draw": 3.65
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 2.0,
+          "under": 1.75
+        },
+        "Tipico": {
+          "over": 2.05,
+          "under": 1.75
+        },
+        "Nordic Bet": {
+          "over": 2.12,
+          "under": 1.72
+        },
+        "Betsson": {
+          "over": 2.12,
+          "under": 1.72
+        },
+        "Unibet": {
+          "over": 2.07,
+          "under": 1.76
+        },
+        "LeoVegas (SE)": {
+          "over": 2.08,
+          "under": 1.77
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.86,
+          "under": 1.97
+        }
+      }
+    }
+  },
+  {
+    "match": "Leeds United vs Crystal Palace",
+    "home": "Leeds United",
+    "away": "Crystal Palace",
+    "start_time": "2025-12-20T20:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Winamax (FR)": {
+          "home": 2.7,
+          "away": 2.35,
+          "draw": 3.2
+        },
+        "Parions Sport (FR)": {
+          "home": 2.55,
+          "away": 2.35,
+          "draw": 3.1
+        },
+        "Winamax (DE)": {
+          "home": 2.75,
+          "away": 2.45,
+          "draw": 3.3
+        },
+        "Betclic (FR)": {
+          "home": 2.75,
+          "away": 2.37,
+          "draw": 3.18
+        },
+        "Betfair": {
+          "home": 2.86,
+          "away": 2.54,
+          "draw": 3.2
+        },
+        "888sport": {
+          "home": 2.8,
+          "away": 2.45,
+          "draw": 3.3
+        },
+        "William Hill": {
+          "home": 2.8,
+          "away": 2.5,
+          "draw": 3.2
+        },
+        "Tipico": {
+          "home": 2.95,
+          "away": 2.45,
+          "draw": 3.2
+        },
+        "Nordic Bet": {
+          "home": 2.88,
+          "away": 2.55,
+          "draw": 3.3
+        },
+        "Betsson": {
+          "home": 2.88,
+          "away": 2.55,
+          "draw": 3.3
+        },
+        "Pinnacle": {
+          "home": 2.84,
+          "away": 2.55,
+          "draw": 3.27
+        },
+        "Marathon Bet": {
+          "home": 2.9,
+          "away": 2.55,
+          "draw": 3.4
+        },
+        "Unibet": {
+          "home": 2.9,
+          "away": 2.55,
+          "draw": 3.4
+        },
+        "LeoVegas (SE)": {
+          "home": 2.88,
+          "away": 2.55,
+          "draw": 3.35
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 2.05,
+          "under": 1.73
+        },
+        "Tipico": {
+          "over": 2.05,
+          "under": 1.75
+        },
+        "Nordic Bet": {
+          "over": 2.08,
+          "under": 1.75
+        },
+        "Betsson": {
+          "over": 2.08,
+          "under": 1.75
+        },
+        "Unibet": {
+          "over": 2.06,
+          "under": 1.76
+        },
+        "LeoVegas (SE)": {
+          "over": 2.07,
+          "under": 1.77
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.86,
+          "under": 1.98
+        }
+      }
+    }
+  },
+  {
+    "match": "Aston Villa vs Manchester United",
+    "home": "Aston Villa",
+    "away": "Manchester United",
+    "start_time": "2025-12-21T16:30:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Winamax (FR)": {
+          "home": 2.0,
+          "away": 3.1,
+          "draw": 3.5
+        },
+        "Parions Sport (FR)": {
+          "home": 1.93,
+          "away": 3.05,
+          "draw": 3.4
+        },
+        "Winamax (DE)": {
+          "home": 2.05,
+          "away": 3.2,
+          "draw": 3.6
+        },
+        "Betclic (FR)": {
+          "home": 2.02,
+          "away": 3.15,
+          "draw": 3.48
+        },
+        "Marathon Bet": {
+          "home": 2.16,
+          "away": 3.35,
+          "draw": 3.7
+        },
+        "Betfair": {
+          "home": 2.1,
+          "away": 3.3,
+          "draw": 3.7
+        },
+        "888sport": {
+          "home": 2.1,
+          "away": 3.25,
+          "draw": 3.5
+        },
+        "William Hill": {
+          "home": 2.1,
+          "away": 3.25,
+          "draw": 3.5
+        },
+        "Tipico": {
+          "home": 2.05,
+          "away": 3.4,
+          "draw": 3.6
+        },
+        "Nordic Bet": {
+          "home": 2.15,
+          "away": 3.25,
+          "draw": 3.7
+        },
+        "Betsson": {
+          "home": 2.15,
+          "away": 3.25,
+          "draw": 3.7
+        },
+        "Pinnacle": {
+          "home": 2.1,
+          "away": 3.33,
+          "draw": 3.64
+        },
+        "Unibet": {
+          "home": 2.08,
+          "away": 3.5,
+          "draw": 3.85
+        },
+        "LeoVegas (SE)": {
+          "home": 2.05,
+          "away": 3.45,
+          "draw": 3.75
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.73,
+          "under": 2.05
+        },
+        "Tipico": {
+          "over": 1.65,
+          "under": 2.2
+        },
+        "Nordic Bet": {
+          "over": 1.65,
+          "under": 2.25
+        },
+        "Betsson": {
+          "over": 1.65,
+          "under": 2.25
+        },
+        "Unibet": {
+          "over": 1.72,
+          "under": 2.12
+        },
+        "LeoVegas (SE)": {
+          "over": 1.73,
+          "under": 2.14
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.82,
+          "under": 2.03
+        }
+      }
+    }
+  },
+  {
+    "match": "Fulham vs Nottingham Forest",
+    "home": "Fulham",
+    "away": "Nottingham Forest",
+    "start_time": "2025-12-22T20:00:00+00:00",
+    "sport": "soccer_epl",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 2.0,
+          "away": 3.05,
+          "draw": 3.15
+        },
+        "Winamax (FR)": {
+          "home": 2.1,
+          "away": 3.1,
+          "draw": 3.25
+        },
+        "Winamax (DE)": {
+          "home": 2.15,
+          "away": 3.2,
+          "draw": 3.35
+        },
+        "Betclic (FR)": {
+          "home": 2.12,
+          "away": 3.15,
+          "draw": 3.23
+        },
+        "Marathon Bet": {
+          "home": 2.28,
+          "away": 3.32,
+          "draw": 3.42
+        },
+        "Betfair": {
+          "home": 2.22,
+          "away": 3.3,
+          "draw": 3.25
+        },
+        "888sport": {
+          "home": 2.15,
+          "away": 3.3,
+          "draw": 3.3
+        },
+        "William Hill": {
+          "home": 2.2,
+          "away": 3.2,
+          "draw": 3.25
+        },
+        "Tipico": {
+          "home": 2.2,
+          "away": 3.3,
+          "draw": 3.3
+        },
+        "Nordic Bet": {
+          "home": 2.28,
+          "away": 3.25,
+          "draw": 3.4
+        },
+        "Betsson": {
+          "home": 2.28,
+          "away": 3.25,
+          "draw": 3.4
+        },
+        "Pinnacle": {
+          "home": 2.22,
+          "away": 3.3,
+          "draw": 3.36
+        },
+        "LeoVegas (SE)": {
+          "home": 2.25,
+          "away": 3.25,
+          "draw": 3.45
+        },
+        "Unibet": {
+          "home": 2.28,
+          "away": 3.3,
+          "draw": 3.5
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.95,
+          "under": 1.8
+        },
+        "Tipico": {
+          "over": 1.97,
+          "under": 1.8
+        },
+        "Nordic Bet": {
+          "over": 2.02,
+          "under": 1.78
+        },
+        "Betsson": {
+          "over": 2.02,
+          "under": 1.78
+        },
+        "Pinnacle": {
+          "over": 2.03,
+          "under": 1.81
+        },
+        "LeoVegas (SE)": {
+          "over": 2.06,
+          "under": 1.78
+        },
+        "Unibet": {
+          "over": 2.05,
+          "under": 1.77
+        }
+      }
+    }
+  },
+  {
+    "match": "Real Sociedad vs Girona",
+    "home": "Real Sociedad",
+    "away": "Girona",
+    "start_time": "2025-12-12T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.74,
+          "away": 4.86,
+          "draw": 3.92
+        },
+        "Parions Sport (FR)": {
+          "home": 1.68,
+          "away": 4.45,
+          "draw": 3.7
+        },
+        "Winamax (FR)": {
+          "home": 1.7,
+          "away": 4.5,
+          "draw": 3.8
+        },
+        "Winamax (DE)": {
+          "home": 1.74,
+          "away": 4.6,
+          "draw": 3.85
+        },
+        "Betclic (FR)": {
+          "home": 1.71,
+          "away": 4.55,
+          "draw": 3.75
+        },
+        "Unibet": {
+          "home": 1.78,
+          "away": 4.9,
+          "draw": 3.8
+        },
+        "Tipico": {
+          "home": 1.7,
+          "away": 4.6,
+          "draw": 3.9
+        },
+        "William Hill": {
+          "home": 1.73,
+          "away": 4.6,
+          "draw": 3.6
+        },
+        "Marathon Bet": {
+          "home": 1.76,
+          "away": 4.95,
+          "draw": 3.84
+        },
+        "LeoVegas (SE)": {
+          "home": 1.74,
+          "away": 4.8,
+          "draw": 3.75
+        },
+        "Betsson": {
+          "home": 1.7,
+          "away": 4.7,
+          "draw": 3.95
+        },
+        "Nordic Bet": {
+          "home": 1.7,
+          "away": 4.7,
+          "draw": 3.95
+        },
+        "Betfair": {
+          "home": 1.77,
+          "away": 5.2,
+          "draw": 3.95
+        },
+        "Matchbook": {
+          "home": 1.77,
+          "away": 5.2,
+          "draw": 3.95
+        },
+        "Coolbet": {
+          "home": 1.74,
+          "away": 5.05,
+          "draw": 3.9
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 1.92,
+          "under": 1.97
+        },
+        "Tipico": {
+          "over": 1.8,
+          "under": 1.95
+        },
+        "William Hill": {
+          "over": 1.83,
+          "under": 1.91
+        },
+        "Unibet": {
+          "over": 1.92,
+          "under": 1.83
+        },
+        "LeoVegas (SE)": {
+          "over": 1.93,
+          "under": 1.85
+        },
+        "Betsson": {
+          "over": 1.85,
+          "under": 1.9
+        },
+        "Nordic Bet": {
+          "over": 1.85,
+          "under": 1.9
+        },
+        "Matchbook": {
+          "over": 1.94,
+          "under": 2.04
+        },
+        "Coolbet": {
+          "over": 1.87,
+          "under": 2.02
+        }
+      }
+    }
+  },
+  {
+    "match": "Atlético Madrid vs Valencia",
+    "home": "Atlético Madrid",
+    "away": "Valencia",
+    "start_time": "2025-12-13T13:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.33,
+          "away": 11.43,
+          "draw": 5.03
+        },
+        "Winamax (FR)": {
+          "home": 1.28,
+          "away": 10.0,
+          "draw": 5.2
+        },
+        "Winamax (DE)": {
+          "home": 1.3,
+          "away": 10.5,
+          "draw": 5.4
+        },
+        "Betclic (FR)": {
+          "home": 1.28,
+          "away": 9.75,
+          "draw": 5.25
+        },
+        "Unibet": {
+          "home": 1.3,
+          "away": 11.0,
+          "draw": 5.6
+        },
+        "Tipico": {
+          "home": 1.27,
+          "away": 11.0,
+          "draw": 5.5
+        },
+        "William Hill": {
+          "home": 1.3,
+          "away": 10.0,
+          "draw": 5.0
+        },
+        "Marathon Bet": {
+          "home": 1.33,
+          "away": 10.5,
+          "draw": 5.4
+        },
+        "LeoVegas (SE)": {
+          "home": 1.29,
+          "away": 10.5,
+          "draw": 5.4
+        },
+        "Betsson": {
+          "home": 1.31,
+          "away": 11.5,
+          "draw": 4.95
+        },
+        "Nordic Bet": {
+          "home": 1.31,
+          "away": 11.5,
+          "draw": 4.95
+        },
+        "Betfair": {
+          "home": 1.33,
+          "away": 12.0,
+          "draw": 5.6
+        },
+        "Matchbook": {
+          "home": 1.33,
+          "away": 12.5,
+          "draw": 5.6
+        },
+        "Coolbet": {
+          "home": 1.33,
+          "away": 12.0,
+          "draw": 5.15
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.99,
+          "under": 1.9
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 1.75,
+          "under": 2.05
+        },
+        "William Hill": {
+          "over": 1.73,
+          "under": 2.05
+        },
+        "LeoVegas (SE)": {
+          "over": 1.71,
+          "under": 2.14
+        },
+        "Unibet": {
+          "over": 1.68,
+          "under": 2.12
+        },
+        "Betsson": {
+          "over": 1.75,
+          "under": 2.02
+        },
+        "Nordic Bet": {
+          "over": 1.75,
+          "under": 2.02
+        },
+        "Coolbet": {
+          "over": 1.76,
+          "under": 2.16
+        }
+      }
+    }
+  },
+  {
+    "match": "Mallorca vs Elche CF",
+    "home": "Mallorca",
+    "away": "Elche CF",
+    "start_time": "2025-12-13T15:15:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 2.5,
+          "away": 3.22,
+          "draw": 3.1
+        },
+        "Parions Sport (FR)": {
+          "home": 2.3,
+          "away": 3.05,
+          "draw": 3.05
+        },
+        "Winamax (FR)": {
+          "home": 2.35,
+          "away": 3.05,
+          "draw": 3.1
+        },
+        "Winamax (DE)": {
+          "home": 2.4,
+          "away": 3.1,
+          "draw": 3.15
+        },
+        "Betclic (FR)": {
+          "home": 2.35,
+          "away": 3.05,
+          "draw": 3.05
+        },
+        "Tipico": {
+          "home": 2.35,
+          "away": 3.2,
+          "draw": 3.1
+        },
+        "William Hill": {
+          "home": 2.4,
+          "away": 3.0,
+          "draw": 3.0
+        },
+        "Marathon Bet": {
+          "home": 2.49,
+          "away": 3.18,
+          "draw": 3.18
+        },
+        "Unibet": {
+          "home": 2.26,
+          "away": 3.1,
+          "draw": 3.08
+        },
+        "LeoVegas (SE)": {
+          "home": 2.38,
+          "away": 3.25,
+          "draw": 3.05
+        },
+        "Betsson": {
+          "home": 2.48,
+          "away": 3.15,
+          "draw": 3.05
+        },
+        "Nordic Bet": {
+          "home": 2.48,
+          "away": 3.15,
+          "draw": 3.05
+        },
+        "Betfair": {
+          "home": 2.52,
+          "away": 3.35,
+          "draw": 3.15
+        },
+        "Matchbook": {
+          "home": 2.52,
+          "away": 3.35,
+          "draw": 3.15
+        },
+        "Coolbet": {
+          "home": 2.5,
+          "away": 3.25,
+          "draw": 3.1
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 2.1,
+          "under": 1.81
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.3,
+          "under": 1.6
+        },
+        "William Hill": {
+          "over": 2.25,
+          "under": 1.62
+        },
+        "Unibet": {
+          "over": 2.3,
+          "under": 1.57
+        },
+        "LeoVegas (SE)": {
+          "over": 2.33,
+          "under": 1.6
+        },
+        "Betsson": {
+          "over": 2.32,
+          "under": 1.58
+        },
+        "Nordic Bet": {
+          "over": 2.32,
+          "under": 1.58
+        },
+        "Matchbook": {
+          "over": 2.44,
+          "under": 1.65
+        }
+      },
+      "over_under_2_0": {
+        "Coolbet": {
+          "over": 1.71,
+          "under": 2.24
+        }
+      }
+    }
+  },
+  {
+    "match": "Barcelona vs CA Osasuna",
+    "home": "Barcelona",
+    "away": "CA Osasuna",
+    "start_time": "2025-12-13T17:30:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.22,
+          "away": 11.98,
+          "draw": 7.06
+        },
+        "Parions Sport (FR)": {
+          "home": 1.18,
+          "away": 10.5,
+          "draw": 6.9
+        },
+        "Winamax (FR)": {
+          "home": 1.18,
+          "away": 11.0,
+          "draw": 7.0
+        },
+        "Winamax (DE)": {
+          "home": 1.2,
+          "away": 12.0,
+          "draw": 7.5
+        },
+        "Betclic (FR)": {
+          "home": 1.19,
+          "away": 10.5,
+          "draw": 6.9
+        },
+        "Tipico": {
+          "home": 1.2,
+          "away": 10.5,
+          "draw": 7.5
+        },
+        "William Hill": {
+          "home": 1.22,
+          "away": 11.0,
+          "draw": 6.5
+        },
+        "Marathon Bet": {
+          "home": 1.23,
+          "away": 12.5,
+          "draw": 7.2
+        },
+        "Unibet": {
+          "home": 1.17,
+          "away": 10.8,
+          "draw": 7.1
+        },
+        "LeoVegas (SE)": {
+          "home": 1.21,
+          "away": 11.5,
+          "draw": 7.5
+        },
+        "Nordic Bet": {
+          "home": 1.21,
+          "away": 12.5,
+          "draw": 6.9
+        },
+        "Betsson": {
+          "home": 1.21,
+          "away": 12.5,
+          "draw": 6.9
+        },
+        "Betfair": {
+          "home": 1.23,
+          "away": 13.0,
+          "draw": 7.8
+        },
+        "Matchbook": {
+          "home": 1.24,
+          "away": 13.0,
+          "draw": 8.0
+        },
+        "Coolbet": {
+          "home": 1.22,
+          "away": 13.0,
+          "draw": 7.5
+        }
+      },
+      "over_under_3_75": {
+        "Pinnacle": {
+          "over": 1.88,
+          "under": 1.99
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 1.65,
+          "under": 2.15
+        },
+        "Unibet": {
+          "over": 1.76,
+          "under": 2.02
+        },
+        "LeoVegas (SE)": {
+          "over": 1.78,
+          "under": 2.04
+        },
+        "Nordic Bet": {
+          "over": 1.68,
+          "under": 2.12
+        },
+        "Betsson": {
+          "over": 1.68,
+          "under": 2.12
+        },
+        "Matchbook": {
+          "over": 1.77,
+          "under": 2.28
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.29,
+          "under": 3.5
+        }
+      },
+      "over_under_4_0": {
+        "Coolbet": {
+          "over": 2.11,
+          "under": 1.8
+        }
+      }
+    }
+  },
+  {
+    "match": "Getafe vs Espanyol",
+    "home": "Getafe",
+    "away": "Espanyol",
+    "start_time": "2025-12-13T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 2.61,
+          "away": 3.28,
+          "draw": 2.9
+        },
+        "Parions Sport (FR)": {
+          "home": 2.4,
+          "away": 3.1,
+          "draw": 2.85
+        },
+        "Winamax (FR)": {
+          "home": 2.45,
+          "away": 3.1,
+          "draw": 2.9
+        },
+        "Winamax (DE)": {
+          "home": 2.5,
+          "away": 3.15,
+          "draw": 2.95
+        },
+        "Betclic (FR)": {
+          "home": 2.43,
+          "away": 3.12,
+          "draw": 2.87
+        },
+        "Unibet": {
+          "home": 2.55,
+          "away": 3.25,
+          "draw": 3.0
+        },
+        "Tipico": {
+          "home": 2.55,
+          "away": 3.2,
+          "draw": 2.8
+        },
+        "William Hill": {
+          "home": 2.5,
+          "away": 3.1,
+          "draw": 2.88
+        },
+        "Marathon Bet": {
+          "home": 2.59,
+          "away": 3.24,
+          "draw": 2.97
+        },
+        "LeoVegas (SE)": {
+          "home": 2.5,
+          "away": 3.2,
+          "draw": 2.95
+        },
+        "Betsson": {
+          "home": 2.58,
+          "away": 3.2,
+          "draw": 2.88
+        },
+        "Nordic Bet": {
+          "home": 2.58,
+          "away": 3.2,
+          "draw": 2.88
+        },
+        "Betfair": {
+          "home": 2.66,
+          "away": 3.35,
+          "draw": 2.96
+        },
+        "Matchbook": {
+          "home": 2.66,
+          "away": 3.35,
+          "draw": 2.96
+        },
+        "Coolbet": {
+          "home": 2.6,
+          "away": 3.35,
+          "draw": 2.88
+        }
+      },
+      "over_under_1_75": {
+        "Pinnacle": {
+          "over": 1.87,
+          "under": 2.02
+        }
+      },
+      "over_under_1_5": {
+        "Tipico": {
+          "over": 1.55,
+          "under": 2.3
+        },
+        "Unibet": {
+          "over": 1.57,
+          "under": 2.3
+        },
+        "LeoVegas (SE)": {
+          "over": 1.6,
+          "under": 2.33
+        },
+        "Betsson": {
+          "over": 1.62,
+          "under": 2.32
+        },
+        "Nordic Bet": {
+          "over": 1.62,
+          "under": 2.32
+        },
+        "Matchbook": {
+          "over": 1.68,
+          "under": 2.34
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 2.7,
+          "under": 1.44
+        }
+      },
+      "over_under_2_0": {
+        "Coolbet": {
+          "over": 2.24,
+          "under": 1.72
+        }
+      }
+    }
+  },
+  {
+    "match": "Sevilla vs Oviedo",
+    "home": "Sevilla",
+    "away": "Oviedo",
+    "start_time": "2025-12-14T13:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 1.81,
+          "away": 5.07,
+          "draw": 3.48
+        },
+        "Parions Sport (FR)": {
+          "home": 1.72,
+          "away": 4.55,
+          "draw": 3.45
+        },
+        "Winamax (FR)": {
+          "home": 1.76,
+          "away": 4.6,
+          "draw": 3.5
+        },
+        "Winamax (DE)": {
+          "home": 1.78,
+          "away": 4.7,
+          "draw": 3.6
+        },
+        "Betclic (FR)": {
+          "home": 1.75,
+          "away": 4.6,
+          "draw": 3.45
+        },
+        "Tipico": {
+          "home": 1.77,
+          "away": 4.8,
+          "draw": 3.5
+        },
+        "William Hill": {
+          "home": 1.8,
+          "away": 4.6,
+          "draw": 3.4
+        },
+        "Marathon Bet": {
+          "home": 1.81,
+          "away": 5.0,
+          "draw": 3.58
+        },
+        "LeoVegas (SE)": {
+          "home": 1.75,
+          "away": 5.0,
+          "draw": 3.5
+        },
+        "Unibet": {
+          "home": 1.7,
+          "away": 4.65,
+          "draw": 3.5
+        },
+        "Betsson": {
+          "home": 1.82,
+          "away": 4.7,
+          "draw": 3.45
+        },
+        "Nordic Bet": {
+          "home": 1.82,
+          "away": 4.7,
+          "draw": 3.45
+        },
+        "Betfair": {
+          "home": 1.86,
+          "away": 5.2,
+          "draw": 3.55
+        },
+        "Matchbook": {
+          "home": 1.86,
+          "away": 5.2,
+          "draw": 3.55
+        },
+        "Coolbet": {
+          "home": 1.81,
+          "away": 5.1,
+          "draw": 3.55
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.96,
+          "under": 1.92
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.15,
+          "under": 1.67
+        },
+        "William Hill": {
+          "over": 2.1,
+          "under": 1.7
+        },
+        "LeoVegas (SE)": {
+          "over": 2.18,
+          "under": 1.68
+        },
+        "Unibet": {
+          "over": 2.16,
+          "under": 1.66
+        },
+        "Betsson": {
+          "over": 2.18,
+          "under": 1.65
+        },
+        "Nordic Bet": {
+          "over": 2.18,
+          "under": 1.65
+        },
+        "Matchbook": {
+          "over": 2.26,
+          "under": 1.75
+        },
+        "Coolbet": {
+          "over": 2.23,
+          "under": 1.72
+        }
+      }
+    }
+  },
+  {
+    "match": "Celta Vigo vs Athletic Bilbao",
+    "home": "Celta Vigo",
+    "away": "Athletic Bilbao",
+    "start_time": "2025-12-14T15:15:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 2.66,
+          "away": 2.87,
+          "draw": 3.24
+        },
+        "Parions Sport (FR)": {
+          "home": 2.45,
+          "away": 2.75,
+          "draw": 3.15
+        },
+        "Winamax (FR)": {
+          "home": 2.5,
+          "away": 2.75,
+          "draw": 3.2
+        },
+        "Winamax (DE)": {
+          "home": 2.55,
+          "away": 2.8,
+          "draw": 3.25
+        },
+        "Betclic (FR)": {
+          "home": 2.48,
+          "away": 2.78,
+          "draw": 3.15
+        },
+        "Tipico": {
+          "home": 2.55,
+          "away": 2.9,
+          "draw": 3.1
+        },
+        "William Hill": {
+          "home": 2.5,
+          "away": 2.8,
+          "draw": 3.1
+        },
+        "Marathon Bet": {
+          "home": 2.64,
+          "away": 2.9,
+          "draw": 3.24
+        },
+        "Unibet": {
+          "home": 2.38,
+          "away": 2.82,
+          "draw": 3.18
+        },
+        "LeoVegas (SE)": {
+          "home": 2.55,
+          "away": 2.95,
+          "draw": 3.15
+        },
+        "Betsson": {
+          "home": 2.62,
+          "away": 2.78,
+          "draw": 3.25
+        },
+        "Nordic Bet": {
+          "home": 2.62,
+          "away": 2.78,
+          "draw": 3.25
+        },
+        "Betfair": {
+          "home": 2.68,
+          "away": 2.92,
+          "draw": 3.2
+        },
+        "Matchbook": {
+          "home": 2.7,
+          "away": 2.92,
+          "draw": 3.25
+        },
+        "Coolbet": {
+          "home": 2.62,
+          "away": 2.92,
+          "draw": 3.25
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.93,
+          "under": 1.95
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.15,
+          "under": 1.67
+        },
+        "William Hill": {
+          "over": 2.05,
+          "under": 1.73
+        },
+        "Unibet": {
+          "over": 2.23,
+          "under": 1.63
+        },
+        "LeoVegas (SE)": {
+          "over": 2.25,
+          "under": 1.64
+        },
+        "Betsson": {
+          "over": 2.12,
+          "under": 1.68
+        },
+        "Nordic Bet": {
+          "over": 2.12,
+          "under": 1.68
+        },
+        "Matchbook": {
+          "over": 2.22,
+          "under": 1.76
+        },
+        "Coolbet": {
+          "over": 2.21,
+          "under": 1.73
+        }
+      }
+    }
+  },
+  {
+    "match": "Levante vs Villarreal",
+    "home": "Levante",
+    "away": "Villarreal",
+    "start_time": "2025-12-14T17:30:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 4.55,
+          "away": 1.68,
+          "draw": 4.46
+        },
+        "Parions Sport (FR)": {
+          "home": 4.05,
+          "away": 1.68,
+          "draw": 4.05
+        },
+        "Winamax (FR)": {
+          "home": 4.3,
+          "away": 1.66,
+          "draw": 4.1
+        },
+        "Winamax (DE)": {
+          "home": 4.4,
+          "away": 1.7,
+          "draw": 4.2
+        },
+        "Betclic (FR)": {
+          "home": 4.3,
+          "away": 1.66,
+          "draw": 4.05
+        },
+        "Tipico": {
+          "home": 4.4,
+          "away": 1.65,
+          "draw": 4.4
+        },
+        "William Hill": {
+          "home": 4.4,
+          "away": 1.7,
+          "draw": 4.0
+        },
+        "Marathon Bet": {
+          "home": 4.65,
+          "away": 1.72,
+          "draw": 4.25
+        },
+        "Unibet": {
+          "home": 4.35,
+          "away": 1.62,
+          "draw": 4.15
+        },
+        "LeoVegas (SE)": {
+          "home": 4.35,
+          "away": 1.7,
+          "draw": 4.25
+        },
+        "Nordic Bet": {
+          "home": 4.7,
+          "away": 1.68,
+          "draw": 4.25
+        },
+        "Betsson": {
+          "home": 4.7,
+          "away": 1.68,
+          "draw": 4.25
+        },
+        "Betfair": {
+          "home": 4.8,
+          "away": 1.72,
+          "draw": 4.3
+        },
+        "Matchbook": {
+          "home": 4.9,
+          "away": 1.72,
+          "draw": 4.4
+        },
+        "Coolbet": {
+          "home": 4.5,
+          "away": 1.72,
+          "draw": 4.4
+        }
+      },
+      "over_under_3_0": {
+        "Pinnacle": {
+          "over": 2.05,
+          "under": 1.85
+        },
+        "Coolbet": {
+          "over": 2.02,
+          "under": 1.87
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 1.6,
+          "under": 2.3
+        },
+        "William Hill": {
+          "over": 1.6,
+          "under": 2.25
+        },
+        "Unibet": {
+          "over": 1.6,
+          "under": 2.28
+        },
+        "LeoVegas (SE)": {
+          "over": 1.62,
+          "under": 2.3
+        },
+        "Nordic Bet": {
+          "over": 1.62,
+          "under": 2.28
+        },
+        "Betsson": {
+          "over": 1.62,
+          "under": 2.28
+        },
+        "Matchbook": {
+          "over": 1.66,
+          "under": 2.42
+        }
+      }
+    }
+  },
+  {
+    "match": "Alavés vs Real Madrid",
+    "home": "Alavés",
+    "away": "Real Madrid",
+    "start_time": "2025-12-14T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 6.17,
+          "away": 1.6,
+          "draw": 4.02
+        },
+        "Parions Sport (FR)": {
+          "home": 5.0,
+          "away": 1.56,
+          "draw": 4.0
+        },
+        "Winamax (FR)": {
+          "home": 5.7,
+          "away": 1.54,
+          "draw": 4.0
+        },
+        "Winamax (DE)": {
+          "home": 5.8,
+          "away": 1.56,
+          "draw": 4.1
+        },
+        "Unibet": {
+          "home": 5.8,
+          "away": 1.57,
+          "draw": 4.3
+        },
+        "Betclic (FR)": {
+          "home": 5.4,
+          "away": 1.55,
+          "draw": 4.05
+        },
+        "Tipico": {
+          "home": 6.0,
+          "away": 1.55,
+          "draw": 4.0
+        },
+        "William Hill": {
+          "home": 5.5,
+          "away": 1.57,
+          "draw": 3.9
+        },
+        "Marathon Bet": {
+          "home": 5.8,
+          "away": 1.61,
+          "draw": 4.2
+        },
+        "LeoVegas (SE)": {
+          "home": 5.75,
+          "away": 1.56,
+          "draw": 4.2
+        },
+        "Nordic Bet": {
+          "home": 5.4,
+          "away": 1.6,
+          "draw": 4.15
+        },
+        "Betsson": {
+          "home": 5.4,
+          "away": 1.6,
+          "draw": 4.15
+        },
+        "Betfair": {
+          "home": 6.4,
+          "away": 1.64,
+          "draw": 4.2
+        },
+        "Matchbook": {
+          "home": 6.4,
+          "away": 1.63,
+          "draw": 4.2
+        },
+        "Coolbet": {
+          "home": 6.1,
+          "away": 1.6,
+          "draw": 4.15
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 1.94,
+          "under": 1.94
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 1.67,
+          "under": 2.15
+        },
+        "William Hill": {
+          "over": 1.65,
+          "under": 2.15
+        },
+        "Unibet": {
+          "over": 1.76,
+          "under": 2.02
+        },
+        "LeoVegas (SE)": {
+          "over": 1.78,
+          "under": 2.04
+        },
+        "Nordic Bet": {
+          "over": 1.7,
+          "under": 2.12
+        },
+        "Betsson": {
+          "over": 1.7,
+          "under": 2.12
+        },
+        "Matchbook": {
+          "over": 1.75,
+          "under": 2.2
+        },
+        "Coolbet": {
+          "over": 1.74,
+          "under": 2.2
+        }
+      }
+    }
+  },
+  {
+    "match": "Rayo Vallecano vs Real Betis",
+    "home": "Rayo Vallecano",
+    "away": "Real Betis",
+    "start_time": "2025-12-15T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Pinnacle": {
+          "home": 2.59,
+          "away": 2.78,
+          "draw": 3.47
+        },
+        "Parions Sport (FR)": {
+          "home": 2.4,
+          "away": 2.7,
+          "draw": 3.3
+        },
+        "Winamax (FR)": {
+          "home": 2.45,
+          "away": 2.7,
+          "draw": 3.4
+        },
+        "Betclic (FR)": {
+          "home": 2.43,
+          "away": 2.72,
+          "draw": 3.33
+        },
+        "Tipico": {
+          "home": 2.5,
+          "away": 2.8,
+          "draw": 3.3
+        },
+        "William Hill": {
+          "home": 2.5,
+          "away": 2.75,
+          "draw": 3.3
+        },
+        "Marathon Bet": {
+          "home": 2.58,
+          "away": 2.8,
+          "draw": 3.48
+        },
+        "Unibet": {
+          "home": 2.35,
+          "away": 2.7,
+          "draw": 3.3
+        },
+        "LeoVegas (SE)": {
+          "home": 2.43,
+          "away": 2.85,
+          "draw": 3.45
+        },
+        "Nordic Bet": {
+          "home": 2.58,
+          "away": 2.78,
+          "draw": 3.35
+        },
+        "Betsson": {
+          "home": 2.58,
+          "away": 2.78,
+          "draw": 3.35
+        },
+        "Betfair": {
+          "home": 2.64,
+          "away": 2.84,
+          "draw": 3.4
+        },
+        "Matchbook": {
+          "home": 2.66,
+          "away": 2.84,
+          "draw": 3.5
+        },
+        "Coolbet": {
+          "home": 2.55,
+          "away": 2.85,
+          "draw": 3.45
+        }
+      },
+      "over_under_2_5": {
+        "Pinnacle": {
+          "over": 2.0,
+          "under": 1.89
+        },
+        "Tipico": {
+          "over": 1.9,
+          "under": 1.85
+        },
+        "William Hill": {
+          "over": 1.91,
+          "under": 1.85
+        },
+        "Unibet": {
+          "over": 1.94,
+          "under": 1.81
+        },
+        "LeoVegas (SE)": {
+          "over": 1.96,
+          "under": 1.83
+        },
+        "Nordic Bet": {
+          "over": 1.95,
+          "under": 1.82
+        },
+        "Betsson": {
+          "over": 1.95,
+          "under": 1.82
+        },
+        "Matchbook": {
+          "over": 2.0,
+          "under": 1.89
+        },
+        "Coolbet": {
+          "over": 1.95,
+          "under": 1.93
+        }
+      }
+    }
+  },
+  {
+    "match": "Valencia vs Mallorca",
+    "home": "Valencia",
+    "away": "Mallorca",
+    "start_time": "2025-12-19T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.84,
+          "away": 3.9,
+          "draw": 3.2
+        },
+        "Winamax (DE)": {
+          "home": 1.92,
+          "away": 4.0,
+          "draw": 3.3
+        },
+        "Winamax (FR)": {
+          "home": 1.88,
+          "away": 3.85,
+          "draw": 3.2
+        },
+        "Betclic (FR)": {
+          "home": 1.88,
+          "away": 3.93,
+          "draw": 3.2
+        },
+        "Tipico": {
+          "home": 1.87,
+          "away": 4.2,
+          "draw": 3.5
+        },
+        "Betsson": {
+          "home": 1.9,
+          "away": 4.25,
+          "draw": 3.45
+        },
+        "Nordic Bet": {
+          "home": 1.9,
+          "away": 4.25,
+          "draw": 3.45
+        },
+        "Marathon Bet": {
+          "home": 2.0,
+          "away": 4.2,
+          "draw": 3.42
+        },
+        "Unibet": {
+          "home": 1.93,
+          "away": 4.3,
+          "draw": 3.5
+        },
+        "William Hill": {
+          "home": 1.95,
+          "away": 3.9,
+          "draw": 3.25
+        },
+        "Pinnacle": {
+          "home": 1.91,
+          "away": 4.16,
+          "draw": 3.46
+        },
+        "Betfair": {
+          "home": 1.06,
+          "away": 1.06,
+          "draw": 1.01
+        },
+        "LeoVegas (SE)": {
+          "home": 1.89,
+          "away": 4.2,
+          "draw": 3.45
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.25,
+          "under": 1.62
+        },
+        "Betsson": {
+          "over": 2.32,
+          "under": 1.58
+        },
+        "Nordic Bet": {
+          "over": 2.32,
+          "under": 1.58
+        },
+        "William Hill": {
+          "over": 2.2,
+          "under": 1.62
+        },
+        "Unibet": {
+          "over": 2.25,
+          "under": 1.62
+        },
+        "LeoVegas (SE)": {
+          "over": 2.28,
+          "under": 1.63
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 2.02,
+          "under": 1.83
+        }
+      }
+    }
+  },
+  {
+    "match": "Oviedo vs Celta Vigo",
+    "home": "Oviedo",
+    "away": "Celta Vigo",
+    "start_time": "2025-12-20T13:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Winamax (FR)": {
+          "home": 3.15,
+          "away": 2.05,
+          "draw": 3.35
+        },
+        "Parions Sport (FR)": {
+          "home": 2.9,
+          "away": 2.05,
+          "draw": 3.25
+        },
+        "Betclic (FR)": {
+          "home": 3.2,
+          "away": 2.05,
+          "draw": 3.32
+        },
+        "Winamax (DE)": {
+          "home": 3.25,
+          "away": 2.1,
+          "draw": 3.45
+        },
+        "Tipico": {
+          "home": 3.3,
+          "away": 2.15,
+          "draw": 3.4
+        },
+        "Betsson": {
+          "home": 3.35,
+          "away": 2.12,
+          "draw": 3.55
+        },
+        "Nordic Bet": {
+          "home": 3.35,
+          "away": 2.12,
+          "draw": 3.55
+        },
+        "Marathon Bet": {
+          "home": 3.42,
+          "away": 2.21,
+          "draw": 3.48
+        },
+        "Unibet": {
+          "home": 3.5,
+          "away": 2.23,
+          "draw": 3.45
+        },
+        "William Hill": {
+          "home": 3.25,
+          "away": 2.15,
+          "draw": 3.3
+        },
+        "Pinnacle": {
+          "home": 3.36,
+          "away": 2.14,
+          "draw": 3.51
+        },
+        "Betfair": {
+          "home": 2.9,
+          "away": 2.14,
+          "draw": 3.25
+        },
+        "LeoVegas (SE)": {
+          "home": 3.4,
+          "away": 2.17,
+          "draw": 3.4
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.15,
+          "under": 1.67
+        },
+        "Betsson": {
+          "over": 2.12,
+          "under": 1.7
+        },
+        "Nordic Bet": {
+          "over": 2.12,
+          "under": 1.7
+        },
+        "William Hill": {
+          "over": 2.1,
+          "under": 1.67
+        },
+        "Unibet": {
+          "over": 2.1,
+          "under": 1.7
+        },
+        "LeoVegas (SE)": {
+          "over": 2.12,
+          "under": 1.72
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.88,
+          "under": 1.95
+        }
+      }
+    }
+  },
+  {
+    "match": "Levante vs Real Sociedad",
+    "home": "Levante",
+    "away": "Real Sociedad",
+    "start_time": "2025-12-20T15:15:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Betclic (FR)": {
+          "home": 3.12,
+          "away": 2.1,
+          "draw": 3.32
+        },
+        "Winamax (DE)": {
+          "home": 3.15,
+          "away": 2.15,
+          "draw": 3.45
+        },
+        "Winamax (FR)": {
+          "home": 3.05,
+          "away": 2.1,
+          "draw": 3.35
+        },
+        "Parions Sport (FR)": {
+          "home": 2.85,
+          "away": 2.1,
+          "draw": 3.2
+        },
+        "Tipico": {
+          "home": 3.3,
+          "away": 2.2,
+          "draw": 3.3
+        },
+        "Betsson": {
+          "home": 3.2,
+          "away": 2.22,
+          "draw": 3.45
+        },
+        "Nordic Bet": {
+          "home": 3.2,
+          "away": 2.22,
+          "draw": 3.45
+        },
+        "Marathon Bet": {
+          "home": 3.3,
+          "away": 2.26,
+          "draw": 3.5
+        },
+        "Unibet": {
+          "home": 3.35,
+          "away": 2.25,
+          "draw": 3.45
+        },
+        "William Hill": {
+          "home": 3.2,
+          "away": 2.2,
+          "draw": 3.3
+        },
+        "Pinnacle": {
+          "home": 3.21,
+          "away": 2.22,
+          "draw": 3.46
+        },
+        "Betfair": {
+          "home": 3.2,
+          "away": 2.22,
+          "draw": 3.35
+        },
+        "LeoVegas (SE)": {
+          "home": 3.3,
+          "away": 2.2,
+          "draw": 3.4
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 1.87,
+          "under": 1.9
+        },
+        "Betsson": {
+          "over": 1.9,
+          "under": 1.85
+        },
+        "Nordic Bet": {
+          "over": 1.9,
+          "under": 1.85
+        },
+        "William Hill": {
+          "over": 1.95,
+          "under": 1.8
+        },
+        "Pinnacle": {
+          "over": 1.93,
+          "under": 1.91
+        },
+        "Unibet": {
+          "over": 1.89,
+          "under": 1.87
+        },
+        "LeoVegas (SE)": {
+          "over": 1.92,
+          "under": 1.88
+        }
+      }
+    }
+  },
+  {
+    "match": "CA Osasuna vs Alavés",
+    "home": "CA Osasuna",
+    "away": "Alavés",
+    "start_time": "2025-12-20T17:30:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 2.05,
+          "away": 3.25,
+          "draw": 2.85
+        },
+        "Winamax (DE)": {
+          "home": 2.25,
+          "away": 3.4,
+          "draw": 3.0
+        },
+        "Winamax (FR)": {
+          "home": 2.15,
+          "away": 3.3,
+          "draw": 2.9
+        },
+        "Betclic (FR)": {
+          "home": 2.18,
+          "away": 3.35,
+          "draw": 2.92
+        },
+        "Tipico": {
+          "home": 2.2,
+          "away": 3.5,
+          "draw": 3.1
+        },
+        "Betsson": {
+          "home": 2.28,
+          "away": 3.45,
+          "draw": 3.05
+        },
+        "Nordic Bet": {
+          "home": 2.28,
+          "away": 3.45,
+          "draw": 3.05
+        },
+        "Marathon Bet": {
+          "home": 2.34,
+          "away": 3.58,
+          "draw": 3.08
+        },
+        "William Hill": {
+          "home": 2.3,
+          "away": 3.4,
+          "draw": 2.9
+        },
+        "Unibet": {
+          "home": 2.3,
+          "away": 3.65,
+          "draw": 3.1
+        },
+        "Pinnacle": {
+          "home": 2.29,
+          "away": 3.54,
+          "draw": 3.02
+        },
+        "Betfair": {
+          "home": 1.06,
+          "away": 1.06,
+          "draw": 1.01
+        },
+        "LeoVegas (SE)": {
+          "home": 2.25,
+          "away": 3.6,
+          "draw": 3.05
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.5,
+          "under": 1.5
+        },
+        "William Hill": {
+          "over": 2.5,
+          "under": 1.5
+        }
+      },
+      "over_under_1_5": {
+        "Betsson": {
+          "over": 1.5,
+          "under": 2.52
+        },
+        "Nordic Bet": {
+          "over": 1.5,
+          "under": 2.52
+        },
+        "LeoVegas (SE)": {
+          "over": 1.47,
+          "under": 2.7
+        },
+        "Unibet": {
+          "over": 1.44,
+          "under": 2.65
+        }
+      },
+      "over_under_2_0": {
+        "Pinnacle": {
+          "over": 1.91,
+          "under": 1.93
+        }
+      }
+    }
+  },
+  {
+    "match": "Real Madrid vs Sevilla",
+    "home": "Real Madrid",
+    "away": "Sevilla",
+    "start_time": "2025-12-20T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Winamax (DE)": {
+          "home": 1.21,
+          "away": 10.0,
+          "draw": 6.5
+        },
+        "Winamax (FR)": {
+          "home": 1.19,
+          "away": 9.5,
+          "draw": 6.0
+        },
+        "Parions Sport (FR)": {
+          "home": 1.18,
+          "away": 8.7,
+          "draw": 5.6
+        },
+        "Betclic (FR)": {
+          "home": 1.21,
+          "away": 9.25,
+          "draw": 5.9
+        },
+        "Tipico": {
+          "home": 1.2,
+          "away": 12.0,
+          "draw": 7.0
+        },
+        "Betsson": {
+          "home": 1.23,
+          "away": 10.5,
+          "draw": 6.9
+        },
+        "Nordic Bet": {
+          "home": 1.23,
+          "away": 10.5,
+          "draw": 6.9
+        },
+        "Marathon Bet": {
+          "home": 1.27,
+          "away": 12.0,
+          "draw": 6.2
+        },
+        "William Hill": {
+          "home": 1.25,
+          "away": 10.0,
+          "draw": 6.0
+        },
+        "Pinnacle": {
+          "home": 1.22,
+          "away": 12.09,
+          "draw": 6.28
+        },
+        "Unibet": {
+          "home": 1.2,
+          "away": 8.6,
+          "draw": 5.5
+        },
+        "LeoVegas (SE)": {
+          "home": 1.22,
+          "away": 13.0,
+          "draw": 6.25
+        },
+        "Betfair": {
+          "home": 1.26,
+          "away": 11.0,
+          "draw": 6.6
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 1.85,
+          "under": 1.87
+        },
+        "Betsson": {
+          "over": 1.92,
+          "under": 1.85
+        },
+        "Nordic Bet": {
+          "over": 1.92,
+          "under": 1.85
+        },
+        "Pinnacle": {
+          "over": 1.95,
+          "under": 1.87
+        },
+        "Unibet": {
+          "over": 2.08,
+          "under": 1.71
+        },
+        "LeoVegas (SE)": {
+          "over": 2.1,
+          "under": 1.73
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.36,
+          "under": 2.9
+        }
+      }
+    }
+  },
+  {
+    "match": "Girona vs Atlético Madrid",
+    "home": "Girona",
+    "away": "Atlético Madrid",
+    "start_time": "2025-12-21T13:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Winamax (DE)": {
+          "home": 4.3,
+          "away": 1.7,
+          "draw": 3.85
+        },
+        "Winamax (FR)": {
+          "home": 4.2,
+          "away": 1.68,
+          "draw": 3.75
+        },
+        "Betclic (FR)": {
+          "home": 4.25,
+          "away": 1.68,
+          "draw": 3.7
+        },
+        "Tipico": {
+          "home": 4.5,
+          "away": 1.72,
+          "draw": 3.9
+        },
+        "Betsson": {
+          "home": 4.45,
+          "away": 1.72,
+          "draw": 3.95
+        },
+        "Nordic Bet": {
+          "home": 4.45,
+          "away": 1.72,
+          "draw": 3.95
+        },
+        "Marathon Bet": {
+          "home": 4.7,
+          "away": 1.77,
+          "draw": 3.94
+        },
+        "William Hill": {
+          "home": 4.4,
+          "away": 1.75,
+          "draw": 3.75
+        },
+        "Pinnacle": {
+          "home": 4.4,
+          "away": 1.73,
+          "draw": 4.02
+        },
+        "Betfair": {
+          "home": 3.15,
+          "away": 1.75,
+          "draw": 2.82
+        },
+        "Unibet": {
+          "home": 4.5,
+          "away": 1.78,
+          "draw": 4.0
+        },
+        "LeoVegas (SE)": {
+          "home": 4.4,
+          "away": 1.74,
+          "draw": 3.95
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 1.77,
+          "under": 2.0
+        },
+        "Betsson": {
+          "over": 1.72,
+          "under": 2.08
+        },
+        "Nordic Bet": {
+          "over": 1.72,
+          "under": 2.08
+        },
+        "William Hill": {
+          "over": 1.75,
+          "under": 2.0
+        },
+        "Unibet": {
+          "over": 1.78,
+          "under": 2.0
+        },
+        "LeoVegas (SE)": {
+          "over": 1.79,
+          "under": 2.02
+        }
+      },
+      "over_under_2_75": {
+        "Pinnacle": {
+          "over": 2.01,
+          "under": 1.84
+        }
+      }
+    }
+  },
+  {
+    "match": "Villarreal vs Barcelona",
+    "home": "Villarreal",
+    "away": "Barcelona",
+    "start_time": "2025-12-21T15:15:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Winamax (DE)": {
+          "home": 3.05,
+          "away": 1.96,
+          "draw": 4.2
+        },
+        "Winamax (FR)": {
+          "home": 2.95,
+          "away": 1.9,
+          "draw": 4.1
+        },
+        "Parions Sport (FR)": {
+          "home": 2.75,
+          "away": 1.9,
+          "draw": 3.95
+        },
+        "Betclic (FR)": {
+          "home": 3.02,
+          "away": 1.91,
+          "draw": 4.1
+        },
+        "Tipico": {
+          "home": 3.1,
+          "away": 2.0,
+          "draw": 4.2
+        },
+        "Betsson": {
+          "home": 3.15,
+          "away": 1.95,
+          "draw": 4.45
+        },
+        "Nordic Bet": {
+          "home": 3.15,
+          "away": 1.95,
+          "draw": 4.45
+        },
+        "Marathon Bet": {
+          "home": 3.32,
+          "away": 1.99,
+          "draw": 4.4
+        },
+        "William Hill": {
+          "home": 3.1,
+          "away": 1.95,
+          "draw": 4.2
+        },
+        "Pinnacle": {
+          "home": 3.0,
+          "away": 2.0,
+          "draw": 4.58
+        },
+        "Betfair": {
+          "home": 2.96,
+          "away": 1.99,
+          "draw": 4.0
+        },
+        "Unibet": {
+          "home": 3.2,
+          "away": 2.0,
+          "draw": 4.5
+        },
+        "LeoVegas (SE)": {
+          "home": 3.15,
+          "away": 1.96,
+          "draw": 4.4
+        }
+      },
+      "over_under_3_5": {
+        "Tipico": {
+          "over": 1.77,
+          "under": 1.95
+        },
+        "Betsson": {
+          "over": 1.82,
+          "under": 1.98
+        },
+        "Nordic Bet": {
+          "over": 1.82,
+          "under": 1.98
+        },
+        "Pinnacle": {
+          "over": 1.85,
+          "under": 2.0
+        },
+        "Unibet": {
+          "over": 1.73,
+          "under": 2.06
+        },
+        "LeoVegas (SE)": {
+          "over": 1.75,
+          "under": 2.08
+        }
+      },
+      "over_under_2_5": {
+        "William Hill": {
+          "over": 1.3,
+          "under": 3.25
+        }
+      }
+    }
+  },
+  {
+    "match": "Elche CF vs Rayo Vallecano",
+    "home": "Elche CF",
+    "away": "Rayo Vallecano",
+    "start_time": "2025-12-21T17:30:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Winamax (FR)": {
+          "home": 2.45,
+          "away": 2.7,
+          "draw": 3.05
+        },
+        "Parions Sport (FR)": {
+          "home": 2.35,
+          "away": 2.65,
+          "draw": 2.95
+        },
+        "Winamax (DE)": {
+          "home": 2.55,
+          "away": 2.75,
+          "draw": 3.15
+        },
+        "Betclic (FR)": {
+          "home": 2.47,
+          "away": 2.73,
+          "draw": 3.05
+        },
+        "Tipico": {
+          "home": 2.45,
+          "away": 2.95,
+          "draw": 3.2
+        },
+        "Betsson": {
+          "home": 2.52,
+          "away": 2.88,
+          "draw": 3.25
+        },
+        "Nordic Bet": {
+          "home": 2.52,
+          "away": 2.88,
+          "draw": 3.25
+        },
+        "Marathon Bet": {
+          "home": 2.64,
+          "away": 2.91,
+          "draw": 3.24
+        },
+        "William Hill": {
+          "home": 2.6,
+          "away": 2.8,
+          "draw": 3.1
+        },
+        "Pinnacle": {
+          "home": 2.55,
+          "away": 2.83,
+          "draw": 3.28
+        },
+        "Betfair": {
+          "home": 2.6,
+          "away": 2.9,
+          "draw": 3.05
+        },
+        "Unibet": {
+          "home": 2.65,
+          "away": 2.9,
+          "draw": 3.25
+        },
+        "LeoVegas (SE)": {
+          "home": 2.6,
+          "away": 2.85,
+          "draw": 3.2
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.25,
+          "under": 1.62
+        },
+        "Betsson": {
+          "over": 2.18,
+          "under": 1.65
+        },
+        "Nordic Bet": {
+          "over": 2.18,
+          "under": 1.65
+        },
+        "William Hill": {
+          "over": 2.3,
+          "under": 1.57
+        },
+        "Unibet": {
+          "over": 2.28,
+          "under": 1.6
+        },
+        "LeoVegas (SE)": {
+          "over": 2.3,
+          "under": 1.62
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.97,
+          "under": 1.86
+        }
+      }
+    }
+  },
+  {
+    "match": "Real Betis vs Getafe",
+    "home": "Real Betis",
+    "away": "Getafe",
+    "start_time": "2025-12-21T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.62,
+          "away": 4.65,
+          "draw": 3.25
+        },
+        "Winamax (FR)": {
+          "home": 1.68,
+          "away": 4.8,
+          "draw": 3.35
+        },
+        "Betclic (FR)": {
+          "home": 1.68,
+          "away": 4.85,
+          "draw": 3.35
+        },
+        "Tipico": {
+          "home": 1.72,
+          "away": 5.2,
+          "draw": 3.5
+        },
+        "Betsson": {
+          "home": 1.78,
+          "away": 4.95,
+          "draw": 3.45
+        },
+        "Nordic Bet": {
+          "home": 1.78,
+          "away": 4.95,
+          "draw": 3.45
+        },
+        "Marathon Bet": {
+          "home": 1.79,
+          "away": 5.3,
+          "draw": 3.52
+        },
+        "William Hill": {
+          "home": 1.75,
+          "away": 5.0,
+          "draw": 3.3
+        },
+        "Pinnacle": {
+          "home": 1.76,
+          "away": 5.19,
+          "draw": 3.43
+        },
+        "Betfair": {
+          "home": 1.75,
+          "away": 3.45,
+          "draw": 3.4
+        },
+        "LeoVegas (SE)": {
+          "home": 1.77,
+          "away": 5.25,
+          "draw": 3.35
+        },
+        "Unibet": {
+          "home": 1.81,
+          "away": 5.4,
+          "draw": 3.4
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.3,
+          "under": 1.6
+        },
+        "Betsson": {
+          "over": 2.32,
+          "under": 1.58
+        },
+        "Nordic Bet": {
+          "over": 2.32,
+          "under": 1.58
+        },
+        "William Hill": {
+          "over": 2.2,
+          "under": 1.62
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 2.03,
+          "under": 1.82
+        }
+      },
+      "over_under_1_5": {
+        "LeoVegas (SE)": {
+          "over": 1.38,
+          "under": 3.0
+        },
+        "Unibet": {
+          "over": 1.36,
+          "under": 3.0
+        }
+      }
+    }
+  },
+  {
+    "match": "Athletic Bilbao vs Espanyol",
+    "home": "Athletic Bilbao",
+    "away": "Espanyol",
+    "start_time": "2025-12-22T20:00:00+00:00",
+    "sport": "soccer_spain_la_liga",
+    "markets": {
+      "h2h": {
+        "Parions Sport (FR)": {
+          "home": 1.58,
+          "away": 4.75,
+          "draw": 3.4
+        },
+        "Winamax (FR)": {
+          "home": 1.62,
+          "away": 4.9,
+          "draw": 3.6
+        },
+        "Winamax (DE)": {
+          "home": 1.64,
+          "away": 5.1,
+          "draw": 3.7
+        },
+        "Betclic (FR)": {
+          "home": 1.64,
+          "away": 4.9,
+          "draw": 3.5
+        },
+        "Tipico": {
+          "home": 1.65,
+          "away": 5.5,
+          "draw": 3.7
+        },
+        "Betsson": {
+          "home": 1.68,
+          "away": 5.4,
+          "draw": 3.7
+        },
+        "Nordic Bet": {
+          "home": 1.68,
+          "away": 5.4,
+          "draw": 3.7
+        },
+        "Marathon Bet": {
+          "home": 1.72,
+          "away": 5.55,
+          "draw": 3.7
+        },
+        "William Hill": {
+          "home": 1.7,
+          "away": 5.0,
+          "draw": 3.5
+        },
+        "Pinnacle": {
+          "home": 1.68,
+          "away": 5.28,
+          "draw": 3.73
+        },
+        "Betfair": {
+          "home": 1.68,
+          "away": 6.0,
+          "draw": 3.5
+        },
+        "Unibet": {
+          "home": 1.75,
+          "away": 5.4,
+          "draw": 3.65
+        },
+        "LeoVegas (SE)": {
+          "home": 1.71,
+          "away": 5.3,
+          "draw": 3.55
+        }
+      },
+      "over_under_2_5": {
+        "Tipico": {
+          "over": 2.2,
+          "under": 1.65
+        },
+        "Betsson": {
+          "over": 2.28,
+          "under": 1.62
+        },
+        "Nordic Bet": {
+          "over": 2.28,
+          "under": 1.62
+        },
+        "William Hill": {
+          "over": 2.15,
+          "under": 1.65
+        },
+        "Unibet": {
+          "over": 2.14,
+          "under": 1.67
+        },
+        "LeoVegas (SE)": {
+          "over": 2.17,
+          "under": 1.7
+        }
+      },
+      "over_under_2_25": {
+        "Pinnacle": {
+          "over": 1.98,
+          "under": 1.86
+        }
+      }
+    }
+  }
+]
