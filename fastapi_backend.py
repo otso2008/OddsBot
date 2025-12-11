@@ -9,7 +9,6 @@ laskettuja ja PostgreSQL-tietokantaan tallennettuja tietoja:
 - ottelut (matches)
 - nykyiset kertoimet (current_odds)
 - fair probabilities / no-vig odds (fair_probs)
-
 Itse kerääminen ja laskenta tehdään erillisissä skripteissä
 (main.py, ev_calc.py, arb_bot.py jne.). Tämä backend EI laske
 mitään itse, vaan lukee dataa tietokannasta ja palauttaa
@@ -69,9 +68,9 @@ def _get_db_config() -> Dict[str, Any]:
     return {
         "host": os.getenv("ODDSBANK_DB_HOST", "localhost"),
         "port": int(os.getenv("ODDSBANK_DB_PORT", "5432")),
-        "dbname": os.getenv("ODDSBANK_DB_NAME", "Oddsbank"),
+        "dbname": os.getenv("ODDSBANK_DB_NAME", "oddsbank"),
         "user": os.getenv("ODDSBANK_DB_USER", "postgres"),
-        "password": os.getenv("ODDSBANK_DB_PASSWORD", 'ABC!"#'),
+        "password": os.getenv("ODDSBANK_DB_PASSWORD", 'Goala411'),
     }
 
 
@@ -192,7 +191,7 @@ class FairItem(BaseModel):
 # API-avain (header: X-API-Key)
 # ---------------------------------------------------------------------------
 
-API_KEY: Optional[str] = os.getenv("ODDS_API_KEY")
+API_KEY: Optional[str] = os.getenv("API_KEY")
 
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
