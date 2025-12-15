@@ -300,6 +300,25 @@ class OddsBankLoader:
                 )
             )
 
+    def insert_placed_arb_bet(self, match_id: int, market_code: str, roi_fraction: float,
+                              legs: Dict[str, Any], stake_split: Dict[str, Any], timestamp: datetime) -> None:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO placed_arb_bets
+                (match_id, market_code, roi, legs, stake_split, placed_at)
+                VALUES (%s, %s, %s, %s::jsonb, %s::jsonb, %s)
+                """,
+                (
+                    match_id,
+                    market_code,
+                    roi_fraction,
+                    json.dumps(legs, sort_keys=True),
+                    json.dumps(stake_split, sort_keys=True),
+                    timestamp
+                )
+            )
+
 
     # --------------------------------------------------
     # MAIN SAVE PIPELINE
@@ -324,7 +343,6 @@ class OddsBankLoader:
                     book_id, book_norm = self.get_or_create_bookmaker(book_name)
 
                     for outcome, price in outcomes.items():
-
                         self.insert_current_odds(
                             match_id, book_id, book_norm,
                             market_code, outcome, float(price),
@@ -397,6 +415,16 @@ class OddsBankLoader:
                 timestamp
             )
 
+            # SAVE PLACED ARB BET
+            self.insert_placed_arb_bet(
+                mid,
+                arb["market"],
+                arb["roi"] / 100.0,
+                legs_with_stakes,
+                stake_split,
+                timestamp
+            )
+
         self.conn.commit()
 
 
@@ -406,7 +434,7 @@ class OddsBankLoader:
 
 def get_db_connection():
     conn = psycopg2.connect(
-        dbname='oddsbank',
+        dbname='Oddsbank',
         user="postgres",
         password=os.getenv('POSTGRES_PASSWORD'),
         host="localhost",
