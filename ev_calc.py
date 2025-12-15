@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 def calculate_ev(
     all_matches: List[Dict[str, Any]],
     no_vig_data: List[Dict[str, Any]],
-    min_ev_percent: float = 1
+    min_ev_percent: float = 3
 ) -> List[Dict[str, Any]]:
 
     # --- 0. Muodosta lookup no-vig datasta ---
@@ -14,6 +14,7 @@ def calculate_ev(
         no_vig_lookup[key] = item
 
     opportunities = []
+    high_ev_opportunities = {}
     now = datetime.now(timezone.utc)
 
     for match in all_matches:
@@ -49,19 +50,26 @@ def calculate_ev(
                     ev_fraction = fair_prob * offered_odds - 1
                     ev_pct = ev_fraction * 100
 
-                    if ev_pct >= min_ev_percent:
-                        opportunities.append({
-                            "match": match_name,
-                            "sport": match["sport"],
-                            "start_time": match["start_time"],
-                            "market": market_code,
-                            "outcome": outcome,
-                            "reference_book": ref_book,
-                            "reference_odds": ref_odds,
-                            "probability": fair_prob,
-                            "book": book,
-                            "offered_odds": offered_odds,
-                            "ev_percent": ev_pct
-                        })
+                    result = {
+                        "match": match_name,
+                        "sport": match["sport"],
+                        "start_time": match["start_time"],
+                        "market": market_code,
+                        "outcome": outcome,
+                        "reference_book": ref_book,
+                        "reference_odds": ref_odds,
+                        "probability": fair_prob,
+                        "book": book,
+                        "offered_odds": offered_odds,
+                        "ev_percent": ev_pct
+                    }
 
-    return opportunities
+                    if ev_pct >= min_ev_percent:
+                        opportunities.append(result)
+
+                    if ev_pct >= 5:
+                        existing = high_ev_opportunities.get(key)
+                        if not existing or ev_pct > existing["ev_percent"]:
+                            high_ev_opportunities[key] = result
+
+    return opportunities, list(high_ev_opportunities.values())
