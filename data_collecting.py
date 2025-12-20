@@ -1,25 +1,17 @@
-# data_loader.py
-
 import os
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 import requests
 from dotenv import load_dotenv
 
-import os
-
-from fastapi_backend import API_KEY
-
 load_dotenv()  # lataa .env-tiedoston sisällön
 SPORT_KEYS: List[str] = [
-    "soccer_epl",
-    "soccer_spain_la_liga"
+    "EPL"
 ]
 
-
-API_KEY: str = os.environ.get("ODDS_API_KEY", os.getenv('ODDS_API_KEY'))
-REGIONS: str = os.environ.get("Regions", "eu",)
-BASE_MARKETS: str = os.environ.get("BASE_MARKETS", "h2h,totals,spreads")
+API_KEY: str = os.environ.get("ODDS_API_KEY")
+REGIONS: str = os.environ.get("Regions", "eu")
+BASE_MARKETS: str = os.environ.get( "h2h")
 
 # ---------- BAD BOOKMAKERS (POISTETAAN KOKONAAN) ----------
 BAD_BOOKMAKERS: List[str] = [
@@ -53,40 +45,22 @@ def normalize_bookmaker_name(name: str) -> str:
 
 
 def fetch_events(sport: str):
-    url = f"https://api.the-odds-api.com/v4/sports/{sport}/events/?apiKey={API_KEY}"
-    r = requests.get(url, timeout=12)
+    url = f"https://api.sportsdata.io/v4/soccer/odds/json/GameOddsByDate/{sport}/{datetime.today().strftime('%Y-%m-%d')}"
+    headers = {"Ocp-Apim-Subscription-Key": API_KEY}
+    r = requests.get(url, headers=headers, timeout=12)
     r.raise_for_status()
     return r.json()
 
 
 def fetch_base_odds(sport: str):
-    url = (
-        f"https://api.the-odds-api.com/v4/sports/{sport}/odds/"
-        f"?apiKey={API_KEY}&markets={BASE_MARKETS}&oddsFormat=decimal&regions={REGIONS}"
-    )
-    r = requests.get(url, timeout=12)
-    r.raise_for_status()
-    return r.json()
+    return []  # ei tarvita tässä versiolla
 
 
 def combine_data(events, odds):
     out = {}
-    for b in odds:
-        out[b["id"]] = {"event": b, "extra": None}
-
-    for e in events:
-        if e["id"] not in out:
-            out[e["id"]] = {
-                "event": {
-                    "id": e["id"],
-                    "home_team": e.get("home_team"),
-                    "away_team": e.get("away_team"),
-                    "commence_time": e.get("commence_time"),
-                    "bookmakers": [],
-                },
-                "extra": None
-            }
-        out[e["id"]]["extra"] = e
+    for b in events:
+        event_id = b.get("GameId")
+        out[event_id] = {"event": b, "extra": None}
     return out
 
 
@@ -96,11 +70,12 @@ def build_matches_for_sport(combined, sport):
 
     for _id, data in combined.items():
         evt = data["event"]
-        home, away = evt.get("home_team"), evt.get("away_team")
+        home = evt.get("HomeTeam")
+        away = evt.get("AwayTeam")
         if not home or not away:
             continue
 
-        ts = evt.get("commence_time")
+        ts = evt.get("DateTime")
         if not ts:
             continue
 
@@ -121,62 +96,21 @@ def build_matches_for_sport(combined, sport):
             "markets": {},
         }
 
-        for book in evt.get("bookmakers", []):
-            raw_name = (book.get("title") or book.get("key") or "").strip()
-
-            # 1. OHITA BAD BOOKMAKERS JO TÄSSÄ VAIHEESSA
-            if is_bad_bookmaker(raw_name):
+        for bookmaker in evt.get("PregameOdds", []):
+            book_name = bookmaker.get("Sportsbook")
+            if is_bad_bookmaker(book_name):
                 continue
 
-            # 2. NORMALISOI UNIBET
-            name = normalize_bookmaker_name(raw_name)
+            book_name = normalize_bookmaker_name(book_name)
+            market_code = "h2h"
+            rec["markets"].setdefault(market_code, {}).setdefault(book_name, {})
 
-            for m in book.get("markets", []):
-                key = m.get("key")
-                outcomes = m.get("outcomes", [])
-                if not outcomes:
-                    continue
-
-                # ---------- H2H ----------
-                if key in ("h2h", "h2h_3_way"):
-                    om = {o["name"]: float(o["price"]) for o in outcomes if "price" in o}
-
-                    if home in om and away in om:
-                        norm = {"home": om[home], "away": om[away]}
-                        if "Draw" in om:
-                            norm["draw"] = om["Draw"]
-
-                        rec["markets"].setdefault("h2h", {})[name] = norm
-
-                # ---------- TOTALS / SPREADS / ALTERNATES ----------
-                if key in (
-                    "totals", "alternate_totals", "team_totals",
-                    "alternate_team_totals", "spreads", "alternate_spreads"
-                ):
-                    for o in outcomes:
-                        p = o.get("price")
-                        pt = o.get("point")
-                        nm = o.get("name", "")
-                        if p is None or pt is None:
-                            continue
-
-                        mk = f"over_under_{str(pt).replace('.', '_')}"
-                        entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
-
-                        if "over" in nm.lower():
-                            entry["over"] = float(p)
-                        elif "under" in nm.lower():
-                            entry["under"] = float(p)
-
-        # Poista vajaat totals-linjat
-        for k in list(rec["markets"].keys()):
-            if k.startswith("over_under_"):
-                for bn in list(rec["markets"][k].keys()):
-                    if "over" not in rec["markets"][k][bn] or "under" not in rec["markets"][k][bn]:
-                        del rec["markets"][k][bn]
-
-                if not rec["markets"][k]:
-                    del rec["markets"][k]
+            if bookmaker.get("HomeTeamMoneyLine"):
+                rec["markets"][market_code][book_name]["home"] = float(bookmaker["HomeTeamMoneyLine"])
+            if bookmaker.get("AwayTeamMoneyLine"):
+                rec["markets"][market_code][book_name]["away"] = float(bookmaker["AwayTeamMoneyLine"])
+            if bookmaker.get("DrawMoneyLine"):
+                rec["markets"][market_code][book_name]["draw"] = float(bookmaker["DrawMoneyLine"])
 
         if rec["markets"]:
             matches.append(rec)
@@ -193,7 +127,7 @@ def build_all_matches_once():
             odds = fetch_base_odds(sport)
             combined = combine_data(events, odds)
             all_matches.extend(build_matches_for_sport(combined, sport))
-        except:
-            continue
+        except Exception as e:
+            print(f"Error loading data for {sport}: {e}")
 
     return all_matches

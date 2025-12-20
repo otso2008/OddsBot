@@ -7,6 +7,7 @@ from alerts import notify   # <-- LISÄTTY
 from no_vig_calc import compute_fair_and_no_vig
 from db_managert import save_to_database
 from closing_odds import collect_closing_odds_and_eval_ev
+from ev_result import save_closing_odds_from_latest  # <-- UUSI IMPORT
 
 
 REFRESH_INTERVAL = 600  # sekuntia
@@ -26,17 +27,14 @@ def main():
 
         try:
             # --- 1. HAE KERTOIMET ---
-            print("📌 Päivitetään kertoimet...")
+            print("\U0001F4CC Päivitetään kertoimet...")
             all_matches = build_all_matches_once()
             no_vig_data = compute_fair_and_no_vig(all_matches)
 
             print(f"➡️ Otteluita ladattu: {len(all_matches)}")
 
-            # Halutessasi tulosta Pinnaclen kertoimet:
-            # print_pinnacle_odds(all_matches)
-
             # --- 2. ARBITRAASIT ---
-            print("\n📌 Lasketaan arbitraasit (>1% ROI)...")
+            print("\n\U0001F4CC Lasketaan arbitraasit (>1% ROI)...")
             arbs = find_arbitrage(all_matches)
 
             if not arbs:
@@ -60,8 +58,9 @@ def main():
                     print()  # tyhjä rivi
 
             # --- 3. +EV-VELOT ---
-            print("\n📌 Lasketaan +EV-vedot (>1% EV)...")
-            evs=calculate_ev(all_matches, no_vig_data, min_ev_percent=2.0)
+            print("\n\U0001F4CC Lasketaan +EV-vedot (>1% EV)...")
+            evs=calculate_ev(all_matches, no_vig_data, min_ev_percent=2.0)[0]
+            print(evs)
 
             if not evs:
                 print("❌ Ei +EV kohteita tällä kierroksella.")
@@ -81,7 +80,7 @@ def main():
             try:
                 save_to_database(all_matches,  no_vig_data, evs, arbs)
                 collect_closing_odds_and_eval_ev()
-
+                save_closing_odds_from_latest()  # <-- UUSI RIVI
                 print("💾 Tallennus tehty.")
             except Exception as e:
                 print(f"⚠️ Tallennus epäonnistui: {e}")

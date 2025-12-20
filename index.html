@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oddsbank – Ottelut ja Kertoimet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Matches list view -->
+    <div id="matches-view" class="view">
+      <h1>Tulevat ottelut</h1>
+      <div id="matches-list" class="list"></div>
+    </div>
+
+    <!-- Single match view -->
+    <div id="match-view" class="view hidden">
+      <button id="back-btn" class="back-button">← Takaisin</button>
+      <h2 id="match-heading"></h2>
+      <p id="match-meta" class="match-meta"></p>
+      <div id="markets-container"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

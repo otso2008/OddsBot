@@ -280,6 +280,47 @@ class OddsBankLoader:
 
 
     # --------------------------------------------------
+    # INSERT HIGH EV RESULT  ⭐ UUSI
+    # --------------------------------------------------
+    def insert_high_ev(self, match_id, bookmaker_id, book_name, market_code,
+                       outcome, odds, ev_percent, fair_prob,
+                       ref_book_id, ref_book_name, timestamp):
+        """
+        Tallentaa high-ev kohteet high_ev_results -tauluun.
+        Deduplikointi tehdään ON CONFLICT -avaimella:
+        (match_id, bookmaker_id, market_code, outcome)
+        """
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO high_ev_results
+                (match_id, bookmaker_id, bookmaker_name,
+                 market_code, outcome,
+                 odds, ev_percent, fair_probability,
+                 reference_bookmaker_id, reference_bookmaker_name,
+                 detected_at)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                ON CONFLICT (match_id, bookmaker_id, market_code, outcome)
+                DO UPDATE SET
+                    odds=EXCLUDED.odds,
+                    ev_percent=EXCLUDED.ev_percent,
+                    fair_probability=EXCLUDED.fair_probability,
+                    detected_at=NOW(),
+                    bookmaker_name=EXCLUDED.bookmaker_name,
+                    reference_bookmaker_id=EXCLUDED.reference_bookmaker_id,
+                    reference_bookmaker_name=EXCLUDED.reference_bookmaker_name
+                """,
+                (
+                    match_id, bookmaker_id, book_name,
+                    market_code, outcome,
+                    odds, ev_percent, fair_prob,
+                    ref_book_id, ref_book_name,
+                    timestamp
+                )
+            )
+
+
+    # --------------------------------------------------
     # INSERT ARB RESULT
     # --------------------------------------------------
 
@@ -301,11 +342,13 @@ class OddsBankLoader:
             )
 
 
+
+
     # --------------------------------------------------
     # MAIN SAVE PIPELINE
     # --------------------------------------------------
 
-    def run(self, all_matches, fair_prob_data, no_vig, ev_list, arb_list):
+    def run(self, all_matches, fair_prob_data, no_vig, ev_list, high_ev_list, arb_list):
 
         timestamp = datetime.now(timezone.utc)
         id_map = {}
@@ -324,7 +367,6 @@ class OddsBankLoader:
                     book_id, book_norm = self.get_or_create_bookmaker(book_name)
 
                     for outcome, price in outcomes.items():
-
                         self.insert_current_odds(
                             match_id, book_id, book_norm,
                             market_code, outcome, float(price),
@@ -376,6 +418,26 @@ class OddsBankLoader:
                 timestamp
             )
 
+        # HIGH EV RESULTS ⭐ UUSI
+        for ev in high_ev_list:
+            mid = id_map[ev["match"]]
+            book_id, book_name = self.get_or_create_bookmaker(ev["book"])
+            ref_id, ref_name = self.get_or_create_bookmaker(ev["reference_book"])
+
+            self.insert_high_ev(
+                mid,
+                book_id,
+                book_name,
+                ev["market"],
+                ev["outcome"],
+                float(ev["offered_odds"]),
+                float(ev["ev_percent"]),
+                ev["probability"],
+                ref_id,
+                ref_name,
+                timestamp
+            )
+
         # ARBITRAGES
         for arb in arb_list:
             mid = id_map[arb["match"]]
@@ -394,6 +456,16 @@ class OddsBankLoader:
                 arb["market"],
                 arb["roi"] / 100.0,
                 {"legs": legs_with_stakes, "stake_split": stake_split},
+                timestamp
+            )
+
+            # SAVE PLACED ARB BET
+            self.insert_placed_arb_bet(
+                mid,
+                arb["market"],
+                arb["roi"] / 100.0,
+                legs_with_stakes,
+                stake_split,
                 timestamp
             )
 
@@ -421,12 +493,12 @@ def get_db_connection():
 # SAVE WRAPPER (used by main.py)
 # --------------------------------------------------
 
-def save_to_database(all_matches, no_vig_data, ev_list, arb_list):
+def save_to_database(all_matches, no_vig_data, ev_list, high_ev_list, arb_list):
 
     conn = get_db_connection()
 
     try:
         loader = OddsBankLoader(conn)
-        loader.run(all_matches, [], no_vig_data, ev_list, arb_list)
+        loader.run(all_matches, [], no_vig_data, ev_list, high_ev_list, arb_list)
     finally:
         conn.close()

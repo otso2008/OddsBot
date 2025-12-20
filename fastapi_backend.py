@@ -192,7 +192,7 @@ class FairItem(BaseModel):
 # API-avain (header: X-API-Key)
 # ---------------------------------------------------------------------------
 
-API_KEY: Optional[str] = os.getenv("ODDSBANK_API_KEY")
+API_KEY: Optional[str] = os.getenv("ODDS_API_KEY")
 
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
@@ -398,6 +398,44 @@ async def get_upcoming_matches(
         ORDER BY start_time;
     """
     rows = fetch_query(sql, (hours,))
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# Additional endpoint: return all upcoming matches without a time window
+# ---------------------------------------------------------------------------
+
+@app.get(
+    "/api/matches/upcoming/all",
+    tags=["matches"],
+    response_model=List[MatchItem],
+)
+async def get_all_upcoming_matches(
+    request: Request,
+    _: None = Depends(verify_api_key),
+) -> List[MatchItem]:
+    """Lista kaikista tulevista otteluista (start_time >= NOW()).
+
+    Tämä reitti palauttaa kaikki tulevat ottelut ilman aikarajaa. Se on
+    hyödyllinen silloin, kun frontend haluaa näyttää koko listan ilman
+    parametrin hours rajausta.
+    """
+    # Käytetään erillistä rate-limiting bucketia tälle reitille. Yksi pyyntö
+    # minuutissa per IP riittää, koska data ei muutu usein.
+    enforce_rate_limit("matches_all", request, max_per_minute=60)
+    sql = """
+        SELECT
+            id AS match_id,
+            sport,
+            league,
+            home_team,
+            away_team,
+            start_time
+        FROM matches
+        WHERE start_time >= NOW()
+        ORDER BY start_time;
+    """
+    rows = fetch_query(sql)
     return rows
 
 
