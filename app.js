@@ -61,11 +61,12 @@
    * Fetch the list of upcoming matches from backend.
    */
   function fetchMatches() {
-    fetch("http://HETZNER_IP:8000/api/matches/upcoming", {
+    fetch("http://46.62.196.149:8000/api/matches/upcoming", {
       headers: {
         "X-API-Key": "Goala411"
       }
     })
+
 
       .then((res) => {
         if (!res.ok) throw new Error('HTTP ' + res.status);
