@@ -62,21 +62,21 @@
    */
 function fetchMatches() {
   function fetchMatches() {
-  fetch('/api/matches/upcoming/all', {
-    headers: { 'X-API-Key': API_KEY }
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
+    fetch('/api/matches/upcoming/all', {
+      headers: { 'X-API-Key': API_KEY }
     })
-    .then((data) => {
-      renderMatches(data);
-    })
-    .catch((err) => {
-      console.error('Matches fetch failed:', err);
-      matchesList.innerHTML = '<p>Tietojen lataaminen epäonnistui.</p>';
-    });
-}
+      .then((res) => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        renderMatches(data);
+      })
+      .catch((err) => {
+        console.error('Matches fetch failed:', err);
+        matchesList.innerHTML = '<p>Tietojen lataaminen epäonnistui.</p>';
+      });
+  }
 
 
   /**
