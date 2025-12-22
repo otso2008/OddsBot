@@ -1,30 +1,16 @@
 /*
- * Oddsbank frontend logic.
+ * Revised Oddsbank frontend logic.
  *
- * Tämä skripti hakee kaikki tulevat ottelut backendistä ja renderöi ne
- * listaan. Kun käyttäjä klikkaa ottelua, haetaan kyseisen ottelun
- * kertoimet ja no-vig-oddsit ja näytetään ne taulukkomuodossa. Toteutus
- * on responsiivinen ja käyttää puhtaasti vanilla JavaScriptiä ilman
- * riippuvuuksia.
+ * Tämä versio lisää liiganavigaation, +EV- ja arbitraasi-listat sekä
+ * automaattisen päivityksen. Sivusto näyttää vain tulevat ottelut.
  */
 
-(function () {
+(function() {
+  'use strict';
   const API_KEY = 'Goala411';
+  const REFRESH_MS = 15000;
 
-  // DOM elements
-  const matchesView = document.getElementById('matches-view');
-  const matchesList = document.getElementById('matches-list');
-  const matchView = document.getElementById('match-view');
-  const backBtn = document.getElementById('back-btn');
-  const matchHeading = document.getElementById('match-heading');
-  const matchMeta = document.getElementById('match-meta');
-  const marketsContainer = document.getElementById('markets-container');
-
-  /**
-   * Utility: format ISO date string to localised date/time string in Finnish.
-   * @param {string} isoStr
-   * @returns {string}
-   */
+  // Helper: format ISO date string to localised date/time string in Finnish.
   function formatDateTime(isoStr) {
     try {
       const date = new Date(isoStr);
@@ -41,117 +27,54 @@
     }
   }
 
-  /**
-   * Show the matches list and hide match detail view.
-   */
-  function showMatchesView() {
-    matchView.classList.add('hidden');
-    matchesView.classList.remove('hidden');
+  // DOM references
+  const topBar = document.getElementById('top-bar');
+  const matchesView = document.getElementById('matches-view');
+  const matchesList = document.getElementById('matches-list');
+  const matchView = document.getElementById('match-view');
+  const backBtn = document.getElementById('back-btn');
+  const matchHeading = document.getElementById('match-heading');
+  const matchMeta = document.getElementById('match-meta');
+  const marketsContainer = document.getElementById('markets-container');
+  const evView = document.getElementById('ev-view');
+  const evList = document.getElementById('ev-list');
+  const arbsView = document.getElementById('arbs-view');
+  const arbsList = document.getElementById('arbs-list');
+
+  // Application state
+  let currentView = null;
+  let currentLeague = null;
+  let currentMatch = null;
+  let refreshTimer = null;
+
+  function clearRefresh() {
+    if (refreshTimer) {
+      clearInterval(refreshTimer);
+      refreshTimer = null;
+    }
   }
 
-  /**
-   * Show match detail view and hide matches list.
-   */
-  function showMatchView() {
+  function setRefresh(fn) {
+    clearRefresh();
+    refreshTimer = setInterval(fn, REFRESH_MS);
+  }
+
+  function showView(view) {
+    // hide all views
     matchesView.classList.add('hidden');
-    matchView.classList.remove('hidden');
-  }
-
-  /**
-   * Fetch the list of upcoming matches from backend.
-   */
-function fetchMatches() {
-  function fetchMatches() {
-    fetch('/api/matches/upcoming/all', {
-      headers: { 'X-API-Key': API_KEY }
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then((data) => {
-        renderMatches(data);
-      })
-      .catch((err) => {
-        console.error('Matches fetch failed:', err);
-        matchesList.innerHTML = '<p>Tietojen lataaminen epäonnistui.</p>';
-      });
-  }
-
-
-  /**
-   * Render the matches list.
-   * @param {Array} matches
-   */
-  function renderMatches(matches) {
-    matchesList.innerHTML = '';
-    // Sort by start_time ascending
-    matches.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
-    matches.forEach((match) => {
-      const card = document.createElement('div');
-      card.className = 'match-card';
-      card.tabIndex = 0;
-      card.addEventListener('click', () => {
-        loadMatch(match);
-      });
-      // For accessibility: allow Enter key to trigger click
-      card.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          loadMatch(match);
-        }
-      });
-
-      const teamsDiv = document.createElement('div');
-      teamsDiv.className = 'teams';
-      teamsDiv.textContent = `${match.home_team} – ${match.away_team}`;
-      card.appendChild(teamsDiv);
-
-      const metaDiv = document.createElement('div');
-      metaDiv.className = 'meta';
-      const league = match.league || match.sport || '';
-      const start = formatDateTime(match.start_time);
-      metaDiv.textContent = `${league} · ${start}`;
-      card.appendChild(metaDiv);
-
-      matchesList.appendChild(card);
-    });
-  }
-
-  /**
-   * Load details for a selected match.
-   * @param {Object} match
-   */
-  function loadMatch(match) {
-    // Update header/meta
-    matchHeading.textContent = `${match.home_team} – ${match.away_team}`;
-    const start = formatDateTime(match.start_time);
-    const league = match.league || match.sport || '';
-    matchMeta.textContent = `${league} · ${start}`;
-    // Clear previous markets
-    marketsContainer.innerHTML = '';
-    showMatchView();
-    // Fetch fair probs and odds concurrently
-    const fairPromise = fetch(`/api/fair/${match.match_id}`, {
-      headers: { 'X-API-Key': API_KEY },
-    }).then((res) => {
-      if (!res.ok) throw new Error('Fair API: ' + res.status);
-      return res.json();
-    });
-    const oddsPromise = fetch(`/api/odds/${match.match_id}`, {
-      headers: { 'X-API-Key': API_KEY },
-    }).then((res) => {
-      if (!res.ok) throw new Error('Odds API: ' + res.status);
-      return res.json();
-    });
-    Promise.all([fairPromise, oddsPromise])
-      .then(([fairData, oddsData]) => {
-        renderMarkets(fairData, oddsData);
-      })
-      .catch((err) => {
-        console.error('Failed to load match details:', err);
-        marketsContainer.innerHTML = '<p>Kertoimien lataaminen epäonnistui.</p>';
-      });
+    matchView.classList.add('hidden');
+    evView.classList.add('hidden');
+    arbsView.classList.add('hidden');
+    if (view === 'league') {
+      matchesView.classList.remove('hidden');
+    } else if (view === 'match') {
+      matchView.classList.remove('hidden');
+    } else if (view === 'ev') {
+      evView.classList.remove('hidden');
+    } else if (view === 'arbs') {
+      arbsView.classList.remove('hidden');
+    }
+    currentView = view;
   }
 
   /**
@@ -172,7 +95,6 @@ function fetchMatches() {
     // Map odds: (market_code + line) -> bookmaker -> outcome -> price
     const oddsByMarket = {};
     oddsData.forEach((item) => {
-      // Build key: include line if present
       let key = item.market_code;
       if (item.line !== null && item.line !== undefined) {
         key = `${item.market_code} (line ${item.line})`;
@@ -183,9 +105,9 @@ function fetchMatches() {
       oddsByMarket[key][bm][item.outcome] = item.price;
     });
 
-    // Collect all market keys
     const marketKeys = Object.keys(oddsByMarket);
     marketKeys.sort();
+    marketsContainer.innerHTML = '';
     if (marketKeys.length === 0) {
       marketsContainer.innerHTML = '<p>Ei saatavilla olevia kertoimia.</p>';
       return;
@@ -202,10 +124,9 @@ function fetchMatches() {
    * @param {Object} noVigByMarket
    */
   function renderMarketSection(key, bookieMap, noVigByMarket) {
-    // Determine market_code (remove line part for fair lookup)
     const match = key.match(/^(.*?)(\s*\(line.*\))?$/);
     const baseMarketCode = match ? match[1] : key;
-    // Collect outcomes from both fair data and odds
+    // Collect outcomes
     const outcomeSet = new Set();
     if (noVigByMarket[baseMarketCode]) {
       Object.keys(noVigByMarket[baseMarketCode]).forEach((outcome) => outcomeSet.add(outcome));
@@ -215,25 +136,22 @@ function fetchMatches() {
     });
     const outcomes = Array.from(outcomeSet);
     outcomes.sort();
-    // Start creating DOM
+    // Section
     const section = document.createElement('div');
     section.className = 'market-section';
-    // Title
     const titleEl = document.createElement('div');
     titleEl.className = 'market-title';
-    // Beautify title: if match_outcome, show "Ottelutulos" else show market code as is
     let displayTitle = baseMarketCode;
     if (baseMarketCode.toLowerCase() === 'match_outcome') {
       displayTitle = 'Ottelutulos';
     }
     titleEl.textContent = displayTitle;
     section.appendChild(titleEl);
-    // Grid container
+    // Grid
     const grid = document.createElement('div');
     grid.className = 'market-grid';
-    // First column width fixed, others equal
     grid.style.gridTemplateColumns = `150px repeat(${outcomes.length}, 1fr)`;
-    // Header row
+    // Header empty cell
     const emptyHeader = document.createElement('div');
     emptyHeader.className = 'header-cell';
     emptyHeader.textContent = '';
@@ -241,9 +159,7 @@ function fetchMatches() {
     outcomes.forEach((outcome) => {
       const cell = document.createElement('div');
       cell.className = 'header-cell';
-      // Capitalise and translate if needed
       let label = outcome;
-      // Convert common codes to Finnish/English labels
       const lower = outcome.toLowerCase();
       if (lower === 'home') label = 'Home';
       else if (lower === 'draw') label = 'Draw';
@@ -283,11 +199,283 @@ function fetchMatches() {
     marketsContainer.appendChild(section);
   }
 
-  // Event listeners
+  // Beautify market code for EV/Arbs lists
+  function beautifyMarket(code) {
+    const lower = (code || '').toLowerCase();
+    if (lower === 'match_outcome') return 'Ottelutulos';
+    return code;
+  }
+
+  // Load matches for a league
+  function loadMatches(league) {
+    currentLeague = league;
+    clearRefresh();
+    fetch(`/api/matches?league=${encodeURIComponent(league)}`, {
+      headers: {
+        'X-API-Key': API_KEY,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        renderMatches(data);
+        showView('league');
+      })
+      .catch((err) => {
+        console.error('Matches fetch failed:', err);
+        matchesList.innerHTML = '<p>Tietojen lataaminen epäonnistui.</p>';
+        showView('league');
+      });
+  }
+
+  // Render matches list
+  function renderMatches(matches) {
+    matchesList.innerHTML = '';
+    matches.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+    matches.forEach((match) => {
+      const card = document.createElement('div');
+      card.className = 'match-card';
+      card.tabIndex = 0;
+      card.addEventListener('click', () => {
+        loadMatch(match);
+      });
+      card.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          loadMatch(match);
+        }
+      });
+      const teamsDiv = document.createElement('div');
+      teamsDiv.className = 'teams';
+      teamsDiv.textContent = `${match.home_team} – ${match.away_team}`;
+      card.appendChild(teamsDiv);
+      const metaDiv = document.createElement('div');
+      metaDiv.className = 'meta';
+      const leagueName = match.league || match.sport || '';
+      const start = formatDateTime(match.start_time);
+      metaDiv.textContent = `${leagueName} · ${start}`;
+      card.appendChild(metaDiv);
+      matchesList.appendChild(card);
+    });
+  }
+
+  // Load single match view
+  function loadMatch(match) {
+    currentMatch = match;
+    clearRefresh();
+    matchHeading.textContent = `${match.home_team} – ${match.away_team}`;
+    const start = formatDateTime(match.start_time);
+    const leagueName = match.league || match.sport || '';
+    matchMeta.textContent = `${leagueName} · ${start}`;
+    marketsContainer.innerHTML = '';
+    showView('match');
+    const fairPromise = fetch(`/api/fair/${match.match_id}`, {
+      headers: { 'X-API-Key': API_KEY },
+    }).then((res) => {
+      if (!res.ok) throw new Error('Fair API: ' + res.status);
+      return res.json();
+    });
+    const oddsPromise = fetch(`/api/odds/${match.match_id}`, {
+      headers: { 'X-API-Key': API_KEY },
+    }).then((res) => {
+      if (!res.ok) throw new Error('Odds API: ' + res.status);
+      return res.json();
+    });
+    Promise.all([fairPromise, oddsPromise])
+      .then(([fairData, oddsData]) => {
+        renderMarkets(fairData, oddsData);
+        setRefresh(refreshMatch);
+      })
+      .catch((err) => {
+        console.error('Failed to load match details:', err);
+        marketsContainer.innerHTML = '<p>Kertoimien lataaminen epäonnistui.</p>';
+      });
+  }
+
+  // Refresh the current match's odds and fair probabilities
+  function refreshMatch() {
+    if (!currentMatch) return;
+    const fairPromise = fetch(`/api/fair/${currentMatch.match_id}`, {
+      headers: { 'X-API-Key': API_KEY },
+    }).then((res) => {
+      if (!res.ok) throw new Error('Fair API: ' + res.status);
+      return res.json();
+    });
+    const oddsPromise = fetch(`/api/odds/${currentMatch.match_id}`, {
+      headers: { 'X-API-Key': API_KEY },
+    }).then((res) => {
+      if (!res.ok) throw new Error('Odds API: ' + res.status);
+      return res.json();
+    });
+    Promise.all([fairPromise, oddsPromise])
+      .then(([fairData, oddsData]) => {
+        renderMarkets(fairData, oddsData);
+      })
+      .catch((err) => {
+        console.error('Failed to refresh match details:', err);
+      });
+  }
+
+  // Load EV list
+  function loadEV() {
+    clearRefresh();
+    fetch('/api/ev/top?hours=24', {
+      headers: { 'X-API-Key': API_KEY },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        renderEV(data);
+        showView('ev');
+        setRefresh(loadEV);
+      })
+      .catch((err) => {
+        console.error('EV fetch failed:', err);
+        evList.innerHTML = '<p>Tietojen lataaminen epäonnistui.</p>';
+        showView('ev');
+      });
+  }
+
+  // Render EV list into a table
+  function renderEV(items) {
+    evList.innerHTML = '';
+    if (!items || items.length === 0) {
+      evList.innerHTML = '<p>Ei saatavilla olevia +EV-vedot.</p>';
+      return;
+    }
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>Ottelu</th><th>Bookkeri</th><th>Markkina</th><th>Outcome</th><th>Kerroin</th><th>EV %</th></tr>';
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    items.forEach((item) => {
+      const tr = document.createElement('tr');
+      const matchCell = document.createElement('td');
+      matchCell.textContent = `${item.home_team || ''} – ${item.away_team || ''}`;
+      const bookCell = document.createElement('td');
+      bookCell.textContent = item.bookmaker_name;
+      const marketCell = document.createElement('td');
+      marketCell.textContent = beautifyMarket(item.market_code);
+      const outcomeCell = document.createElement('td');
+      outcomeCell.textContent = item.outcome;
+      const oddsCell = document.createElement('td');
+      oddsCell.textContent = item.odds !== undefined ? Number(item.odds).toFixed(2) : '-';
+      const evCell = document.createElement('td');
+      evCell.textContent = item.ev_fraction !== undefined ? (item.ev_fraction * 100).toFixed(2) + '%' : '-';
+      tr.appendChild(matchCell);
+      tr.appendChild(bookCell);
+      tr.appendChild(marketCell);
+      tr.appendChild(outcomeCell);
+      tr.appendChild(oddsCell);
+      tr.appendChild(evCell);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    evList.appendChild(table);
+  }
+
+  // Load arbitrage list
+  function loadArbs() {
+    clearRefresh();
+    fetch('/api/arbs/latest?hours=24', {
+      headers: { 'X-API-Key': API_KEY },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        renderArbs(data);
+        showView('arbs');
+        setRefresh(loadArbs);
+      })
+      .catch((err) => {
+        console.error('Arbs fetch failed:', err);
+        arbsList.innerHTML = '<p>Tietojen lataaminen epäonnistui.</p>';
+        showView('arbs');
+      });
+  }
+
+  // Render arbitrage list
+  function renderArbs(items) {
+    arbsList.innerHTML = '';
+    if (!items || items.length === 0) {
+      arbsList.innerHTML = '<p>Ei saatavilla olevia arbitraaseja.</p>';
+      return;
+    }
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>Ottelu</th><th>Markkina</th><th>ROI %</th><th>Legit</th></tr>';
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    items.forEach((item) => {
+      const tr = document.createElement('tr');
+      const matchCell = document.createElement('td');
+      matchCell.textContent = `${item.home_team || ''} – ${item.away_team || ''}`;
+      const marketCell = document.createElement('td');
+      marketCell.textContent = beautifyMarket(item.market_code);
+      const roiCell = document.createElement('td');
+      roiCell.textContent = item.roi_fraction !== undefined ? (item.roi_fraction * 100).toFixed(2) + '%' : '-';
+      const legsCell = document.createElement('td');
+      const legs = item.legs;
+      const parts = [];
+      if (legs) {
+        Object.keys(legs).forEach((key) => {
+          const leg = legs[key];
+          if (leg && typeof leg === 'object') {
+            const b = leg.book || key;
+            const o = leg.odds;
+            if (o !== undefined) {
+              parts.push(`${b}: ${Number(o).toFixed(2)}`);
+            } else {
+              parts.push(`${b}: ${o}`);
+            }
+          }
+        });
+      }
+      legsCell.textContent = parts.join(', ');
+      tr.appendChild(matchCell);
+      tr.appendChild(marketCell);
+      tr.appendChild(roiCell);
+      tr.appendChild(legsCell);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    arbsList.appendChild(table);
+  }
+
+  // Event handlers for top bar buttons
+  if (topBar) {
+    topBar.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const view = btn.getAttribute('data-view');
+        const league = btn.getAttribute('data-league');
+        if (view === 'league' && league) {
+          loadMatches(league);
+        } else if (view === 'ev') {
+          loadEV();
+        } else if (view === 'arbs') {
+          loadArbs();
+        }
+      });
+    });
+  }
+
+  // Back button: navigate back to league view
   backBtn.addEventListener('click', () => {
-    showMatchesView();
+    if (currentLeague) {
+      loadMatches(currentLeague);
+    } else {
+      showView('league');
+    }
   });
 
-  // Load matches on start
-  fetchMatches();
+  // Initialize default view on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadMatches('soccer_epl');
+  });
 })();
