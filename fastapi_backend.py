@@ -144,6 +144,13 @@ class EvResult(BaseModel):
     reference_bookmaker_name: str
     collected_at: datetime
 
+    # Lisätään ottelun tiedot EV-vastaukseen. Nämä voivat olla None jos
+    # kysely ei liitä matches-taulua, mutta tyypillisesti ne ovat mukana.
+    home_team: Optional[str] = None
+    away_team: Optional[str] = None
+    league: Optional[str] = None
+    start_time: Optional[datetime] = None
+
 
 class ArbLeg(BaseModel):
     book: str
@@ -157,6 +164,12 @@ class ArbResult(BaseModel):
     legs: Dict[str, ArbLeg]
     stake_split: Dict[str, float]
     found_at: datetime
+
+    # Lisätään ottelun tiedot arbitraasi-vastaukseen.
+    home_team: Optional[str] = None
+    away_team: Optional[str] = None
+    league: Optional[str] = None
+    start_time: Optional[datetime] = None
 
 
 class MatchItem(BaseModel):
@@ -192,7 +205,7 @@ class FairItem(BaseModel):
 # API-avain (header: X-API-Key)
 # ---------------------------------------------------------------------------
 
-API_KEY: Optional[str] = os.getenv("API_KEY")
+API_KEY: Optional[str] = os.getenv("ODDS_API_KEY")
 
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
@@ -297,31 +310,49 @@ async def get_top_ev(
     request: Request,
     limit: int = Query(20, gt=0, le=100),
     offset: int = Query(0, ge=0),
+    hours: Optional[int] = Query(None, ge=0, le=168),
     _: None = Depends(verify_api_key),
 ) -> List[EvResult]:
-    """Palauta korkeimmat EV-vedot, järjestettynä EV:n mukaan.
+    """
+    Palauta korkeimmat EV-vedot, järjestettynä EV:n mukaan.
 
     limit  – montako riviä palautetaan (1–100)
     offset – sivutus (esim. 0, 20, 40, ...)
+    hours  – valinnainen aikaraja tuleville otteluille. Jos asetettu,
+              palauttaa vain ottelut joiden start_time on välillä [now, now+hours].
+              Jos ei asetettu, palauttaa kaikki tulevat ottelut (start_time >= now).
     """
     enforce_rate_limit("ev", request, max_per_minute=120)
 
+    # Rakennetaan kysely dynaamisesti. EV-vedot liittyvät aina otteluihin, joten
+    # liitetään matches-tauluun, jotta voidaan suodattaa vain tulevat ottelut.
+    params: List[Any] = []
     sql = """
         SELECT
-            match_id,
-            bookmaker_name,
-            market_code,
-            outcome,
-            odds,
-            ev_value AS ev_fraction,
-            fair_probability,
-            reference_bookmaker_name,
-            collected_at
-        FROM ev_results
-        ORDER BY ev_value DESC
-        LIMIT %s OFFSET %s;
+            ev.match_id,
+            ev.bookmaker_name,
+            ev.market_code,
+            ev.outcome,
+            ev.odds,
+            ev.ev_value AS ev_fraction,
+            ev.fair_probability,
+            ev.reference_bookmaker_name,
+            ev.collected_at,
+            m.home_team,
+            m.away_team,
+            m.league,
+            m.start_time
+        FROM ev_results ev
+        JOIN matches m ON m.id = ev.match_id
+        WHERE m.start_time >= NOW()
     """
-    rows = fetch_query(sql, (limit, offset))
+    if hours is not None:
+        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    # Järjestys suurimman EV:n mukaan ja sivutus
+    sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
+    params.extend([limit, offset])
+    rows = fetch_query(sql, tuple(params))
     return rows  # FastAPI + Pydantic konvertoi EvResult-malleiksi
 
 
@@ -334,28 +365,43 @@ async def get_latest_arbs(
     request: Request,
     limit: int = Query(20, gt=0, le=100),
     offset: int = Query(0, ge=0),
+    hours: Optional[int] = Query(None, ge=0, le=168),
     _: None = Depends(verify_api_key),
 ) -> List[ArbResult]:
-    """Palauta uusimmat arbitraasit, järjestettynä found_at DESC.
+    """
+    Palauta uusimmat arbitraasit, järjestettynä found_at DESC.
 
     limit  – montako riviä palautetaan (1–100)
     offset – sivutus (esim. 0, 20, 40, ...)
+    hours  – valinnainen aikaraja tuleville otteluille. Jos asetettu,
+              palauttaa vain arbitraasit joiden ottelut ovat välillä [now, now+hours].
+              Jos ei asetettu, palauttaa kaikki tulevat ottelut (start_time >= now).
     """
     enforce_rate_limit("arbs", request, max_per_minute=120)
 
+    params: List[Any] = []
     sql = """
         SELECT
-            match_id,
-            market_code,
-            roi AS roi_fraction,
-            legs,
-            stake_split,
-            found_at
-        FROM arb_results
-        ORDER BY found_at DESC
-        LIMIT %s OFFSET %s;
+            arb.match_id,
+            arb.market_code,
+            arb.roi AS roi_fraction,
+            arb.legs,
+            arb.stake_split,
+            arb.found_at,
+            m.home_team,
+            m.away_team,
+            m.league,
+            m.start_time
+        FROM arb_results arb
+        JOIN matches m ON m.id = arb.match_id
+        WHERE m.start_time >= NOW()
     """
-    rows = fetch_query(sql, (limit, offset))
+    if hours is not None:
+        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
+    params.extend([limit, offset])
+    rows = fetch_query(sql, tuple(params))
 
     # legs ja stake_split voivat olla JSON stringejä → yritetään parse
     for row in rows:
@@ -496,4 +542,55 @@ async def get_latest_fair_probabilities(
         ORDER BY market_code, outcome, collected_at DESC;
     """
     rows = fetch_query(sql, (match_id,))
+    return rows
+
+# ---------------------------------------------------------------------------
+# Additional endpoint: filterable upcoming matches by league and hours
+# ---------------------------------------------------------------------------
+
+@app.get(
+    "/api/matches",
+    tags=["matches"],
+    response_model=List[MatchItem],
+)
+async def get_filtered_matches(
+    request: Request,
+    league: Optional[str] = Query(None, description="Rajaa tulokset tiettyyn liigaan"),
+    hours: Optional[int] = Query(None, gt=0, le=168, description="Aikaraja tuleville otteluille"),
+    _: None = Depends(verify_api_key),
+) -> List[MatchItem]:
+    """
+    Palauta tulevat ottelut suodatettuna liigan ja/tai aikarajan perusteella.
+
+    Jos league-parametri on asetettu, palauttaa vain kyseisen liigan ottelut.
+    Jos hours-parametri on asetettu, palauttaa vain ottelut jotka alkavat
+    seuraavan `hours` tunnin sisällä. Molempia parametreja voi käyttää yhtä
+    aikaa. Jos parametria ei ole asetettu, palauttaa kaikki tulevat ottelut
+    (start_time >= now()).
+    """
+    # Käytetään erillistä bucketia rate limiting -logiikkaa varten
+    enforce_rate_limit("matches_filtered", request, max_per_minute=60)
+
+    sql = """
+        SELECT
+            id AS match_id,
+            sport,
+            league,
+            home_team,
+            away_team,
+            start_time
+        FROM matches
+        WHERE start_time >= NOW()
+    """
+    params: List[Any] = []
+    # Lisätään aikaraja jos annettu
+    if hours is not None:
+        sql += " AND start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    # Lisätään liigan suodatus jos annettu
+    if league:
+        sql += " AND league = %s"
+        params.append(league)
+    sql += " ORDER BY start_time;"
+    rows = fetch_query(sql, tuple(params))
     return rows
