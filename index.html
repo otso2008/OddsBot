@@ -8,8 +8,16 @@
 </head>
 <body>
   <div id="app">
+    <!-- Top navigation bar -->
+    <div id="top-bar" class="top-bar">
+      <button data-view="league" data-league="soccer_epl">Premier League</button>
+      <button data-view="league" data-league="soccer_spain_la_liga">La Liga</button>
+      <button data-view="ev">+EV</button>
+      <button data-view="arbs">Arbitraasit</button>
+    </div>
+
     <!-- Matches list view -->
-    <div id="matches-view" class="view">
+    <div id="matches-view" class="view hidden">
       <h1>Tulevat ottelut</h1>
       <div id="matches-list" class="list"></div>
     </div>
@@ -21,8 +29,21 @@
       <p id="match-meta" class="match-meta"></p>
       <div id="markets-container"></div>
     </div>
+
+    <!-- EV view -->
+    <div id="ev-view" class="view hidden">
+      <h1>Parhaat +EV</h1>
+      <div id="ev-list" class="list"></div>
+    </div>
+
+    <!-- Arbitrage view -->
+    <div id="arbs-view" class="view hidden">
+      <h1>Arbitraasit</h1>
+      <div id="arbs-list" class="list"></div>
+    </div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Frontend logic -->
+  <script src="a9c30b37-16d9-42e3-a024-f228c76224fb.js"></script>
 </body>
 </html>
