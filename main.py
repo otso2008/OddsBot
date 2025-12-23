@@ -64,7 +64,7 @@ def main():
 
             # --- 3. +EV-VELOT ---
             print("\n📌 Lasketaan +EV-vedot (>1% EV)...")
-            evs=calculate_ev(all_matches, no_vig_data, min_ev_percent=2.0)
+            evs, high_evs = calculate_ev(all_matches, no_vig_data, min_ev_percent=2.0)
 
             if not evs:
                 print("❌ Ei +EV kohteita tällä kierroksella.")
