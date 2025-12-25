@@ -497,7 +497,7 @@ class OddsBankLoader:
 
 def get_db_connection():
     conn = psycopg2.connect(
-        dbname='Oddsbank',
+        dbname='oddsbank',
         user="postgres",
         password=os.getenv('POSTGRES_PASSWORD'),
         host="localhost",
