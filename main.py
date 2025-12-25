@@ -82,7 +82,13 @@ def main():
 
             # --- 4. TALLENNA DATABASEEN ---
             try:
-                save_to_database(all_matches,  no_vig_data, evs, arbs)
+                save_to_database(
+                    all_matches,
+                    no_vig_data,
+                    evs,
+                    high_evs,
+                    arbs
+                )
                 collect_closing_odds_and_eval_ev()
 
                 print("💾 Tallennus tehty.")
