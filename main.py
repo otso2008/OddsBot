@@ -85,6 +85,10 @@ def main():
 
             # --- 4. TALLENNA DATABASEEN ---
             try:
+                print("DEBUG ev_list type:", type(evs))
+                print("DEBUG ev_list[0] type:", type(evs[0]))
+                print("DEBUG ev_list[0]:", evs[0])
+
                 save_to_database(
                     all_matches,
                     no_vig_data,
