@@ -41,6 +41,9 @@ def main():
             # --- 2. ARBITRAASIT ---
             print("\n📌 Lasketaan arbitraasit (>1% ROI)...")
             arbs = find_arbitrage(all_matches)
+            print("DEBUG arbs type:", type(arbs))
+            print("DEBUG arbs[0] type:", type(arbs[0]))
+
 
             if not arbs:
                 print("❌ Ei arbitraaseja tällä kierroksella.")
