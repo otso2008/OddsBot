@@ -72,4 +72,4 @@ def calculate_ev(
                         if not existing or ev_pct > existing["ev_percent"]:
                             high_ev_opportunities[key] = result
 
-    return opportunities, list(high_ev_opportunities.values())
+    return opportunities
