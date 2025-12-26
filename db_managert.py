@@ -330,7 +330,7 @@ class OddsBankLoader:
     # MAIN SAVE PIPELINE
     # --------------------------------------------------
 
-    def run(self, all_matches, fair_prob_data, no_vig, ev_list, high_ev_list, arb_list):
+    def run(self, all_matches, fair_prob_data, no_vig, ev_list, arb_list):
 
         timestamp = datetime.now(timezone.utc)
         id_map = {}
