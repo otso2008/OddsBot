@@ -14,7 +14,6 @@ def calculate_ev(
         no_vig_lookup[key] = item
 
     opportunities = []
-    high_ev_opportunities = {}
     now = datetime.now(timezone.utc)
 
     for match in all_matches:
@@ -50,26 +49,19 @@ def calculate_ev(
                     ev_fraction = fair_prob * offered_odds - 1
                     ev_pct = ev_fraction * 100
 
-                    result = {
-                        "match": match_name,
-                        "sport": match["sport"],
-                        "start_time": match["start_time"],
-                        "market": market_code,
-                        "outcome": outcome,
-                        "reference_book": ref_book,
-                        "reference_odds": ref_odds,
-                        "probability": fair_prob,
-                        "book": book,
-                        "offered_odds": offered_odds,
-                        "ev_percent": ev_pct
-                    }
-
                     if ev_pct >= min_ev_percent:
-                        opportunities.append(result)
+                        opportunities.append({
+                            "match": match_name,
+                            "sport": match["sport"],
+                            "start_time": match["start_time"],
+                            "market": market_code,
+                            "outcome": outcome,
+                            "reference_book": ref_book,
+                            "reference_odds": ref_odds,
+                            "probability": fair_prob,
+                            "book": book,
+                            "offered_odds": offered_odds,
+                            "ev_percent": ev_pct
+                        })
 
-                    if ev_pct >= 5:
-                        existing = high_ev_opportunities.get(key)
-                        if not existing or ev_pct > existing["ev_percent"]:
-                            high_ev_opportunities[key] = result
-
-    return opportunities, high_ev_opportunities
+    return opportunities
