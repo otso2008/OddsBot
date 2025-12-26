@@ -400,25 +400,6 @@ class OddsBankLoader:
                 timestamp
             )
 
-        # HIGH EV RESULTS ⭐ UUSI
-        for ev in high_ev_list:
-            mid = id_map[ev["match"]]
-            book_id, book_name = self.get_or_create_bookmaker(ev["book"])
-            ref_id, ref_name = self.get_or_create_bookmaker(ev["reference_book"])
-
-            self.insert_high_ev(
-                mid,
-                book_id,
-                book_name,
-                ev["market"],
-                ev["outcome"],
-                float(ev["offered_odds"]),
-                float(ev["ev_percent"]),
-                ev["probability"],
-                ref_id,
-                ref_name,
-                timestamp
-            )
 
         # ARBITRAGES
         for arb in arb_list:
@@ -479,9 +460,7 @@ def save_to_database(all_matches, no_vig_data, ev_list, high_ev_list, arb_list):
 
     conn = get_db_connection()
 
-    try:
-        print("DEBUG no_vig type:", type(no_vig_data))
-        print("DEBUG no_vig[0] type:", type(no_vig_data[0]))
+   try:
 
         loader = OddsBankLoader(conn)
         # 🔒 flatten no_vig_data jos se on sisäkkäinen
