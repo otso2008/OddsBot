@@ -1,60 +1,79 @@
 <!DOCTYPE html>
 <html lang="fi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oddsbank – Ottelut ja Kertoimet</title>
-    <!--
-      Tämä on frontendin HTML-rakenne Oddsbank-projektille. Sivulla on
-      neljä päävalikkoa: kaksi jalkapalloliigaa (Premier League ja La Liga)
-      sekä näkymät parhaisiin +EV-kohteisiin ja arbitraaseihin. Nappien
-      klikkaukset ja datan lataus hoidetaan app.js:ssä. Ulkoasu on määritetty
-      style.css:ssä. Kaikki API-kutsut tehdään FastAPI-backendiin suhteellisella
-      polulla (esim. /api/matches). Muuta selaimen osoiteriviä tai porttia
-      vain, jos backend on eri hostilla.
-    -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="app">
-      <nav id="top-bar" class="top-bar">
-        <!--
-          Päävalikon napit. data-league‑attribuutit vastaavat tietokannan
-          league‑arvoja (esim. "epl" ja "spain_la_liga"). Näihin
-          attribuutteihin ei lisätä "soccer_"‑prefiksiä, sillä backendin
-          /api/matches?league=… endpoint käyttää league‑sarakketta sellaisenaan.
-        -->
-        <button data-league="epl" class="nav-button" id="league-epl">Premier League</button>
-        <button data-league="spain_la_liga" class="nav-button" id="league-laliga">La Liga</button>
-        <button id="ev-button" class="nav-button">+EV</button>
-        <button id="arbs-button" class="nav-button">Arbitraasit</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oddsbank – Ottelut ja Kertoimet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-title">Oddsbank</div>
+        <div class="brand-sub">Ottelut • Kertoimet • +EV • Arbitraasit</div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-button" data-league="epl">Premier League</button>
+        <button class="nav-button" data-league="spain_la_liga">La Liga</button>
+        <button class="nav-button" id="ev-button">+EV</button>
+        <button class="nav-button" id="arbs-button">Arbitraasit</button>
       </nav>
-      <main id="views">
-        <!-- Ottelulista -->
-        <section id="matches-view" class="view hidden">
-          <h1 id="matches-title">Tulevat ottelut</h1>
-          <div id="matches-list" class="list"></div>
-        </section>
-        <!-- Yksittäinen ottelu, kertoimet -->
-        <section id="match-view" class="view hidden">
-          <button id="back-btn" class="back-button">← Takaisin</button>
-          <h2 id="match-heading"></h2>
-          <p id="match-meta" class="match-meta"></p>
-          <div id="odds-container" class="markets-container"></div>
-          <div id="fair-container" class="fair-container"></div>
-        </section>
-        <!-- +EV-näkymä -->
-        <section id="ev-view" class="view hidden">
-          <h1>Parhaat +EV</h1>
-          <div id="ev-list" class="list"></div>
-        </section>
-        <!-- Arbitraasi-näkymä -->
-        <section id="arbs-view" class="view hidden">
-          <h1>Arbitraasit</h1>
-          <div id="arbs-list" class="list"></div>
-        </section>
-      </main>
     </div>
-    <script src="app.js"></script>
-  </body>
+  </header>
+
+  <main class="container">
+    <!-- MATCHES LIST VIEW -->
+    <section id="matches-view" class="view hidden">
+      <div class="view-header">
+        <h1 id="matches-title">Tulevat ottelut</h1>
+        <div class="hint">Valitse ylhäältä liiga, +EV tai arbitraasit.</div>
+      </div>
+      <div id="matches-list" class="list"></div>
+    </section>
+
+    <!-- SINGLE MATCH VIEW -->
+    <section id="match-view" class="view hidden">
+      <div class="view-header">
+        <button id="back-btn" class="back-button">← Takaisin</button>
+        <h1 id="match-heading">Ottelu</h1>
+        <div id="match-meta" class="hint"></div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <h2 class="section-title">Kertoimet</h2>
+          <div id="odds-container" class="stack"></div>
+        </div>
+
+        <div>
+          <h2 class="section-title">Fair / No-vig</h2>
+          <div id="fair-container" class="stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EV VIEW -->
+    <section id="ev-view" class="view hidden">
+      <div class="view-header">
+        <h1>Parhaat +EV</h1>
+        <div class="hint">Listassa näkyy tallennetut +EV-kohteet tietokannasta.</div>
+      </div>
+      <div id="ev-list" class="list"></div>
+    </section>
+
+    <!-- ARBS VIEW -->
+    <section id="arbs-view" class="view hidden">
+      <div class="view-header">
+        <h1>Arbitraasit</h1>
+        <div class="hint">Listassa näkyy tallennetut arbitraasit tietokannasta.</div>
+      </div>
+      <div id="arbs-list" class="list"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
 </html>
