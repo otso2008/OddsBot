@@ -91,7 +91,7 @@ def main():
                     all_matches,
                     no_vig_data,
                     evs,
-                    high_evs,
+                    
                     arbs
                 )
                 collect_closing_odds_and_eval_ev()
