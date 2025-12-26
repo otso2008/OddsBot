@@ -461,7 +461,7 @@ def save_to_database(all_matches, no_vig_data, ev_list, high_ev_list, arb_list):
     conn = get_db_connection()
 
   
-
+    try:
         loader = OddsBankLoader(conn)
         # 🔒 flatten no_vig_data jos se on sisäkkäinen
         if no_vig_data and isinstance(no_vig_data[0], list):
