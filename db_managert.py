@@ -280,44 +280,7 @@ class OddsBankLoader:
 
 
     # --------------------------------------------------
-    # INSERT HIGH EV RESULT  ⭐ UUSI
-    # --------------------------------------------------
-    def insert_high_ev(self, match_id, bookmaker_id, book_name, market_code,
-                       outcome, odds, ev_percent, fair_prob,
-                       ref_book_id, ref_book_name, timestamp):
-        """
-        Tallentaa high-ev kohteet high_ev_results -tauluun.
-        Deduplikointi tehdään ON CONFLICT -avaimella:
-        (match_id, bookmaker_id, market_code, outcome)
-        """
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO high_ev_results
-                (match_id, bookmaker_id, bookmaker_name,
-                 market_code, outcome,
-                 odds, ev_percent, fair_probability,
-                 reference_bookmaker_id, reference_bookmaker_name,
-                 detected_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                ON CONFLICT (match_id, bookmaker_id, market_code, outcome)
-                DO UPDATE SET
-                    odds=EXCLUDED.odds,
-                    ev_percent=EXCLUDED.ev_percent,
-                    fair_probability=EXCLUDED.fair_probability,
-                    detected_at=NOW(),
-                    bookmaker_name=EXCLUDED.bookmaker_name,
-                    reference_bookmaker_id=EXCLUDED.reference_bookmaker_id,
-                    reference_bookmaker_name=EXCLUDED.reference_bookmaker_name
-                """,
-                (
-                    match_id, bookmaker_id, book_name,
-                    market_code, outcome,
-                    odds, ev_percent, fair_prob,
-                    ref_book_id, ref_book_name,
-                    timestamp
-                )
-            )
+    # INSERT HIGH EV RESULT  ⭐ UUS)
 
 
     # --------------------------------------------------
