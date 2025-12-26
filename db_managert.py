@@ -467,6 +467,6 @@ def save_to_database(all_matches, no_vig_data, ev_list, arb_list):
         if no_vig_data and isinstance(no_vig_data[0], list):
             no_vig_data = [x for sub in no_vig_data for x in sub]
 
-        loader.run(all_matches, [], no_vig_data, ev_list, high_ev_list, arb_list)
+        loader.run(all_matches, [], no_vig_data, ev_list, arb_list)
     finally:
         conn.close()
