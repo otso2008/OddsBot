@@ -1,157 +1,210 @@
-/*
-  Perustyyli Oddsbank-frontendille. Värit ja kulmat on määritelty CSS-
-  muuttujilla helpottamaan muokkausta. Ulkoasu pyrkii moderniin,
-  selkeään ilmeeseen. Nappeihin on lisätty hover-efektit ja kortit
-  sisältävät pehmeän varjon. Pienemmillä näytöillä listat ovat yksi
-  sarake, suuremmilla näyttöruuduilla kaksi saraketta. Tämä tiedosto
-  ei sisällä JavaScriptia – näytön vaihdot tehdään app.js:ssä.
-*/
-
-:root {
-  --primary-color: #2c3e50;
-  --accent-color: #e74c3c;
-  --bg-color: #f7f7f7;
-  --card-bg: #ffffff;
-  --text-color: #2c3e50;
-  --border-radius: 8px;
-  --transition-duration: 0.3s;
+:root{
+  --bg:#ffffff;
+  --fg:#000000;
+  --muted:rgba(0,0,0,.65);
+  --border:rgba(0,0,0,.14);
+  --border-strong:rgba(0,0,0,.22);
+  --card:#ffffff;
+  --shadow:0 8px 24px rgba(0,0,0,.08);
+  --radius:14px;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-/* Top navigation bar */
-.top-bar {
+.container{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 18px 14px 40px;
+}
+
+.topbar{
+  position: sticky;
+  top:0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px 14px;
   display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.brand{
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 16px;
+}
+
+.tabs{
+  display:flex;
+  gap:10px;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: var(--primary-color);
+  justify-content: flex-end;
 }
 
-.nav-button {
-  background-color: var(--accent-color);
-  border: none;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color var(--transition-duration);
+.tab{
+  appearance:none;
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  color:#000;
+  padding: 10px 12px;
+  border-radius: 999px; /* pyöristetyt reunat */
+  font-weight: 650;
+  font-size: 14px;
+  line-height: 1;
+  cursor:pointer;
+  transition: transform .06s ease, background .12s ease, border-color .12s ease;
 }
 
-/* Aktiivinen navigaation nappi – korosta valittua näkymää */
-.nav-button.active {
-  background-color: #c0392b;
+.tab:hover{
+  background: #f6f6f6;
 }
 
-.nav-button:hover {
-  background-color: #c0392b;
+.tab:active{
+  transform: translateY(1px);
 }
 
-/* Generic view container */
-.view {
-  padding: 1rem;
+.tab.active{
+  background:#000;
+  color:#fff;
+  border-color:#000;
 }
 
-.hidden {
-  display: none;
+.back-button{
+  border-radius: 999px;
 }
 
-/* Lists of cards (matches, ev, arbs) */
-.list {
-  display: flex;
+.view.hidden{ display:none; }
+
+.page-title{
+  margin: 12px 0 12px;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.muted{
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.list{
+  display:flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 0;
-  margin: 0;
+  gap: 12px;
 }
 
-/* Card style */
-.card {
-  background-color: var(--card-bg);
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  cursor: pointer;
-  transition: transform var(--transition-duration), box-shadow var(--transition-duration);
+.card{
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.card h3{
+  margin:0 0 6px;
+  font-size: 16px;
+  letter-spacing:-0.01em;
 }
 
-/* Meta text */
-.match-meta,
-.market-meta {
-  margin: 0.5rem 0;
-  color: #555555;
-  font-size: 0.9rem;
+.card p{
+  margin: 6px 0;
+  color: var(--muted);
+  font-size: 14px;
 }
 
-/* Back button */
-.back-button {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 1rem;
+.match-card{
+  cursor:pointer;
 }
 
-/* Market and fair cards within match view */
-.market-card,
-.fair-card {
-  margin-bottom: 1rem;
+.match-card:hover{
+  border-color: rgba(0,0,0,.28);
 }
 
-.market-card h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
+.stack{
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
 }
 
-/* Table styling for odds */
-.table {
-  width: 100%;
+.row{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  margin: 6px 0 10px;
+}
+
+.table{
+  width:100%;
   border-collapse: collapse;
-  margin-top: 0.5rem;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
-.table th,
-.table td {
-  padding: 0.4rem;
-  border-bottom: 1px solid #dddddd;
-  text-align: left;
-  font-size: 0.9rem;
+.table th, .table td{
+  border-bottom: 1px solid var(--border);
+  text-align:left;
+  padding: 10px 8px;
+  vertical-align: top;
 }
 
-.ev-card .ev-header,
-.arb-card .arb-header {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
+.table th{
+  color: rgba(0,0,0,.75);
+  font-weight: 700;
 }
 
-.legs-list,
-.stakes-list {
-  list-style-type: none;
-  padding-left: 1rem;
-  margin: 0.5rem 0;
+.kv{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
 }
 
-/* Responsive layout: two columns on wider screens */
-@media (min-width: 600px) {
-  .list {
-    flex-direction: row;
-    flex-wrap: wrap;
+.kv .pill{
+  border:1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: rgba(0,0,0,.78);
+}
+
+/* mobile */
+@media (max-width: 640px){
+  .topbar-inner{
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
   }
-  .list .card {
-    flex: 1 1 calc(50% - 0.5rem);
-    box-sizing: border-box;
+  .tabs{
+    justify-content: flex-start;
+  }
+  .tab{
+    padding: 12px 12px;
+    font-size: 14px;
+  }
+  .page-title{
+    font-size: 20px;
+  }
+  .table th, .table td{
+    padding: 10px 6px;
+    font-size: 13px;
   }
 }
