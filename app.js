@@ -4,6 +4,7 @@
  * Tämä versio lisää liiganavigaation, +EV- ja arbitraasi-listat sekä
  * automaattisen päivityksen. Sivusto näyttää vain tulevat ottelut.
  */
+console.log("APP.JS IS RUNNING");
 
 (function() {
   'use strict';
