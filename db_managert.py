@@ -456,7 +456,7 @@ def get_db_connection():
 # SAVE WRAPPER (used by main.py)
 # --------------------------------------------------
 
-def save_to_database(all_matches, no_vig_data, ev_list, high_ev_list, arb_list):
+def save_to_database(all_matches, no_vig_data, ev_list, arb_list):
 
     conn = get_db_connection()
 
