@@ -1,6 +1,7 @@
 # data_loader.py
 
 import os
+import math
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 import requests
@@ -50,6 +51,25 @@ def normalize_bookmaker_name(name: str) -> str:
     if name in UNIBET_NAMES:
         return "Unibet"
     return name
+
+
+# Helper: round a line to the nearest 0.5 increment based on betting conventions.
+# If the value is already on a 0.5 or integer boundary, it is returned as-is.  Otherwise,
+# values are grouped to the midpoint (e.g. 2.75 → 2.5, 2.1 → 2.5, 3.25 → 3.5).
+def round_to_half(x: float) -> float:
+    """Round the given point to the nearest 0.5 increment.
+
+    Betting markets often quote totals such as 2.75 which are effectively split
+    between two adjacent half-goal lines.  To combine lines that mean the same
+    thing, points that are not exactly on a 0.5 boundary are mapped to the
+    nearest 0.5.  For example, 2.75 and 2.25 both map to 2.5, while 3.1 maps
+    to 3.5.
+    """
+    # Check if already on an integer or .5 boundary (within a tiny tolerance)
+    if abs((x * 2) - round(x * 2)) < 1e-6:
+        return x
+    base = math.floor(x)
+    return base + 0.5
 
 
 def fetch_events(sport: str):
@@ -148,25 +168,41 @@ def build_matches_for_sport(combined, sport):
 
                         rec["markets"].setdefault("h2h", {})[name] = norm
 
-                # ---------- TOTALS / SPREADS / ALTERNATES ----------
-                if key in (
-                    "totals", "alternate_totals", "team_totals",
-                    "alternate_team_totals", "spreads", "alternate_spreads"
-                ):
+                # ---------- TOTALS ----------
+                # Map totals (including alternate and team totals) to the nearest half-goal line
+                # so that, for example, O/U 2.5 and O/U 2.75 are considered the same market.
+                if key in ("totals", "alternate_totals", "team_totals", "alternate_team_totals"):
                     for o in outcomes:
                         p = o.get("price")
                         pt = o.get("point")
                         nm = o.get("name", "")
                         if p is None or pt is None:
                             continue
-
-                        mk = f"over_under_{str(pt).replace('.', '_')}"
+                        try:
+                            val = float(pt)
+                        except Exception:
+                            continue
+                        rounded = round_to_half(val)
+                        mk = f"over_under_{str(rounded).replace('.', '_')}"
                         entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
-
                         if "over" in nm.lower():
                             entry["over"] = float(p)
                         elif "under" in nm.lower():
                             entry["under"] = float(p)
+
+                # ---------- SPREADS ----------
+                # For spreads and alternate spreads, preserve the actual point value
+                # (do not round).  We capture the price by the raw outcome name.
+                if key in ("spreads", "alternate_spreads"):
+                    for o in outcomes:
+                        p = o.get("price")
+                        pt = o.get("point")
+                        nm = o.get("name", "")
+                        if p is None or pt is None:
+                            continue
+                        mk = f"spread_{str(pt).replace('.', '_')}"
+                        entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
+                        entry[nm] = float(p)
 
         # Poista vajaat totals-linjat
         for k in list(rec["markets"].keys()):
