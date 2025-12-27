@@ -345,11 +345,17 @@ async def get_top_ev(
         FROM ev_results ev
         JOIN matches m ON m.id = ev.match_id
         WHERE m.start_time >= NOW()
+          -- Only include rows from the most recent run.  A small window
+          -- (2 seconds) is used to capture all rows inserted in the
+          -- latest batch.
+          AND ev.collected_at >= (
+              SELECT MAX(collected_at) FROM ev_results
+          ) - INTERVAL '2 seconds'
     """
     if hours is not None:
         sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
         params.append(hours)
-    # Järjestys suurimman EV:n mukaan ja sivutus
+    # Order by EV value descending and apply pagination
     sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
     rows = fetch_query(sql, tuple(params))
@@ -395,6 +401,12 @@ async def get_latest_arbs(
         FROM arb_results arb
         JOIN matches m ON m.id = arb.match_id
         WHERE m.start_time >= NOW()
+          -- Only include rows from the most recent run.  A small window
+          -- (2 seconds) is used to capture all rows inserted in the
+          -- latest batch.
+          AND arb.found_at >= (
+              SELECT MAX(found_at) FROM arb_results
+          ) - INTERVAL '2 seconds'
     """
     if hours is not None:
         sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
