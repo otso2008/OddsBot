@@ -171,46 +171,83 @@ def build_matches_for_sport(combined, sport):
                 # ---------- TOTALS ----------
                 # Map totals (including alternate and team totals) to the nearest half-goal line
                 # so that, for example, O/U 2.5 and O/U 2.75 are considered the same market.
+                # We always base the market key on the rounded line to half-goal boundaries
+                # to avoid splitting otherwise equivalent markets.
                 if key in ("totals", "alternate_totals", "team_totals", "alternate_team_totals"):
                     for o in outcomes:
                         p = o.get("price")
                         pt = o.get("point")
-                        nm = o.get("name", "")
-                        if p is None or pt is None:
+                        nm = o.get("name", "").strip()
+                        if p is None or pt is None or not nm:
                             continue
+                        # attempt to parse the point as a float; skip if it fails
                         try:
                             val = float(pt)
                         except Exception:
                             continue
+                        # use round_to_half to group lines that mean the same thing (e.g. 2.75 -> 2.5)
                         rounded = round_to_half(val)
+                        # Build a canonical key for this total.  We keep the underscore format
+                        # because other parts of the pipeline expect it.  For example, 2.5 becomes '2_5'.
                         mk = f"over_under_{str(rounded).replace('.', '_')}"
                         entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
-                        if "over" in nm.lower():
+                        # Determine whether this is an 'over' or 'under' outcome by the outcome name.
+                        lower_nm = nm.lower()
+                        if "over" in lower_nm:
                             entry["over"] = float(p)
-                        elif "under" in nm.lower():
+                        elif "under" in lower_nm:
                             entry["under"] = float(p)
 
                 # ---------- SPREADS ----------
-                # For spreads and alternate spreads, preserve the actual point value
-                # (do not round).  We capture the price by the raw outcome name.
+                # For spreads and alternate spreads, we want to group both sides of the same handicap
+                # into a single market keyed by the home team's handicap.  That way the fair/no-vig
+                # calculations see both sides together rather than as separate markets.  We do not
+                # round the line: -0.25 and -0.5 etc. remain distinct.  But we convert the handicap
+                # to the perspective of the home team.  If the outcome is the away team with a +X
+                # handicap, the home line is -X.  If the outcome is the home team with -X, the
+                # home line is -X as given.
                 if key in ("spreads", "alternate_spreads"):
                     for o in outcomes:
                         p = o.get("price")
                         pt = o.get("point")
-                        nm = o.get("name", "")
-                        if p is None or pt is None:
+                        nm = (o.get("name") or "").strip()
+                        if p is None or pt is None or not nm:
                             continue
-                        mk = f"spread_{str(pt).replace('.', '_')}"
+                        # ensure we can interpret the line as a float; skip if not
+                        try:
+                            line = float(pt)
+                        except Exception:
+                            continue
+                        # Determine whether this outcome refers to the home or away team.
+                        # The home team gets the line as-is; the away team gets the line negated.
+                        if nm == home:
+                            home_line = line
+                            side = "home"
+                        elif nm == away:
+                            home_line = -line
+                            side = "away"
+                        else:
+                            # Unknown team name; skip
+                            continue
+                        # Build a canonical market key: use underscores for decimals like other keys
+                        mk = f"spread_{str(home_line).replace('.', '_')}"
                         entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
-                        entry[nm] = float(p)
+                        entry[side] = float(p)
 
-        # Poista vajaat totals-linjat
+        # Poista vajaat totals-linjat ja spreads-linjat
+        # Totals: both 'over' and 'under' must be present for a bookmaker
+        # Spreads: both 'home' and 'away' must be present
         for k in list(rec["markets"].keys()):
             if k.startswith("over_under_"):
                 for bn in list(rec["markets"][k].keys()):
                     if "over" not in rec["markets"][k][bn] or "under" not in rec["markets"][k][bn]:
                         del rec["markets"][k][bn]
-
+                if not rec["markets"][k]:
+                    del rec["markets"][k]
+            elif k.startswith("spread_"):
+                for bn in list(rec["markets"][k].keys()):
+                    if "home" not in rec["markets"][k][bn] or "away" not in rec["markets"][k][bn]:
+                        del rec["markets"][k][bn]
                 if not rec["markets"][k]:
                     del rec["markets"][k]
 
