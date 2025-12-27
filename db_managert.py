@@ -1,472 +1,608 @@
+"""
+FastAPI backend for the Odds Analysis project.
+
+Tämä moduuli tarjoaa HTTP-API:n, jolla voidaan lukea valmiiksi
+laskettuja ja PostgreSQL-tietokantaan tallennettuja tietoja:
+
+- EV-vedot (ev_results)
+- arbitraasit (arb_results)
+- ottelut (matches)
+- nykyiset kertoimet (current_odds)
+- fair probabilities / no-vig odds (fair_probs)
+
+Itse kerääminen ja laskenta tehdään erillisissä skripteissä
+(main.py, ev_calc.py, arb_bot.py jne.). Tämä backend EI laske
+mitään itse, vaan lukee dataa tietokannasta ja palauttaa
+sen JSON-muodossa frontendille, Telegram-botille tms.
+
+TÄRKEÄT OPTIMOINTI-KOHDAT TÄSSÄ VERSIOSSA
+----------------------------------------
+1. PostgreSQL-yhteyspooli (SimpleConnectionPool) → ei avata
+   / suljeta yhteyttä joka kutsulla → nopeampi ja skaalautuvampi.
+2. READ COMMITTED -eristystaso → luetaan vain valmiiksi commitattua
+   dataa, kun main.py kirjoittaa samaan aikaan.
+3. API-avain (header: X-API-Key) → jos ODDSBANK_API_KEY on asetettu,
+   kaikki API-reitit vaativat oikean avaimen.
+4. Yksinkertainen rate limiting per IP → estää spämmin
+   (429 Too Many Requests).
+5. Pagination EV- ja arb-reiteille (limit + offset).
+6. Pydantic-mallit (response_model) → selkeä & vakaa JSON-rakenne,
+   parempi dokumentaatio ja validation.
+"""
+
+from __future__ import annotations
+
 import json
 import os
-import re
-from datetime import datetime, timezone
-from typing import Any, Dict, Tuple
+import time
+from contextlib import contextmanager
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
 import psycopg2
-from psycopg2 import sql
-from psycopg2.extras import DictCursor
-from dotenv import load_dotenv
-
-import os
-
-load_dotenv()  # lataa .env-tiedoston sisällön
-
-
-class OddsBankLoader:
-    def __init__(self, conn) -> None:
-        self.conn = conn
-
-
-    # --------------------------------------------------
-    # BOOKMAKER HANDLING
-    # --------------------------------------------------
-
-    def get_or_create_bookmaker(self, name: str) -> Tuple[int, str]:
-        name = name.strip()
-
-        BOOKMAKER_META = {
-            "Pinnacle": {"country": "MT", "is_sharp": True, "reliability_score": 100, "short_code": "PIN"},
-            "Betfair": {"country": "UK", "is_sharp": True, "reliability_score": 95, "short_code": "BF"},
-            "Matchbook": {"country": "UK", "is_sharp": True, "reliability_score": 90, "short_code": "MB"},
-            "Coolbet": {"country": "EE", "is_sharp": False, "reliability_score": 85, "short_code": "COOL"},
-            "Unibet": {"country": "MT", "is_sharp": False, "reliability_score": 80, "short_code": "UNI"},
-            "Betsson": {"country": "SE", "is_sharp": False, "reliability_score": 75, "short_code": "BSS"},
-            "Nordic Bet": {"country": "SE", "is_sharp": False, "reliability_score": 75, "short_code": "NB"},
-            "888sport": {"country": "GI", "is_sharp": False, "reliability_score": 75, "short_code": "888"},
-            "LeoVegas (SE)": {"country": "SE", "is_sharp": False, "reliability_score": 70, "short_code": "LEO"},
-            "Tipico": {"country": "MT", "is_sharp": False, "reliability_score": 70, "short_code": "TIP"},
-            "Betclic (FR)": {"country": "FR", "is_sharp": False, "reliability_score": 60, "short_code": "BCL"},
-            "Winamax (FR)": {"country": "FR", "is_sharp": False, "reliability_score": 60, "short_code": "WFR"},
-            "Winamax (DE)": {"country": "DE", "is_sharp": False, "reliability_score": 60, "short_code": "WDE"},
-            "Parions Sport (FR)": {"country": "FR", "is_sharp": False, "reliability_score": 55, "short_code": "PSF"},
-        }
-
-        meta = BOOKMAKER_META.get(name, {
-            "country": None,
-            "is_sharp": False,
-            "reliability_score": 70,
-            "short_code": None,
-        })
-
-        with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT id FROM bookmakers WHERE name=%s", (name,))
-            row = cur.fetchone()
-            if row:
-                return int(row[0]), name
-
-            cur.execute(
-                """
-                INSERT INTO bookmakers (name, country, is_sharp, reliability_score, short_code)
-                VALUES (%s, %s, %s, %s, %s)
-                RETURNING id
-                """,
-                (name, meta["country"], meta["is_sharp"], meta["reliability_score"], meta["short_code"])
-            )
-
-            return int(cur.fetchone()[0]), name
-
-
-
-    # --------------------------------------------------
-    # INSERT CLOSING ODDS (only once per match/book/outcome)
-    # --------------------------------------------------
-    def insert_ev_closing_result(self, match_id, market_code, outcome,
-                                 offered_odds, fair_odds_closing,
-                                 ev_percent, beat_closing, timestamp):
-        with self.conn.cursor() as cur:
-            cur.execute("""
-                INSERT INTO ev_closing_results
-                (match_id, market_code, outcome,
-                 offered_odds, fair_odds_closing,
-                 ev_percent, beat_closing, evaluated_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-            """, (match_id, market_code, outcome,
-                  offered_odds, fair_odds_closing,
-                  ev_percent, beat_closing, timestamp))
-            self.conn.commit()
-
-    def insert_closing_odds(self, match_id: int, bookmaker_id: int, book_name: str, market_code: str,
-                            outcome: str, price: float, line: Any, timestamp: datetime) -> None:
-        implied_probability = (1.0 / price) if price > 0 else None
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT 1 FROM closing_odds
-                WHERE match_id=%s AND bookmaker_id=%s AND market_code=%s AND outcome=%s
-                """,
-                (match_id, bookmaker_id, market_code, outcome)
-            )
-            if cur.fetchone():
-                return  # Skip if already exists
-
-            cur.execute(
-                """
-                INSERT INTO closing_odds
-                (match_id, bookmaker_id, bookmaker_name,
-                 market_code, outcome, price, line, implied_probability, collected_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (
-                    match_id, bookmaker_id, book_name,
-                    market_code, outcome, price, line,
-                    implied_probability, timestamp
-                )
-            )
-            self.conn.commit()
-    # --------------------------------------------------
-    # MATCH HANDLING
-    # --------------------------------------------------
-
-    def get_or_create_match(self, m: Dict[str, Any]) -> int:
-        sport = m["sport"]
-        home = m["home"]
-        away = m["away"]
-        start_time = m["start_time"]
-
-        # Extract league from sport code (soccer_epl → epl)
-        try:
-            league = sport.split("_", 1)[1]
-        except:
-            league = None
-
-        match_key = f"{sport}_{home}_{away}_{start_time}"
-
-        with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("DELETE FROM matches WHERE start_time < NOW()")
-
-            cur.execute("SELECT id FROM matches WHERE match_key=%s", (match_key,))
-            row = cur.fetchone()
-            if row:
-                return int(row[0])
-
-            cur.execute(
-                """
-                INSERT INTO matches (match_key, sport, league, home_team, away_team, start_time)
-                VALUES (%s,%s,%s,%s,%s,%s)
-                RETURNING id
-                """,
-                (match_key, sport, league, home, away, start_time)
-            )
-
-            return int(cur.fetchone()[0])
-
-
-    # --------------------------------------------------
-    # MARKET TYPE
-    # --------------------------------------------------
-
-    def get_or_create_market_type(self, code: str) -> int:
-        code = code.strip()
-        with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT id FROM market_types WHERE market_code=%s", (code,))
-            row = cur.fetchone()
-            if row:
-                return int(row[0])
-
-            cur.execute(
-                "INSERT INTO market_types (market_code) VALUES (%s) RETURNING id",
-                (code,)
-            )
-            return int(cur.fetchone()[0])
-
-
-    # --------------------------------------------------
-    # INSERT CURRENT ODDS
-    # --------------------------------------------------
-
-    def insert_current_odds(self, match_id, bookmaker_id, book_name, market_code,
-                            outcome, price, line, timestamp):
-
-        implied_probability = (1.0 / price) if price > 0 else None
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO current_odds
-                (match_id, bookmaker_id, bookmaker_name,
-                 market_code, outcome, price, line, implied_probability, updated_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                ON CONFLICT (match_id, bookmaker_id, market_code, outcome)
-                DO UPDATE SET
-                    price=EXCLUDED.price,
-                    line=EXCLUDED.line,
-                    implied_probability=EXCLUDED.implied_probability,
-                    updated_at=NOW(),
-                    bookmaker_name=EXCLUDED.bookmaker_name
-                """,
-                (
-                    match_id, bookmaker_id, book_name,
-                    market_code, outcome, price, line,
-                    implied_probability, timestamp
-                )
-            )
-
-
-    # --------------------------------------------------
-    # INSERT ODDS HISTORY
-    # --------------------------------------------------
-
-    def insert_history(self, match_id, bookmaker_id, book_name, market_code,
-                       outcome, price, line, timestamp):
-
-        implied_probability = (1.0 / price) if price > 0 else None
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO odds_history
-                (match_id, bookmaker_id, bookmaker_name,
-                 market_code, outcome, price, line, implied_probability, collected_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (
-                    match_id, bookmaker_id, book_name,
-                    market_code, outcome, price, line,
-                    implied_probability, timestamp
-                )
-            )
-
-
-    # --------------------------------------------------
-    # INSERT FAIR PROB (with margin + no_vig_odds)
-    # --------------------------------------------------
-
-    def insert_fair_prob(self, match_id, market_code, outcome,
-                         probability, no_vig_odds, margin,
-                         ref_book_id, ref_book_name, timestamp):
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO fair_probs
-                (match_id, market_code, outcome,
-                 fair_probability, no_vig_odds, margin,
-                 reference_bookmaker_id, reference_bookmaker_name, collected_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (
-                    match_id, market_code, outcome,
-                    probability, no_vig_odds, margin,
-                    ref_book_id, ref_book_name, timestamp
-                )
-            )
-
-
-    # --------------------------------------------------
-    # INSERT EV RESULT
-    # --------------------------------------------------
-
-    def insert_ev(self, match_id, bookmaker_id, book_name, market_code,
-                  outcome, odds, ev_fraction, fair_prob, ref_book_id, ref_book_name,
-                  timestamp):
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO ev_results
-                (match_id, bookmaker_id, bookmaker_name, market_code,
-                 outcome, odds, ev_value, fair_probability,
-                 reference_bookmaker_id, reference_bookmaker_name, collected_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (
-                    match_id, bookmaker_id, book_name,
-                    market_code, outcome, odds, ev_fraction, fair_prob,
-                    ref_book_id, ref_book_name, timestamp
-                )
-            )
-
-
-    # --------------------------------------------------
-    # INSERT HIGH EV RESULT  ⭐ UUS)
-
-
-    # --------------------------------------------------
-    # INSERT ARB RESULT
-    # --------------------------------------------------
-
-    def insert_arb(self, match_id, market_code, roi_fraction, legs, timestamp):
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO arb_results
-                (match_id, market_code, roi, legs, stake_split, found_at)
-                VALUES (%s,%s,%s,%s::jsonb,%s::jsonb,%s)
-                """,
-                (
-                    match_id, market_code, roi_fraction,
-                    json.dumps(legs["legs"], sort_keys=True),
-                    json.dumps(legs["stake_split"], sort_keys=True),
-                    timestamp
-                )
-            )
-
-    def insert_placed_arb_bet(self, match_id: int, market_code: str, roi_fraction: float,
-                              legs: Dict[str, Any], stake_split: Dict[str, Any], timestamp: datetime) -> None:
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO placed_arb_bets
-                (match_id, market_code, roi, legs, stake_split, placed_at)
-                VALUES (%s, %s, %s, %s::jsonb, %s::jsonb, %s)
-                """,
-                (
-                    match_id,
-                    market_code,
-                    roi_fraction,
-                    json.dumps(legs, sort_keys=True),
-                    json.dumps(stake_split, sort_keys=True),
-                    timestamp
-                )
-            )
-
-
-
-
-    # --------------------------------------------------
-    # MAIN SAVE PIPELINE
-    # --------------------------------------------------
-
-    def run(self, all_matches, fair_prob_data, no_vig, ev_list, arb_list):
-
-        timestamp = datetime.now(timezone.utc)
-        id_map = {}
-
-        # MATCHES
-        for m in all_matches:
-            id_map[m["match"]] = self.get_or_create_match(m)
-
-        # CURRENT ODDS + HISTORY
-        for m in all_matches:
-            match_id = id_map[m["match"]]
-            for market_code, books in m["markets"].items():
-                self.get_or_create_market_type(market_code)
-
-                for book_name, outcomes in books.items():
-                    book_id, book_norm = self.get_or_create_bookmaker(book_name)
-
-                    for outcome, price in outcomes.items():
-                        self.insert_current_odds(
-                            match_id, book_id, book_norm,
-                            market_code, outcome, float(price),
-                            None, timestamp
-                        )
-
-                        self.insert_history(
-                            match_id, book_id, book_norm,
-                            market_code, outcome, float(price),
-                            None, timestamp
-                        )
-
-        # FAIR PROBABILITIES (with margin)
-        for nv in no_vig:
-            mid = id_map[nv["match"]]
-            ref_id, ref_name = self.get_or_create_bookmaker(nv["reference_book"])
-
-            margin = nv.get("margin", None)
-
-            self.insert_fair_prob(
-                mid,
-                nv["market_code"],
-                nv["outcome"],
-                nv["fair_probability"],
-                nv["no_vig_odds"],
-                margin,
-                ref_id,
-                ref_name,
-                timestamp
-            )
-
-        # EV RESULTS
-        for ev in ev_list:
-            mid = id_map[ev["match"]]
-            book_id, book_name = self.get_or_create_bookmaker(ev["book"])
-            ref_id, ref_name = self.get_or_create_bookmaker(ev["reference_book"])
-
-            self.insert_ev(
-                mid,
-                book_id,
-                book_name,
-                ev["market"],
-                ev["outcome"],
-                float(ev["offered_odds"]),
-                ev["ev_percent"] / 100.0,
-                ev["probability"],
-                ref_id,
-                ref_name,
-                timestamp
-            )
-
-
-        # ARBITRAGES
-        for arb in arb_list:
-            mid = id_map[arb["match"]]
-
-            legs_with_stakes = {}
-            for outcome, info in arb["best_odds"].items():
-                legs_with_stakes[outcome] = {
-                    "book": info["book"],
-                    "odds": info["odds"]
-                }
-
-            stake_split = arb["stakes"]
-
-            self.insert_arb(
-                mid,
-                arb["market"],
-                arb["roi"] / 100.0,
-                {"legs": legs_with_stakes, "stake_split": stake_split},
-                timestamp
-            )
-
-            # SAVE PLACED ARB BET
-            self.insert_placed_arb_bet(
-                mid,
-                arb["market"],
-                arb["roi"] / 100.0,
-                legs_with_stakes,
-                stake_split,
-                timestamp
-            )
-
-        self.conn.commit()
-
-
-# --------------------------------------------------
-# DB CONNECTION
-# --------------------------------------------------
-
-def get_db_connection():
-    conn = psycopg2.connect(
-        dbname='oddsbank',
-        user="postgres",
-        password=os.getenv('POSTGRES_PASSWORD'),
-        host="localhost",
-        port=5432,
-    )
-
-    conn.autocommit = True
-    return conn
-
-
-# --------------------------------------------------
-# SAVE WRAPPER (used by main.py)
-# --------------------------------------------------
-
-def save_to_database(all_matches, no_vig_data, ev_list, arb_list):
-
-    conn = get_db_connection()
-
-  
+import psycopg2.extras
+from psycopg2.pool import SimpleConnectionPool
+from psycopg2 import extensions as pg_ext
+
+from fastapi import (
+    FastAPI,
+    HTTPException,
+    Query,
+    Depends,
+    Header,
+    Request,
+    status,
+)
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+
+# ---------------------------------------------------------------------------
+# Database connection pool
+# ---------------------------------------------------------------------------
+
+POOL: Optional[SimpleConnectionPool] = None
+
+
+def _get_db_config() -> Dict[str, Any]:
+    """Read database configuration from environment variables."""
+    return {
+        "host": os.getenv("ODDSBANK_DB_HOST", "localhost"),
+        "port": int(os.getenv("ODDSBANK_DB_PORT", "5432")),
+        "dbname": os.getenv("ODDSBANK_DB_NAME", "Oddsbank"),
+        "user": os.getenv("ODDSBANK_DB_USER", "postgres"),
+        "password": os.getenv("ODDSBANK_DB_PASSWORD", 'ABC!"#'),
+    }
+
+
+def _init_pool() -> None:
+    """Initialise the global connection pool if it is not already created."""
+    global POOL
+    if POOL is not None:
+        return
+
+    cfg = _get_db_config()
     try:
-        loader = OddsBankLoader(conn)
-        # 🔒 flatten no_vig_data jos se on sisäkkäinen
-        if no_vig_data and isinstance(no_vig_data[0], list):
-            no_vig_data = [x for sub in no_vig_data for x in sub]
+        POOL = SimpleConnectionPool(
+            minconn=1,
+            maxconn=10,
+            **cfg,
+        )
+    except Exception as exc:
+        # Jos poolin luonti epäonnistuu, koko API ei voi toimia.
+        raise RuntimeError(f"Failed to create DB connection pool: {exc}") from exc
 
-        loader.run(all_matches, [], no_vig_data, ev_list, arb_list)
+
+@contextmanager
+def get_conn():
+    """Yield a pooled database connection with READ COMMITTED isolation."""
+    if POOL is None:
+        _init_pool()
+
+    assert POOL is not None  # tyyppitarkennusta varten
+    conn: psycopg2.extensions.connection = POOL.getconn()
+    try:
+        # Luetaan vain commitattua dataa; read-only riittää
+        conn.set_session(
+            isolation_level=pg_ext.ISOLATION_LEVEL_READ_COMMITTED,
+            readonly=True,
+            autocommit=False,
+        )
+        yield conn
     finally:
-        conn.close()
+        POOL.putconn(conn)
+
+
+def fetch_query(sql: str, params: tuple | None = None) -> List[Dict[str, Any]]:
+    """Execute a SQL query and return all rows as a list of dicts."""
+    try:
+        with get_conn() as conn:
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute(sql, params or ())
+            rows = cur.fetchall()
+            return [dict(row) for row in rows]
+    except Exception as exc:
+        # Wrapataan virhe HTTP 500:ksi, jotta FastAPI palauttaa selkeän vastauksen.
+        raise HTTPException(
+            status_code=500, detail=f"Database query failed: {exc}"
+        ) from exc
+
+
+# ---------------------------------------------------------------------------
+# Pydantic-mallit vastauksille
+# ---------------------------------------------------------------------------
+
+
+class EvResult(BaseModel):
+    match_id: int
+    bookmaker_name: str
+    market_code: str
+    outcome: str
+    odds: float
+    ev_fraction: float
+    fair_probability: float
+    reference_bookmaker_name: str
+    collected_at: datetime
+
+    # Lisätään ottelun tiedot EV-vastaukseen. Nämä voivat olla None jos
+    # kysely ei liitä matches-taulua, mutta tyypillisesti ne ovat mukana.
+    home_team: Optional[str] = None
+    away_team: Optional[str] = None
+    league: Optional[str] = None
+    start_time: Optional[datetime] = None
+
+
+class ArbLeg(BaseModel):
+    book: str
+    odds: float
+
+
+class ArbResult(BaseModel):
+    match_id: int
+    market_code: str
+    roi_fraction: float
+    legs: Dict[str, ArbLeg]
+    stake_split: Dict[str, float]
+    found_at: datetime
+
+    # Lisätään ottelun tiedot arbitraasi-vastaukseen.
+    home_team: Optional[str] = None
+    away_team: Optional[str] = None
+    league: Optional[str] = None
+    start_time: Optional[datetime] = None
+
+
+class MatchItem(BaseModel):
+    match_id: int
+    sport: str
+    league: str
+    home_team: str
+    away_team: str
+    start_time: datetime
+
+
+class OddsItem(BaseModel):
+    bookmaker_name: str
+    market_code: str
+    outcome: str
+    price: float
+    line: Optional[float]
+    implied_probability: Optional[float]
+    updated_at: datetime
+
+
+class FairItem(BaseModel):
+    market_code: str
+    outcome: str
+    fair_probability: float
+    no_vig_odds: float
+    margin: float
+    reference_bookmaker_name: str
+    collected_at: datetime
+
+
+# ---------------------------------------------------------------------------
+# API-avain (header: X-API-Key)
+# ---------------------------------------------------------------------------
+
+API_KEY: Optional[str] = os.getenv("API_KEY")
+
+
+async def verify_api_key(x_api_key: Optional[str] = Header(None)) -> None:
+    """Varmista, että X-API-Key vastaa ODDSBANK_API_KEY:tä (jos asetettu).
+
+    Jos ODDSBANK_API_KEY ei ole asetettu, autentikointi on pois päältä.
+    """
+    if not API_KEY:
+        # Ei API-avainta ympäristössä → ei autentikointia.
+        return
+    if x_api_key != API_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid API key",
+        )
+
+
+# ---------------------------------------------------------------------------
+# Yksinkertainen rate limiting per IP + endpoint
+# ---------------------------------------------------------------------------
+
+RATE_LIMIT_STATE: Dict[str, Dict[str, List[float]]] = {}
+RATE_WINDOW_SECONDS = 60.0  # 1 minuutin liukuva ikkuna
+
+
+def enforce_rate_limit(
+    bucket_name: str,
+    request: Request,
+    max_per_minute: int,
+) -> None:
+    """Rajoita pyyntöjä per IP per bucket.
+
+    Tämä on yksinkertainen prosessikohtainen toteutus, joka riittää
+    kehitysvaiheeseen / pieneen tuotantoon.
+    """
+    client_ip = request.client.host if request.client else "unknown"
+    now = time.time()
+
+    bucket = RATE_LIMIT_STATE.setdefault(bucket_name, {}).setdefault(client_ip, [])
+    # Putsaa vanhat aikaleimat pois ikkunan ulkopuolelta
+    bucket = [t for t in bucket if now - t < RATE_WINDOW_SECONDS]
+
+    if len(bucket) >= max_per_minute:
+        # Liian monta pyyntöä minuutissa
+        RATE_LIMIT_STATE[bucket_name][client_ip] = bucket
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many requests, slow down.",
+        )
+
+    bucket.append(now)
+    RATE_LIMIT_STATE[bucket_name][client_ip] = bucket
+
+
+# ---------------------------------------------------------------------------
+# FastAPI-sovellus ja CORS
+# ---------------------------------------------------------------------------
+
+app = FastAPI(
+    title="Odds Analysis API",
+    description=(
+        "API for retrieving match, odds, fair probability, expected value and "
+        "arbitrage data from the Oddsbank Postgres database. This service "
+        "sits on top of the existing data collection and analysis pipeline "
+        "and exposes the results over HTTP in JSON format."
+    ),
+    version="2.0.0",
+)
+
+cors_origins = os.getenv("ODDSBANK_CORS_ORIGINS", "*")
+if cors_origins.strip() == "*":
+    origins: List[str] = ["*"]
+else:
+    origins = [o.strip() for o in cors_origins.split(",") if o.strip()]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# ---------------------------------------------------------------------------
+# Endpoints
+# ---------------------------------------------------------------------------
+
+
+@app.get("/", tags=["health"])
+async def root() -> Dict[str, str]:
+    """Yksinkertainen health check."""
+    return {"message": "Odds Analysis API is running"}
+
+
+@app.get(
+    "/api/ev/top",
+    tags=["ev"],
+    response_model=List[EvResult],
+)
+async def get_top_ev(
+    request: Request,
+    limit: int = Query(20, gt=0, le=100),
+    offset: int = Query(0, ge=0),
+    hours: Optional[int] = Query(None, ge=0, le=168),
+    _: None = Depends(verify_api_key),
+) -> List[EvResult]:
+    """
+    Palauta korkeimmat EV-vedot, järjestettynä EV:n mukaan.
+
+    limit  – montako riviä palautetaan (1–100)
+    offset – sivutus (esim. 0, 20, 40, ...)
+    hours  – valinnainen aikaraja tuleville otteluille. Jos asetettu,
+              palauttaa vain ottelut joiden start_time on välillä [now, now+hours].
+              Jos ei asetettu, palauttaa kaikki tulevat ottelut (start_time >= now).
+    """
+    enforce_rate_limit("ev", request, max_per_minute=120)
+
+    # Rakennetaan kysely dynaamisesti. EV-vedot liittyvät aina otteluihin, joten
+    # liitetään matches-tauluun, jotta voidaan suodattaa vain tulevat ottelut.
+    params: List[Any] = []
+    sql = """
+        SELECT
+            ev.match_id,
+            ev.bookmaker_name,
+            ev.market_code,
+            ev.outcome,
+            ev.odds,
+            ev.ev_value AS ev_fraction,
+            ev.fair_probability,
+            ev.reference_bookmaker_name,
+            ev.collected_at,
+            m.home_team,
+            m.away_team,
+            m.league,
+            m.start_time
+        FROM ev_results ev
+        JOIN matches m ON m.id = ev.match_id
+        WHERE m.start_time >= NOW()
+          -- Only include rows from the most recent run.  A small window
+          -- (2 seconds) is used to capture all rows inserted in the
+          -- latest batch.
+          AND ev.collected_at >= (
+              SELECT MAX(collected_at) FROM ev_results
+          ) - INTERVAL '2 seconds'
+    """
+    if hours is not None:
+        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    # Order by EV value descending and apply pagination
+    sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
+    params.extend([limit, offset])
+    rows = fetch_query(sql, tuple(params))
+    return rows  # FastAPI + Pydantic konvertoi EvResult-malleiksi
+
+
+@app.get(
+    "/api/arbs/latest",
+    tags=["arbitrage"],
+    response_model=List[ArbResult],
+)
+async def get_latest_arbs(
+    request: Request,
+    limit: int = Query(20, gt=0, le=100),
+    offset: int = Query(0, ge=0),
+    hours: Optional[int] = Query(None, ge=0, le=168),
+    _: None = Depends(verify_api_key),
+) -> List[ArbResult]:
+    """
+    Palauta uusimmat arbitraasit, järjestettynä found_at DESC.
+
+    limit  – montako riviä palautetaan (1–100)
+    offset – sivutus (esim. 0, 20, 40, ...)
+    hours  – valinnainen aikaraja tuleville otteluille. Jos asetettu,
+              palauttaa vain arbitraasit joiden ottelut ovat välillä [now, now+hours].
+              Jos ei asetettu, palauttaa kaikki tulevat ottelut (start_time >= now).
+    """
+    enforce_rate_limit("arbs", request, max_per_minute=120)
+
+    params: List[Any] = []
+    sql = """
+        SELECT
+            arb.match_id,
+            arb.market_code,
+            arb.roi AS roi_fraction,
+            arb.legs,
+            arb.stake_split,
+            arb.found_at,
+            m.home_team,
+            m.away_team,
+            m.league,
+            m.start_time
+        FROM arb_results arb
+        JOIN matches m ON m.id = arb.match_id
+        WHERE m.start_time >= NOW()
+          -- Only include rows from the most recent run.  A small window
+          -- (2 seconds) is used to capture all rows inserted in the
+          -- latest batch.
+          AND arb.found_at >= (
+              SELECT MAX(found_at) FROM arb_results
+          ) - INTERVAL '2 seconds'
+    """
+    if hours is not None:
+        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
+    params.extend([limit, offset])
+    rows = fetch_query(sql, tuple(params))
+
+    # legs ja stake_split voivat olla JSON stringejä → yritetään parse
+    for row in rows:
+        for field in ("legs", "stake_split"):
+            val = row.get(field)
+            if isinstance(val, str):
+                try:
+                    row[field] = json.loads(val)
+                except Exception:
+                    # Jos parse kaatuu, jätetään alkuperäinen arvo
+                    pass
+
+    return rows
+
+
+@app.get(
+    "/api/matches/upcoming",
+    tags=["matches"],
+    response_model=List[MatchItem],
+)
+async def get_upcoming_matches(
+    request: Request,
+    hours: int = Query(168, gt=0, le=168),
+    _: None = Depends(verify_api_key),
+) -> List[MatchItem]:
+    """Lista tulevista otteluista seuraavan N tunnin sisällä."""
+    enforce_rate_limit("matches", request, max_per_minute=60)
+
+    sql = """
+        SELECT
+            id AS match_id,
+            sport,
+            league,
+            home_team,
+            away_team,
+            start_time
+        FROM matches
+        WHERE start_time >= NOW()
+          AND start_time < NOW() + (%s || ' hours')::interval
+        ORDER BY start_time;
+    """
+    rows = fetch_query(sql, (hours,))
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# Additional endpoint: return all upcoming matches without a time window
+# ---------------------------------------------------------------------------
+
+@app.get(
+    "/api/matches/upcoming/all",
+    tags=["matches"],
+    response_model=List[MatchItem],
+)
+async def get_all_upcoming_matches(
+    request: Request,
+    _: None = Depends(verify_api_key),
+) -> List[MatchItem]:
+    """Lista kaikista tulevista otteluista (start_time >= NOW()).
+
+    Tämä reitti palauttaa kaikki tulevat ottelut ilman aikarajaa. Se on
+    hyödyllinen silloin, kun frontend haluaa näyttää koko listan ilman
+    parametrin hours rajausta.
+    """
+    # Käytetään erillistä rate-limiting bucketia tälle reitille. Yksi pyyntö
+    # minuutissa per IP riittää, koska data ei muutu usein.
+    enforce_rate_limit("matches_all", request, max_per_minute=60)
+    sql = """
+        SELECT
+            id AS match_id,
+            sport,
+            league,
+            home_team,
+            away_team,
+            start_time
+        FROM matches
+        WHERE start_time >= NOW()
+        ORDER BY start_time;
+    """
+    rows = fetch_query(sql)
+    return rows
+
+
+@app.get(
+    "/api/odds/{match_id}",
+    tags=["odds"],
+    response_model=List[OddsItem],
+)
+async def get_current_odds(
+    match_id: int,
+    request: Request,
+    _: None = Depends(verify_api_key),
+) -> List[OddsItem]:
+    """Hae nykyiset kertoimet yhdelle ottelulle kaikista markkinoista."""
+    enforce_rate_limit("odds", request, max_per_minute=120)
+
+    sql = """
+        SELECT
+            bookmaker_name,
+            market_code,
+            outcome,
+            price,
+            line,
+            implied_probability,
+            updated_at
+        FROM current_odds
+        WHERE match_id = %s
+        ORDER BY market_code, outcome;
+    """
+    rows = fetch_query(sql, (match_id,))
+    return rows
+
+
+@app.get(
+    "/api/fair/{match_id}",
+    tags=["fair probabilities"],
+    response_model=List[FairItem],
+)
+async def get_latest_fair_probabilities(
+    match_id: int,
+    request: Request,
+    _: None = Depends(verify_api_key),
+) -> List[FairItem]:
+    """Palauta viimeisimmät fair probs / no-vig odds / margin per markkina + outcome."""
+    enforce_rate_limit("fair", request, max_per_minute=120)
+
+    sql = """
+        SELECT DISTINCT ON (market_code, outcome)
+            market_code,
+            outcome,
+            fair_probability,
+            no_vig_odds,
+            margin,
+            reference_bookmaker_name,
+            collected_at
+        FROM fair_probs
+        WHERE match_id = %s
+        ORDER BY market_code, outcome, collected_at DESC;
+    """
+    rows = fetch_query(sql, (match_id,))
+    return rows
+
+# ---------------------------------------------------------------------------
+# Additional endpoint: filterable upcoming matches by league and hours
+# ---------------------------------------------------------------------------
+
+@app.get(
+    "/api/matches",
+    tags=["matches"],
+    response_model=List[MatchItem],
+)
+async def get_filtered_matches(
+    request: Request,
+    league: Optional[str] = Query(None, description="Rajaa tulokset tiettyyn liigaan"),
+    hours: Optional[int] = Query(None, gt=0, le=168, description="Aikaraja tuleville otteluille"),
+    _: None = Depends(verify_api_key),
+) -> List[MatchItem]:
+    """
+    Palauta tulevat ottelut suodatettuna liigan ja/tai aikarajan perusteella.
+
+    Jos league-parametri on asetettu, palauttaa vain kyseisen liigan ottelut.
+    Jos hours-parametri on asetettu, palauttaa vain ottelut jotka alkavat
+    seuraavan `hours` tunnin sisällä. Molempia parametreja voi käyttää yhtä
+    aikaa. Jos parametria ei ole asetettu, palauttaa kaikki tulevat ottelut
+    (start_time >= now()).
+    """
+    # Käytetään erillistä bucketia rate limiting -logiikkaa varten
+    enforce_rate_limit("matches_filtered", request, max_per_minute=60)
+
+    sql = """
+        SELECT
+            id AS match_id,
+            sport,
+            league,
+            home_team,
+            away_team,
+            start_time
+        FROM matches
+        WHERE start_time >= NOW()
+    """
+    params: List[Any] = []
+    # Lisätään aikaraja jos annettu
+    if hours is not None:
+        sql += " AND start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    # Lisätään liigan suodatus jos annettu
+    if league:
+        sql += " AND league = %s"
+        params.append(league)
+    sql += " ORDER BY start_time;"
+    rows = fetch_query(sql, tuple(params))
+    return rows
