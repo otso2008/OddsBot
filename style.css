@@ -1,12 +1,13 @@
 :root{
-  --bg:#ffffff;
-  --fg:#000000;
-  --muted:rgba(0,0,0,.65);
-  --border:rgba(0,0,0,.14);
-  --border-strong:rgba(0,0,0,.22);
+  /* Colors tuned for a more modern, airy look */
+  --bg:#f7f8fa;
+  --fg:#111111;
+  --muted:rgba(0,0,0,.64);
+  --border:rgba(0,0,0,.12);
+  --border-strong:rgba(0,0,0,.20);
   --card:#ffffff;
-  --shadow:0 8px 24px rgba(0,0,0,.08);
-  --radius:14px;
+  --shadow:0 6px 16px rgba(0,0,0,.06);
+  --radius:12px;
 }
 
 *{ box-sizing:border-box; }
@@ -48,7 +49,18 @@ body{
 .brand{
   font-weight: 800;
   letter-spacing: -0.02em;
-  font-size: 16px;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+/* Brand sub-line styling */
+.brand-sub{
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .tabs{
@@ -184,6 +196,71 @@ body{
   padding: 6px 10px;
   font-size: 13px;
   color: rgba(0,0,0,.78);
+}
+
+/* Navigation styling */
+.nav{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.nav-button{
+  appearance: none;
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 650;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .1s ease, color .1s ease, border-color .1s ease;
+}
+.nav-button:hover{
+  background: #f2f2f2;
+}
+.nav-button:active{
+  transform: translateY(1px);
+}
+.nav-button.active{
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* H2H odds table styling */
+.odds-h2h-table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.odds-h2h-table th, .odds-h2h-table td{
+  border-bottom: 1px solid var(--border);
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: top;
+}
+.odds-h2h-table th:first-child,
+.odds-h2h-table td:first-child{
+  text-align: left;
+}
+.no-vig-row{
+  background: #f6f6f6;
+  font-weight: 700;
+}
+.no-vig-cell{
+  color: rgba(0,0,0,.8);
+  font-weight: 600;
+}
+.odds-better{
+  color: #0a8800;
+  font-weight: 700;
+}
+.odds-worse{
+  color: #d00000;
+  font-weight: 700;
 }
 
 /* mobile */
