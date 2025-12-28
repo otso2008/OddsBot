@@ -133,14 +133,16 @@ body{
 
 .card h3{
   margin:0 0 6px;
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing:-0.01em;
+  font-family: var(--font-family);
 }
 
 .card p{
   margin: 6px 0;
   color: var(--muted);
   font-size: 14px;
+  font-family: var(--font-family);
 }
 
 .match-card{
@@ -197,6 +199,7 @@ body{
   padding: 6px 10px;
   font-size: 13px;
   color: rgba(0,0,0,.78);
+  font-family: var(--font-family);
 }
 
 /* --- Custom H2H odds table styling --- */
@@ -256,6 +259,7 @@ body{
   line-height: 1;
   cursor: pointer;
   transition: background .1s ease, color .1s ease, border-color .1s ease;
+  font-family: var(--font-family);
 }
 .nav-button:hover{
   background: #f2f2f2;
@@ -375,16 +379,27 @@ body{
 }
 
 /* Match card enhancements on the start page */
+/* Make match cards larger and use the same font as odds table */
 .match-card{
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  min-height: 80px;
+  font-family: var(--font-family);
+}
+.match-card h3{
+  font-size: 18px;
+  margin: 0 0 4px;
+  font-family: var(--font-family);
+}
+.match-card p{
+  font-family: var(--font-family);
 }
 .match-card img{
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
 }
 
