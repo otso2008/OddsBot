@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   // --- API KEY (X-API-Key header) ---
   const API_KEY = "Goala411";
@@ -6,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Element references ---
   const matchesTitle = document.getElementById('matches-title');
-  const matchesGrid = document.getElementById('matches-grid');
+  const matchesList = document.getElementById('matches-list');
   const matchHeading = document.getElementById('match-heading');
   const matchMeta = document.getElementById('match-meta');
   const oddsContainer = document.getElementById('odds-container');
@@ -54,17 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadMatches(league, title) {
     showView('matches');
     matchesTitle.textContent = title || 'Tulevat ottelut';
-    matchesGrid.innerHTML = '<div class="card"><p>Ladataan otteluita...</p></div>';
+    matchesList.innerHTML = '<div class="card"><p>Ladataan otteluita...</p></div>';
 
     try {
       const data = await fetchJson(`/api/matches?league=${encodeURIComponent(league)}`);
-
       if (!data || data.length === 0) {
-        matchesGrid.innerHTML = '<div class="card"><p>Ei otteluita löytynyt.</p></div>';
+        matchesList.innerHTML = '<div class="card"><p>Ei otteluita löytynyt.</p></div>';
         return;
       }
-
-      matchesGrid.innerHTML = '';
+      matchesList.innerHTML = '';
       data.forEach((match) => {
         const card = document.createElement('div');
         card.className = 'card match-card';
@@ -75,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', () => {
           loadMatchDetails(match.match_id, match.home_team, match.away_team, match.start_time);
         });
-        matchesGrid.appendChild(card);
+        matchesList.appendChild(card);
       });
     } catch (error) {
-      matchesGrid.innerHTML = `<div class="card"><p>Virhe otteluiden haussa: ${error.message}</p></div>`;
+      matchesList.innerHTML = `<div class="card"><p>Virhe otteluiden haussa: ${error.message}</p></div>`;
     }
   }
 
@@ -95,36 +92,26 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchJson(`/api/odds/${matchId}`),
         fetchJson(`/api/fair/${matchId}`),
       ]);
-
-      // Group odds by market_code
       const markets = {};
       (odds || []).forEach((row) => {
         (markets[row.market_code] ||= []).push(row);
       });
-
       oddsContainer.innerHTML = '';
       const marketCodes = Object.keys(markets);
-
       if (marketCodes.length === 0) {
         oddsContainer.innerHTML = '<div class="card"><p>Ei kertoimia saatavilla.</p></div>';
       } else {
         marketCodes.forEach((marketCode) => {
           const card = document.createElement('div');
           card.className = 'card market-card';
-
-          // Custom rendering for H2H market: bookmaker rows and outcomes columns with no-vig reference
           if (marketCode === 'h2h') {
             let html = `<h3>${marketCode}</h3>`;
-
-            // Build no-vig lookup from fair data
             const noVig = {};
             (fair || []).forEach((item) => {
               if (item.market_code === 'h2h') {
                 noVig[item.outcome] = item.no_vig_odds;
               }
             });
-
-            // Determine unique outcomes and bookmaker mapping
             const outcomesSet = new Set();
             const bookmakerMap = {};
             markets[marketCode].forEach((row) => {
@@ -134,22 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
               }
               bookmakerMap[row.bookmaker_name][row.outcome] = row.price;
             });
-
-            // Define a preferred order for common outcomes
             const preferredOrder = ['home', 'draw', 'away'];
             const outcomes = preferredOrder.filter((o) => outcomesSet.has(o)).concat(
               Array.from(outcomesSet).filter((o) => !preferredOrder.includes(o))
             );
-
-            // Build table header
             html += '<table class="table odds-h2h-table">';
             html += '<thead><tr><th>Bookkeri</th>';
             outcomes.forEach((outc) => {
               html += `<th>${outc}</th>`;
             });
             html += '</tr></thead><tbody>';
-
-            // No-vig reference row
             if (Object.keys(noVig).length > 0) {
               html += '<tr class="no-vig-row"><th>No-vig</th>';
               outcomes.forEach((outc) => {
@@ -159,8 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
               });
               html += '</tr>';
             }
-
-            // Bookmaker rows
             Object.keys(bookmakerMap).forEach((bookName) => {
               html += `<tr><th>${bookName}</th>`;
               outcomes.forEach((outc) => {
@@ -172,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   const refVal = noVig[outc];
                   let cls = '';
                   if (refVal != null) {
-                    // Compare offered odds to no-vig; higher odds mean better value
                     cls = numPrice > refVal ? 'odds-better' : (numPrice < refVal ? 'odds-worse' : '');
                   }
                   html += `<td class="${cls}">${numPrice.toFixed(2)}</td>`;
@@ -180,13 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
               });
               html += '</tr>';
             });
-
             html += '</tbody></table>';
             card.innerHTML = html;
             oddsContainer.appendChild(card);
-            return; // skip default rendering for h2h
+            return;
           }
-
           // Default rendering for other markets
           let html = `<h3>${marketCode}</h3>`;
           html += `
@@ -211,8 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
           oddsContainer.appendChild(card);
         });
       }
-
-      // Render fair probabilities (no-vig and margin)
+      // Render fair probabilities
       if (fair && fair.length > 0) {
         const heading = document.createElement('div');
         heading.className = 'card';
@@ -337,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetButton) targetButton.classList.add('active');
   }
 
-  // --- Event listeners ---
+  // --- Event listeners for nav buttons ---
   document.querySelectorAll('button[data-league]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const league = btn.getAttribute('data-league');
