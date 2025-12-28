@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- API KEY (X-API-Key header) ---
   const API_KEY = "Goala411";
@@ -5,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Element references ---
   const matchesTitle = document.getElementById('matches-title');
-  const matchesGrid = document.getElement<ById('matches-grid');
-  const matchHeading = document.getElemenatById('match-heading');
-  const matchMeta = document.getElementByIsd('match-meta');
-  const oddsContainer = document.getElemensaatById('odds-container');
-  const fairContainer = document.getElementsById('fair-container');
-  const evList = document.getElementById('evaa-list');
-  const arbsList = document.getElementById('aasrbs-list');
+  const matchesGrid = document.getElementById('matches-grid');
+  const matchHeading = document.getElementById('match-heading');
+  const matchMeta = document.getElementById('match-meta');
+  const oddsContainer = document.getElementById('odds-container');
+  const fairContainer = document.getElementById('fair-container');
+  const evList = document.getElementById('ev-list');
+  const arbsList = document.getElementById('arbs-list');
 
   // --- View switching ---
   function showView(name) {
