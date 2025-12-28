@@ -1,21 +1,28 @@
-:root{
-  /* Base colours restored closer to the original design */
+:root {
+  /* Base colours inspired by original design */
   --bg: #ffffff;
   --fg: #111111;
-  --muted: rgba(0,0,0,.6);
-  --border: rgba(0,0,0,.12);
-  --border-strong: rgba(0,0,0,.25);
+  --muted: rgba(0, 0, 0, 0.6);
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.25);
   --card: #ffffff;
-  --shadow: 0 2px 4px rgba(0,0,0,.06);
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   --radius: 8px;
+  /* Unified font used throughout the app */
   --font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
+* {
+  box-sizing: border-box;
+}
 
-body{
-  margin:0;
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-family);
@@ -23,383 +30,273 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-.container{
+/* Container constrains content width */
+.container {
   max-width: 980px;
   margin: 0 auto;
   padding: 18px 14px 40px;
 }
 
-.topbar{
+/* Sticky top bar with brand and navigation */
+.topbar {
   position: sticky;
-  top:0;
+  top: 0;
   z-index: 10;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
 
-.topbar-inner{
+.topbar-inner {
   max-width: 980px;
   margin: 0 auto;
-  padding: 12px 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
   justify-content: space-between;
+  padding: 12px 14px;
+  gap: 12px;
 }
 
-.brand{
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  font-size: 18px;
+/* Brand title and tagline */
+.brand {
   display: flex;
   flex-direction: column;
   line-height: 1.1;
 }
 
-/* Brand sub-line styling */
-.brand-sub{
+.brand-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 20px;
+}
+
+.brand-tagline {
   font-size: 12px;
   color: var(--muted);
   font-weight: 500;
-  margin-top: 2px;
 }
 
-.tabs{
-  display:flex;
-  gap:10px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.tab{
-  appearance:none;
-  border: 1px solid var(--border-strong);
-  background: #fff;
-  color:#000;
-  padding: 10px 12px;
-  border-radius: 999px; /* pyöristetyt reunat */
-  font-weight: 650;
-  font-size: 14px;
-  line-height: 1;
-  cursor:pointer;
-  transition: transform .06s ease, background .12s ease, border-color .12s ease;
-}
-
-.tab:hover{
-  background: #f6f6f6;
-}
-
-.tab:active{
-  transform: translateY(1px);
-}
-
-.tab.active{
-  background:#000;
-  color:#fff;
-  border-color:#000;
-}
-
-.back-button{
-  border-radius: 999px;
-}
-
-.view.hidden{ display:none; }
-
-.page-title{
-  margin: 12px 0 12px;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-}
-
-.muted{
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.list{
-  display:flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.card{
-  border: 1px solid var(--border);
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 14px;
-  box-shadow: var(--shadow);
-}
-
-.card h3{
-  margin:0 0 6px;
-  font-size: 17px;
-  letter-spacing:-0.01em;
-  font-family: var(--font-family);
-}
-
-.card p{
-  margin: 6px 0;
-  color: var(--muted);
-  font-size: 14px;
-  font-family: var(--font-family);
-}
-
-.match-card{
-  cursor:pointer;
-}
-
-.match-card:hover{
-  border-color: rgba(0,0,0,.28);
-}
-
-.stack{
-  display:flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.row{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  margin: 6px 0 10px;
-}
-
-.table{
-  width:100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.table th, .table td{
-  border-bottom: 1px solid var(--border);
-  text-align:left;
-  padding: 10px 8px;
-  vertical-align: top;
-}
-
-.table th{
-  color: rgba(0,0,0,.75);
-  font-weight: 700;
-}
-
-.kv{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.kv .pill{
-  border:1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 13px;
-  color: rgba(0,0,0,.78);
-  font-family: var(--font-family);
-}
-
-/* --- Custom H2H odds table styling --- */
-.odds-h2h-table{
-  width:100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 14px;
-}
-.odds-h2h-table th, .odds-h2h-table td{
-  border-bottom: 1px solid var(--border);
-  padding: 10px 8px;
-  text-align: center;
-  vertical-align: top;
-}
-.odds-h2h-table th:first-child,
-.odds-h2h-table td:first-child{
-  text-align: left;
-}
-.no-vig-row{
-  background: #f6f6f6;
-  font-weight: 700;
-}
-.no-vig-cell{
-  font-weight: 700;
-}
-.odds-better{
-  color: green;
-}
-.odds-worse{
-  color: red;
-}
-
-/* --- Home page (match list) enhancements --- */
-/* Use rounded corners consistently and enlarge cards slightly */
-.match-card{
-  border-radius: var(--radius);
-  padding: 16px;
-  /* optional box-shadow or background adjustments could be added here if desired */
-}
-
-/* Navigation styling */
-.nav{
+/* Navigation bar */
+.nav {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
-.nav-button{
+
+.nav-button {
   appearance: none;
   border: 1px solid var(--border-strong);
   background: #fff;
   color: #000;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: 6px;
   font-weight: 650;
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
-  transition: background .1s ease, color .1s ease, border-color .1s ease;
-  font-family: var(--font-family);
+  transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
 }
-.nav-button:hover{
+
+.nav-button:hover {
   background: #f2f2f2;
 }
-.nav-button:active{
+
+.nav-button:active {
   transform: translateY(1px);
 }
-.nav-button.active{
+
+.nav-button.active {
   background: #000;
   color: #fff;
   border-color: #000;
 }
 
-/* H2H odds table styling */
-.odds-h2h-table{
+/* Back button style matches navigation */
+.back-button {
+  appearance: none;
+  border: 1px solid var(--border-strong);
+  background: #fff;
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+}
+
+.back-button:hover {
+  background: #f2f2f2;
+}
+
+.back-button:active {
+  transform: translateY(1px);
+}
+
+/* Hide inactive views */
+.view.hidden {
+  display: none;
+}
+
+/* Page headings */
+h1 {
+  margin: 12px 0 12px;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  margin: 12px 0 6px;
+}
+
+/* Utility classes */
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.list,
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Grid layout for the matches list on the front page */
+.match-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Card component */
+.card {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.card p {
+  margin: 6px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Match cards are larger and clickable */
+.match-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 120px;
+  gap: 4px;
+}
+
+.match-card:hover {
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+/* Generic table styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  padding: 10px 8px;
+  vertical-align: top;
+}
+
+.table th {
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 700;
+}
+
+/* Custom H2H odds table styling */
+.odds-h2h-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
   font-size: 14px;
 }
-.odds-h2h-table th, .odds-h2h-table td{
+
+.odds-h2h-table th,
+.odds-h2h-table td {
   border-bottom: 1px solid var(--border);
   padding: 10px 8px;
   text-align: center;
   vertical-align: top;
 }
+
 .odds-h2h-table th:first-child,
-.odds-h2h-table td:first-child{
+.odds-h2h-table td:first-child {
   text-align: left;
 }
-.no-vig-row{
+
+.no-vig-row {
   background: #f6f6f6;
   font-weight: 700;
 }
-.no-vig-cell{
-  color: rgba(0,0,0,.8);
+
+.no-vig-cell {
   font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
 }
-.odds-better{
+
+.odds-better {
   color: #0a8800;
   font-weight: 700;
 }
-.odds-worse{
+
+.odds-worse {
   color: #d00000;
   font-weight: 700;
 }
 
-/* mobile */
-@media (max-width: 640px){
-  .topbar-inner{
+/* Key-value pill container used in EV and Arbs cards */
+.kv {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.kv .pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.78);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .topbar-inner {
     align-items: flex-start;
     flex-direction: column;
     gap: 10px;
   }
-  .tabs{
+  .nav {
     justify-content: flex-start;
   }
-  .tab{
-    padding: 12px 12px;
-    font-size: 14px;
-  }
-  .page-title{
+  h1 {
     font-size: 20px;
   }
-  .table th, .table td{
+  .table th,
+  .table td {
     padding: 10px 6px;
     font-size: 13px;
   }
 }
-
-/* ---------------------------------------------
- * Overrides to restore original look and adjust
- * only the home and odds list appearance.
- * These styles are appended at the end to
- * override earlier definitions without
- * rewriting them in-place.
- */
-
-/* Reduce padding and adjust spacing inside topbar */
-.topbar-inner{
-  padding: 10px 14px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-/* Brand container shows title and tagline inline */
-.brand{
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.brand-title{
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-}
-
-.brand-tagline{
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: 500;
-}
-
-/* Navigation buttons: rectangular with slight rounding */
-.nav-button{
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 14px;
-}
-.nav-button.active{
-  background: var(--fg);
-  color: #ffffff;
-  border-color: var(--fg);
-}
-
-/* Match card enhancements on the start page */
-/* Make match cards larger and use the same font as odds table */
-.match-card{
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 80px;
-  font-family: var(--font-family);
-}
-.match-card h3{
-  font-size: 18px;
-  margin: 0 0 4px;
-  font-family: var(--font-family);
-}
-.match-card p{
-  font-family: var(--font-family);
-}
-.match-card img{
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
-
