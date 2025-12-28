@@ -25,7 +25,7 @@ def calculate_ev(
         except Exception:
             continue
 
-        if start_dt - now > timedelta(hours=48):
+        if start_dt - now > timedelta(hours=168):
             continue
 
         markets = match.get("markets", {})
