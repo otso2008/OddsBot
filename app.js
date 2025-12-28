@@ -114,6 +114,81 @@ document.addEventListener('DOMContentLoaded', () => {
           const card = document.createElement('div');
           card.className = 'card market-card';
 
+          // Custom rendering for H2H market to show bookmaker rows and outcomes columns with no-vig reference
+          if (marketCode === 'h2h') {
+            let html = `<h3>${marketCode}</h3>`;
+
+            // Build no-vig lookup from fair data
+            const noVig = {};
+            (fair || []).forEach((item) => {
+              if (item.market_code === 'h2h') {
+                noVig[item.outcome] = item.no_vig_odds;
+              }
+            });
+
+            // Determine unique outcomes and bookmakers
+            const outcomesSet = new Set();
+            const bookmakerMap = {};
+            markets[marketCode].forEach((row) => {
+              outcomesSet.add(row.outcome);
+              if (!bookmakerMap[row.bookmaker_name]) {
+                bookmakerMap[row.bookmaker_name] = {};
+              }
+              bookmakerMap[row.bookmaker_name][row.outcome] = row.price;
+            });
+            // Define a preferred order for common outcomes
+            const preferredOrder = ['home', 'draw', 'away'];
+            const outcomes = preferredOrder.filter((o) => outcomesSet.has(o)).concat(
+              Array.from(outcomesSet).filter((o) => !preferredOrder.includes(o))
+            );
+
+            // Build table header
+            html += '<table class="table odds-h2h-table">';
+            html += '<thead><tr><th>Bookkeri</th>';
+            outcomes.forEach((outc) => {
+              html += `<th>${outc}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            // No-vig reference row
+            if (Object.keys(noVig).length > 0) {
+              html += '<tr class="no-vig-row"><th>No-vig</th>';
+              outcomes.forEach((outc) => {
+                const val = noVig[outc];
+                const valStr = typeof val === 'number' ? val.toFixed(2) : (val || '');
+                html += `<td class="no-vig-cell">${valStr}</td>`;
+              });
+              html += '</tr>';
+            }
+
+            // Bookmaker rows
+            Object.keys(bookmakerMap).forEach((bookName) => {
+              html += `<tr><th>${bookName}</th>`;
+              outcomes.forEach((outc) => {
+                const price = bookmakerMap[bookName][outc];
+                if (price == null) {
+                  html += '<td>-</td>';
+                } else {
+                  const numPrice = typeof price === 'number' ? price : parseFloat(price);
+                  const refVal = noVig[outc];
+                  let cls = '';
+                  if (refVal != null) {
+                    // Compare offered odds to no-vig; higher odds mean better value
+                    cls = numPrice > refVal ? 'odds-better' : (numPrice < refVal ? 'odds-worse' : '');
+                  }
+                  html += `<td class="${cls}">${numPrice.toFixed(2)}</td>`;
+                }
+              });
+              html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            card.innerHTML = html;
+            oddsContainer.appendChild(card);
+            return; // skip default rendering for h2h
+          }
+
+          // Default rendering for other markets
           let html = `<h3>${marketCode}</h3>`;
           html += `
             <table class="table">
