@@ -114,14 +114,27 @@ document.addEventListener('DOMContentLoaded', () => {
           const card = document.createElement('div');
           card.className = 'card market-card';
 
-          // Custom rendering for H2H market to show bookmaker rows and outcomes columns with no-vig reference
-          if (marketCode === 'h2h') {
+          // Determine if this market should be rendered as an H2H (Home/Draw/Away) table.
+          let isH2H = false;
+          const rows = markets[marketCode];
+          if (rows && rows.length > 0) {
+            const outcomesSet = new Set();
+            rows.forEach((row) => {
+              if (row.outcome) {
+                outcomesSet.add(String(row.outcome).toLowerCase());
+              }
+            });
+            const common = ['home', 'draw', 'away'];
+            isH2H = common.some((o) => outcomesSet.has(o));
+          }
+
+          if (marketCode === 'h2h' || isH2H) {
             let html = `<h3>${marketCode}</h3>`;
 
-            // Build no-vig lookup from fair data
+            // Build no-vig lookup from fair data for this market
             const noVig = {};
             (fair || []).forEach((item) => {
-              if (item.market_code === 'h2h') {
+              if (item.market_code === marketCode) {
                 noVig[item.outcome] = item.no_vig_odds;
               }
             });
@@ -129,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Determine unique outcomes and bookmakers
             const outcomesSet = new Set();
             const bookmakerMap = {};
-            markets[marketCode].forEach((row) => {
+            rows.forEach((row) => {
               outcomesSet.add(row.outcome);
               if (!bookmakerMap[row.bookmaker_name]) {
                 bookmakerMap[row.bookmaker_name] = {};
@@ -185,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             html += '</tbody></table>';
             card.innerHTML = html;
             oddsContainer.appendChild(card);
-            return; // skip default rendering for h2h
+            return; // skip default rendering for h2h-like markets
           }
 
           // Default rendering for other markets
