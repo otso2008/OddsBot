@@ -84,6 +84,19 @@ def compute_fair_and_no_vig(
             margin = inv_sum - 1.0
 
             # 4) BUILD RESULT ROWS
+            # Extract a numeric line value for markets that encode the line in the market_code
+            # e.g. "over_under_2_5" → 2.5. This allows EV/arb matching on markets with identical
+            # market codes but different lines. For non-total markets the line is left as None.
+            line_val: Optional[float] = None
+            if isinstance(market_code, str) and market_code.startswith("over_under_"):
+                raw = market_code[len("over_under_") :]
+                # replace underscores with decimal points to recover the original line value
+                # Some bookies provide quarter lines like 2_25 → 2.25
+                try:
+                    line_val = float(raw.replace("_", "."))
+                except Exception:
+                    line_val = None
+
             for outcome, fair_prob in fair_probs.items():
                 no_vig_odds = 1.0 / fair_prob
 
@@ -91,6 +104,7 @@ def compute_fair_and_no_vig(
                     {
                         "match": match_key,
                         "market_code": market_code,
+                        "line": line_val,
                         "outcome": outcome,
                         "reference_book": ref_book,
                         "fair_probability": fair_prob,
@@ -132,17 +146,19 @@ def main(argv: List[str]) -> None:
 
     fair_probs_output = []
     for item in fair_results:
-        fair_probs_output.append(
-            {
-                "match": item["match"],
-                "market_code": item["market_code"],
-                "outcome": item["outcome"],
-                "reference_book": item["reference_book"],
-                "fair_probability": item["fair_probability"],
-                "no_vig_odds": item["no_vig_odds"],
-                "margin": item["margin"],
-            }
-        )
+        row = {
+            "match": item["match"],
+            "market_code": item["market_code"],
+            "outcome": item["outcome"],
+            "reference_book": item["reference_book"],
+            "fair_probability": item["fair_probability"],
+            "no_vig_odds": item["no_vig_odds"],
+            "margin": item["margin"],
+        }
+        # include line if present; keeps backward compatibility because reading code can ignore unknown fields
+        if "line" in item and item["line"] is not None:
+            row["line"] = item["line"]
+        fair_probs_output.append(row)
 
     try:
         _write_json("fair_probs.json", fair_probs_output)
