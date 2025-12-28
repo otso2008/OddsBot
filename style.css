@@ -1,13 +1,14 @@
 :root{
-  /* Colors tuned for a more modern, airy look */
-  --bg:#f7f8fa;
-  --fg:#111111;
-  --muted:rgba(0,0,0,.64);
-  --border:rgba(0,0,0,.12);
-  --border-strong:rgba(0,0,0,.20);
-  --card:#ffffff;
-  --shadow:0 6px 16px rgba(0,0,0,.06);
-  --radius:12px;
+  /* Base colours restored closer to the original design */
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: rgba(0,0,0,.6);
+  --border: rgba(0,0,0,.12);
+  --border-strong: rgba(0,0,0,.25);
+  --card: #ffffff;
+  --shadow: 0 2px 4px rgba(0,0,0,.06);
+  --radius: 8px;
+  --font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 *{ box-sizing:border-box; }
@@ -15,11 +16,11 @@ html,body{ height:100%; }
 
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--fg);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container{
@@ -198,6 +199,45 @@ body{
   color: rgba(0,0,0,.78);
 }
 
+/* --- Custom H2H odds table styling --- */
+.odds-h2h-table{
+  width:100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.odds-h2h-table th, .odds-h2h-table td{
+  border-bottom: 1px solid var(--border);
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: top;
+}
+.odds-h2h-table th:first-child,
+.odds-h2h-table td:first-child{
+  text-align: left;
+}
+.no-vig-row{
+  background: #f6f6f6;
+  font-weight: 700;
+}
+.no-vig-cell{
+  font-weight: 700;
+}
+.odds-better{
+  color: green;
+}
+.odds-worse{
+  color: red;
+}
+
+/* --- Home page (match list) enhancements --- */
+/* Use rounded corners consistently and enlarge cards slightly */
+.match-card{
+  border-radius: var(--radius);
+  padding: 16px;
+  /* optional box-shadow or background adjustments could be added here if desired */
+}
+
 /* Navigation styling */
 .nav{
   display: flex;
@@ -285,3 +325,66 @@ body{
     font-size: 13px;
   }
 }
+
+/* ---------------------------------------------
+ * Overrides to restore original look and adjust
+ * only the home and odds list appearance.
+ * These styles are appended at the end to
+ * override earlier definitions without
+ * rewriting them in-place.
+ */
+
+/* Reduce padding and adjust spacing inside topbar */
+.topbar-inner{
+  padding: 10px 14px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Brand container shows title and tagline inline */
+.brand{
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brand-title{
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.brand-tagline{
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Navigation buttons: rectangular with slight rounding */
+.nav-button{
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+.nav-button.active{
+  background: var(--fg);
+  color: #ffffff;
+  border-color: var(--fg);
+}
+
+/* Match card enhancements on the start page */
+.match-card{
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.match-card img{
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
