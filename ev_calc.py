@@ -1,67 +1,212 @@
-from typing import List, Dict, Any
-from datetime import datetime, timedelta, timezone
 
-def calculate_ev(
-    all_matches: List[Dict[str, Any]],
-    no_vig_data: List[Dict[str, Any]],
-    min_ev_percent: float = 3
-) -> List[Dict[str, Any]]:
+# data_loader.py
 
-    # --- 0. Muodosta lookup no-vig datasta ---
-    no_vig_lookup = {}
-    for item in no_vig_data:
-        key = (item["match"], item["market_code"], item["outcome"])
-        no_vig_lookup[key] = item
+import os
+from typing import Dict, Any, List, Optional
+from datetime import datetime, timezone
+import requests
+from dotenv import load_dotenv
 
-    opportunities = []
+import os
+
+from fastapi_backend import API_KEY
+
+load_dotenv()  # lataa .env-tiedoston sisällön
+SPORT_KEYS: List[str] = [
+    "soccer_epl",
+    "soccer_spain_la_liga"
+]
+
+
+API_KEY: str = os.environ.get("ODDS_API_KEY", os.getenv('ODDS_API_KEY'))
+REGIONS: str = os.environ.get("Regions", "eu",)
+BASE_MARKETS: str = os.environ.get("BASE_MARKETS", "h2h,totals,spreads")
+
+# ---------- BAD BOOKMAKERS (POISTETAAN KOKONAAN) ----------
+BAD_BOOKMAKERS: List[str] = [
+    "1xBet", "BetUS", "MyBookie.ag", "Bovada", "BetOnline.ag",
+    "LowVig.ag", "GTbets", "SportsBetting.ag", "BetRivers",
+    "SportsBet", "Codere", "Codere (IT)", "PMU (FR)",
+    "Everygame", "Suprabets",
+]
+
+# ---------- UNIBET ALIAS LISTA ----------
+UNIBET_NAMES = [
+    "Unibet", "Unibet (SE)", "Unibet (NL)", "Unibet (FR)",
+    "Unibet (DK)", "Unibet (FI)", "Unibet (NO)"
+]
+
+PREFERRED_UNIBET = "Unibet (SE)"
+
+
+def is_bad_bookmaker(name: Optional[str]) -> bool:
+    if not name:
+        return False
+    return name.strip() in BAD_BOOKMAKERS
+
+
+# Muutetaan kaikki Unibet-versiot → "Unibet"
+def normalize_bookmaker_name(name: str) -> str:
+    name = name.strip()
+    if name in UNIBET_NAMES:
+        return "Unibet"
+    return name
+
+
+def fetch_events(sport: str):
+    url = f"https://api.the-odds-api.com/v4/sports/{sport}/events/?apiKey={API_KEY}"
+    r = requests.get(url, timeout=12)
+    r.raise_for_status()
+    return r.json()
+
+
+def fetch_base_odds(sport: str):
+    url = (
+        f"https://api.the-odds-api.com/v4/sports/{sport}/odds/"
+        f"?apiKey={API_KEY}&markets={BASE_MARKETS}&oddsFormat=decimal&regions={REGIONS}"
+    )
+    r = requests.get(url, timeout=12)
+    r.raise_for_status()
+    return r.json()
+
+
+def combine_data(events, odds):
+    out = {}
+    for b in odds:
+        out[b["id"]] = {"event": b, "extra": None}
+
+    for e in events:
+        if e["id"] not in out:
+            out[e["id"]] = {
+                "event": {
+                    "id": e["id"],
+                    "home_team": e.get("home_team"),
+                    "away_team": e.get("away_team"),
+                    "commence_time": e.get("commence_time"),
+                    "bookmakers": [],
+                },
+                "extra": None
+            }
+        out[e["id"]]["extra"] = e
+    return out
+
+
+def build_matches_for_sport(combined, sport):
+    matches = []
     now = datetime.now(timezone.utc)
 
-    for match in all_matches:
-        match_name = match["match"]
+    for _id, data in combined.items():
+        evt = data["event"]
+        home, away = evt.get("home_team"), evt.get("away_team")
+        if not home or not away:
+            continue
 
-        # --- 1. Ota mukaan vain seuraavan 12h alkavat ottelut ---
+        ts = evt.get("commence_time")
+        if not ts:
+            continue
+
         try:
-            start_dt = datetime.fromisoformat(match["start_time"].replace("Z", "+00:00"))
-        except Exception:
+            dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        except:
             continue
 
-        if start_dt - now > timedelta(hours=168):
+        if dt <= now:
             continue
 
-        markets = match.get("markets", {})
+        rec = {
+            "match": f"{home} vs {away}",
+            "home": home,
+            "away": away,
+            "start_time": dt.isoformat(),
+            "sport": sport,
+            "markets": {},
+        }
 
-        # --- 2. Käydään markkinat läpi ---
-        for market_code, market_data in markets.items():
+        for book in evt.get("bookmakers", []):
+            raw_name = (book.get("title") or book.get("key") or "").strip()
 
-            # --- 3. Käydään kaikki bookkerit ja niiden outcomes ---
-            for book, odds in market_data.items():
-                for outcome, offered_odds in odds.items():
+            # 1. OHITA BAD BOOKMAKERS JO TÄSSÄ VAIHEESSA
+            if is_bad_bookmaker(raw_name):
+                continue
 
-                    key = (match_name, market_code, outcome)
-                    if key not in no_vig_lookup:
-                        continue  # ei no-vig dataa
+            # 2. NORMALISOI UNIBET
+            name = normalize_bookmaker_name(raw_name)
 
-                    fair_prob = no_vig_lookup[key]["fair_probability"]
-                    ref_book = no_vig_lookup[key]["reference_book"]
-                    ref_odds = no_vig_lookup[key]["no_vig_odds"]
+            for m in book.get("markets", []):
+                key = m.get("key")
+                outcomes = m.get("outcomes", [])
+                if not outcomes:
+                    continue
 
-                    # --- 4. EV-laskenta ---
-                    ev_fraction = fair_prob * offered_odds - 1
-                    ev_pct = ev_fraction * 100
+                # ---------- H2H ----------
+                if key in ("h2h", "h2h_3_way"):
+                    om = {o["name"]: float(o["price"]) for o in outcomes if "price" in o}
 
-                    if ev_pct >= min_ev_percent:
-                        opportunities.append({
-                            "match": match_name,
-                            "sport": match["sport"],
-                            "start_time": match["start_time"],
-                            "market": market_code,
-                            "outcome": outcome,
-                            "reference_book": ref_book,
-                            "reference_odds": ref_odds,
-                            "probability": fair_prob,
-                            "book": book,
-                            "offered_odds": offered_odds,
-                            "ev_percent": ev_pct
-                        })
+                    if home in om and away in om:
+                        norm = {"home": om[home], "away": om[away]}
+                        if "Draw" in om:
+                            norm["draw"] = om["Draw"]
 
-    return opportunities
+                        rec["markets"].setdefault("h2h", {})[name] = norm
+
+                # ---------- TOTALS / SPREADS / ALTERNATES ----------
+                if key in (
+                    "totals", "alternate_totals", "team_totals",
+                    "alternate_team_totals", "spreads", "alternate_spreads"
+                ):
+                    for o in outcomes:
+                        p = o.get("price")
+                        pt = o.get("point")
+                        nm = o.get("name", "")
+                        # skip invalid entries
+                        if p is None or pt is None:
+                            continue
+
+                        # Normalize the point/line representation. Some APIs return string values like '2.50' or '2'
+                        # Convert to Decimal first to avoid floating precision issues, then back to string with underscores.
+                        try:
+                            from decimal import Decimal
+                            dec = Decimal(str(pt))
+                            # Normalize removes any exponent and trailing zeros
+                            dec_str = format(dec.normalize(), 'f')
+                        except Exception:
+                            dec_str = str(pt)
+
+                        mk = f"over_under_{dec_str.replace('.', '_')}"
+                        entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
+
+                        lname = nm.lower()
+                        if "over" in lname:
+                            entry["over"] = float(p)
+                        elif "under" in lname:
+                            entry["under"] = float(p)
+
+        # Poista vajaat totals-linjat
+        for k in list(rec["markets"].keys()):
+            if k.startswith("over_under_"):
+                for bn in list(rec["markets"][k].keys()):
+                    if "over" not in rec["markets"][k][bn] or "under" not in rec["markets"][k][bn]:
+                        del rec["markets"][k][bn]
+
+                if not rec["markets"][k]:
+                    del rec["markets"][k]
+
+        if rec["markets"]:
+            matches.append(rec)
+
+    return matches
+
+
+def build_all_matches_once():
+    all_matches = []
+
+    for sport in SPORT_KEYS:
+        try:
+            events = fetch_events(sport)
+            odds = fetch_base_odds(sport)
+            combined = combine_data(events, odds)
+            all_matches.extend(build_matches_for_sport(combined, sport))
+        except:
+            continue
+
+    return all_matches
