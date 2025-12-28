@@ -158,15 +158,27 @@ def build_matches_for_sport(combined, sport):
                         p = o.get("price")
                         pt = o.get("point")
                         nm = o.get("name", "")
+                        # skip invalid entries
                         if p is None or pt is None:
                             continue
 
-                        mk = f"over_under_{str(pt).replace('.', '_')}"
+                        # Normalize the point/line representation. Some APIs return string values like '2.50' or '2'
+                        # Convert to Decimal first to avoid floating precision issues, then back to string with underscores.
+                        try:
+                            from decimal import Decimal
+                            dec = Decimal(str(pt))
+                            # Normalize removes any exponent and trailing zeros
+                            dec_str = format(dec.normalize(), 'f')
+                        except Exception:
+                            dec_str = str(pt)
+
+                        mk = f"over_under_{dec_str.replace('.', '_')}"
                         entry = rec["markets"].setdefault(mk, {}).setdefault(name, {})
 
-                        if "over" in nm.lower():
+                        lname = nm.lower()
+                        if "over" in lname:
                             entry["over"] = float(p)
-                        elif "under" in nm.lower():
+                        elif "under" in lname:
                             entry["under"] = float(p)
 
         # Poista vajaat totals-linjat
