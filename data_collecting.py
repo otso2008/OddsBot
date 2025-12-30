@@ -12,7 +12,8 @@ import os
 from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
-SPORT_KEYS: List[str]   = [
+SPORT_KEYS: List[str]      = [
+    # --- SOCCER (ylivoimaisesti tärkein) ---
     "soccer_epl",
     "soccer_uefa_champs_league",
     "soccer_uefa_europa_league",
@@ -23,8 +24,7 @@ SPORT_KEYS: List[str]   = [
     "soccer_netherlands_eredivisie",
     "soccer_portugal_primeira_liga",
     "soccer_usa_mls",
-    
-    "soccer_finland_veikkausliiga",
+
 
     # --- AMERICAN SPORTS ---
     "americanfootball_nfl",
@@ -34,14 +34,15 @@ SPORT_KEYS: List[str]   = [
     "icehockey_nhl",
     "baseball_mlb",
 
-    # --- OTHER MAJOR LEAGUES ---
     "icehockey_sweden_hockey_league",
-    "icehockey_liiga",
+  
 
-    # --- GLOBAL TOURNAMENTS ---
+  
 
     # --- COMBAT / NICHE BUT POPULAR ---
+    "mma_mixed_martial_arts"
 ]
+
 
 
 
