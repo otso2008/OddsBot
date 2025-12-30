@@ -467,7 +467,7 @@ async def get_latest_arbs(
 )
 async def get_upcoming_matches(
     request: Request,
-    hours: int = Query(168, gt=0, le=168),
+    hours: int = Query(336, gt=0, le=168),
     _: None = Depends(verify_api_key),
 ) -> List[MatchItem]:
     """Lista tulevista otteluista seuraavan N tunnin sisällä."""
