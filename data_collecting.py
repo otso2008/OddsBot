@@ -51,7 +51,7 @@ SPORT_KEYS: List[str] = [
 
 
 API_KEY: str = os.environ.get("ODDS_API_KEY", os.getenv('ODDS_API_KEY'))
-REGIONS: str = os.environ.get("Regions", "eu","us")
+REGIONS: str = os.environ.get("Regions", "eu,us")
 BASE_MARKETS: str = os.environ.get("BASE_MARKETS", "h2h,totals,spreads")
 
 # ---------- BAD BOOKMAKERS (POISTETAAN KOKONAAN) ----------
