@@ -12,7 +12,7 @@ import os
 from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
-SPORT_KEYS: List[str]  [
+SPORT_KEYS: List[str] = [
     # ⚽ Jalkapallo – Eurooppa (isoimmat)
     "soccer_epl",                    # Premier League
     "soccer_spain_la_liga",           # La Liga
