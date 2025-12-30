@@ -467,7 +467,7 @@ async def get_latest_arbs(
 )
 async def get_upcoming_matches(
     request: Request,
-    hours: int = Query(336, gt=0, le=168),
+    hours: int = Query(336, gt=0, le=336),
     _: None = Depends(verify_api_key),
 ) -> List[MatchItem]:
     """Lista tulevista otteluista seuraavan N tunnin sisällä."""
@@ -599,7 +599,7 @@ async def get_latest_fair_probabilities(
 async def get_filtered_matches(
     request: Request,
     league: Optional[str] = Query(None, description="Rajaa tulokset tiettyyn liigaan"),
-    hours: Optional[int] = Query(None, gt=0, le=168, description="Aikaraja tuleville otteluille"),
+    hours: Optional[int] = Query(None, gt=0, le=336, description="Aikaraja tuleville otteluille"),
     _: None = Depends(verify_api_key),
 ) -> List[MatchItem]:
     """
