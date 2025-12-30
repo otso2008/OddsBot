@@ -354,31 +354,14 @@ async def get_top_ev(
               SELECT MAX(collected_at) FROM ev_results
           ) - INTERVAL '2 seconds'
     """
-   if hours is not None:
-      sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
-      params.append(hours)
+    if hours is not None:
+        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
     # Order by EV value descending and apply pagination
-   sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
-   params.extend([limit, offset])
-   rows = fetch_query(sql, tuple(params))
-   
-   dedup: Dict[tuple, Dict[str, Any]] = {}
-
-   for row in rows:
-       key = (
-           row["match_id"],
-           row["market_code"],
-           row["outcome"],
-           row["bookmaker_name"],
-       )
-   
-       # pidä uusin / paras
-       prev = dedup.get(key)
-       if prev is None or row["collected_at"] > prev["collected_at"]:
-           dedup[key] = row
-   
-   return list(dedup.values())
-   
+    sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
+    params.extend([limit, offset])
+    rows = fetch_query(sql, tuple(params))
+    return rows  # FastAPI + Pydantic konvertoi EvResult-malleiksi
 
 
 @app.get(
@@ -427,28 +410,25 @@ async def get_latest_arbs(
               SELECT MAX(found_at) FROM arb_results
           ) - INTERVAL '2 seconds'
     """
-   if hours is not None:
-      sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
-      params.append(hours)
-   sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
-   params.extend([limit, offset])
-   rows = fetch_query(sql, tuple(params))
+    if hours is not None:
+        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+        params.append(hours)
+    sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
+    params.extend([limit, offset])
+    rows = fetch_query(sql, tuple(params))
 
-   dedup: Dict[tuple, Dict[str, Any]] = {}
-   
-   for row in rows:
-       key = (
-           row["match_id"],
-           row["market_code"],
-       )
-   
-       prev = dedup.get(key)
-       if prev is None or row["found_at"] > prev["found_at"]:
-           dedup[key] = row
-   
-   # legs / stake_split JSON-parsing säilyy ennallaan
-   rows = list(dedup.values())
-   return rows
+    # legs ja stake_split voivat olla JSON stringejä → yritetään parse
+    for row in rows:
+        for field in ("legs", "stake_split"):
+            val = row.get(field)
+            if isinstance(val, str):
+                try:
+                    row[field] = json.loads(val)
+                except Exception:
+                    # Jos parse kaatuu, jätetään alkuperäinen arvo
+                    pass
+
+    return rows
 
 
 @app.get(
