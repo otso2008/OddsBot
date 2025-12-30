@@ -356,7 +356,7 @@ async def get_top_ev(
         sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
         params.append(hours)
     # Order by EV value descending and apply pagination
-    sql += " ORDER BY ev.ev_value;"
+    sql += " ORDER BY ev.ev_value DESC;"
     params.extend([limit, offset])
     # Suorita kysely
     rows = fetch_query(sql, tuple(params))
@@ -427,7 +427,7 @@ async def get_latest_arbs(
           ) - INTERVAL '2 seconds'
     """
     
-    sql += " ORDER BY arb.roi;"
+    sql += " ORDER BY arb.roi DESC;"
     params.extend([limit, offset])
     rows = fetch_query(sql, tuple(params))
 
