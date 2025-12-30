@@ -427,7 +427,7 @@ async def get_latest_arbs(
           ) - INTERVAL '2 seconds'
     """
     if hours is not None:
-         sql += " ORDER BY arb.roi DESC, arb.found_at DESC LIMIT %s OFFSET %s;"
+        sql += " ORDER BY arb.roi DESC, arb.found_at DESC LIMIT %s OFFSET %s;"
         params.append(hours)
     sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
