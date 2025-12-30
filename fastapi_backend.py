@@ -308,9 +308,9 @@ async def root() -> Dict[str, str]:
 )
 async def get_top_ev(
     request: Request,
-    limit: int = Query(20, gt=0, le=100),
+    limit: int = Query(150, gt=0, le=100),
     offset: int = Query(0, ge=0),
-    hours: Optional[int] = Query(None, ge=0, le=168),
+    hours: Optional[int] = Query(None, ge=0, le=336),
     _: None = Depends(verify_api_key),
 ) -> List[EvResult]:
     """
@@ -356,7 +356,7 @@ async def get_top_ev(
         sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
         params.append(hours)
     # Order by EV value descending and apply pagination
-    sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
+    sql += " ORDER BY ev.ev_value;"
     params.extend([limit, offset])
     # Suorita kysely
     rows = fetch_query(sql, tuple(params))
@@ -387,9 +387,9 @@ async def get_top_ev(
 )
 async def get_latest_arbs(
     request: Request,
-    limit: int = Query(20, gt=0, le=100),
+    limit: int = Query(50, gt=0, le=100),
     offset: int = Query(0, ge=0),
-    hours: Optional[int] = Query(None, ge=0, le=168),
+    hours: Optional[int] = Query(None, ge=0, le=336),
     _: None = Depends(verify_api_key),
 ) -> List[ArbResult]:
     """
@@ -427,7 +427,7 @@ async def get_latest_arbs(
           ) - INTERVAL '2 seconds'
     """
     
-    sql += " ORDER BY arb.roi DESC LIMIT %s OFFSET %s;"
+    sql += " ORDER BY arb.roi;"
     params.extend([limit, offset])
     rows = fetch_query(sql, tuple(params))
 
