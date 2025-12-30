@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -133,22 +134,12 @@
       else {
         arbPreview.forEach(item => {
           const roi = (item.roi_fraction * 100).toFixed(2);
-        
           html += '<div class="card arb-preview" data-match-id="'+item.match_id+'">';
           html += '<div><strong>'+item.home_team+' vs '+item.away_team+'</strong></div>';
           html += '<div>ROI '+(roi>0?'+':'')+roi+'%</div>';
-        
-          if (item.stake_split) {
-            const split = Object.keys(item.stake_split)
-              .map(o => o + ': ' + item.stake_split[o].toFixed(1) + '%')
-              .join(' | ');
-            html += '<div><small>Stake split: ' + split + '</small></div>';
-          }
-        
           html += '</div>';
         });
-
-     
+      }
       homeView.innerHTML = html;
       // attach handlers
       homeView.querySelectorAll('.league-card').forEach(div => {
