@@ -360,7 +360,23 @@ async def get_top_ev(
     sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
     rows = fetch_query(sql, tuple(params))
-    return rows  # FastAPI + Pydantic konvertoi EvResult-malleiksi
+
+   dedup: Dict[tuple, Dict[str, Any]] = {}
+   
+   for row in rows:
+       key = (
+           row["match_id"],
+           row["market_code"],
+           row["outcome"],
+           row["bookmaker_name"],
+       )
+   
+       # pidä uusin / paras
+       prev = dedup.get(key)
+       if prev is None or row["collected_at"] > prev["collected_at"]:
+           dedup[key] = row
+   
+   return list(dedup.values())
 
 
 @app.get(
@@ -416,18 +432,21 @@ async def get_latest_arbs(
     params.extend([limit, offset])
     rows = fetch_query(sql, tuple(params))
 
-    # legs ja stake_split voivat olla JSON stringejä → yritetään parse
-    for row in rows:
-        for field in ("legs", "stake_split"):
-            val = row.get(field)
-            if isinstance(val, str):
-                try:
-                    row[field] = json.loads(val)
-                except Exception:
-                    # Jos parse kaatuu, jätetään alkuperäinen arvo
-                    pass
+dedup: Dict[tuple, Dict[str, Any]] = {}
 
-    return rows
+for row in rows:
+    key = (
+        row["match_id"],
+        row["market_code"],
+    )
+
+    prev = dedup.get(key)
+    if prev is None or row["found_at"] > prev["found_at"]:
+        dedup[key] = row
+
+# legs / stake_split JSON-parsing säilyy ennallaan
+rows = list(dedup.values())
+
 
 
 @app.get(
