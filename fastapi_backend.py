@@ -359,24 +359,24 @@ async def get_top_ev(
     # Order by EV value descending and apply pagination
     sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
-    rows = fetch_query(sql, tuple(params))
+ rows = fetch_query(sql, tuple(params))
 
-   dedup: Dict[tuple, Dict[str, Any]] = {}
-   
-   for row in rows:
-       key = (
-           row["match_id"],
-           row["market_code"],
-           row["outcome"],
-           row["bookmaker_name"],
-       )
-   
-       # pidä uusin / paras
-       prev = dedup.get(key)
-       if prev is None or row["collected_at"] > prev["collected_at"]:
-           dedup[key] = row
-   
-   return list(dedup.values())
+dedup: Dict[tuple, Dict[str, Any]] = {}
+
+for row in rows:
+    key = (
+        row["match_id"],
+        row["market_code"],
+        row["outcome"],
+        row["bookmaker_name"],
+    )
+
+    # pidä uusin / paras
+    prev = dedup.get(key)
+    if prev is None or row["collected_at"] > prev["collected_at"]:
+        dedup[key] = row
+
+return list(dedup.values())
 
 
 @app.get(
