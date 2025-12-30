@@ -12,41 +12,51 @@ import os
 from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
-SPORT_KEYS: List[str] = [
-    # ⚽ Jalkapallo – Eurooppa (isoimmat)
-    "soccer_epl",                    # Premier League
-    "soccer_spain_la_liga",           # La Liga
-    "soccer_germany_bundesliga",      # Bundesliga
-    "soccer_italy_serie_a",           # Serie A
-    "soccer_france_ligue_one",        # Ligue 1
-
-    # ⚽ Kansainväliset
+SPORT_KEYS: List[str] = POPULAR_LEAGUES_ODDSAPI = [
+    # --- SOCCER ---
+    "soccer_epl",                     # Premier League
     "soccer_uefa_champs_league",      # Champions League
     "soccer_uefa_europa_league",      # Europa League
-    "soccer_uefa_europa_conference_league",
+    "soccer_germany_bundesliga",
+    "soccer_spain_la_liga",
+    "soccer_italy_serie_a",
+    "soccer_france_ligue_one",
+    "soccer_netherlands_eredivisie",
+    "soccer_portugal_primeira_liga",
+    "soccer_usa_mls",
+    "soccer_sweden_allsvenskan",
+    "soccer_finland_veikkausliiga",
+    "soccer_denmark_superliga",
+    "soccer_norway_eliteserien",
 
-    # ⚽ Muut isot jalkapallot
-    "soccer_usa_mls",                 # MLS
-    "soccer_brazil_campeonato",       # Brasileirão
+    # --- BASKETBALL ---
+    "basketball_nba",
+    "basketball_euroleague",
+    "basketball_wnba",
 
-    # 🏀 Koripallo
-    "basketball_nba",                 # NBA
-    "basketball_euroleague",          # EuroLeague
-    "basketball_ncaab",               # NCAA
+    # --- ICE HOCKEY ---
+    "icehockey_nhl",
+    "icehockey_sweden_shl",
+    "icehockey_finland_liiga",
 
-    # 🏒 Jääkiekko
-    "icehockey_nhl",                  # NHL
-    "icehockey_finland_liiga",        # Liiga
-    "icehockey_sweden_shl",           # SHL
+    # --- AMERICAN FOOTBALL ---
+    "americanfootball_nfl",
+    "americanfootball_ncaaf",
 
-    # 🏈 Amerikkalainen jalkapallo
-    "americanfootball_nfl",           # NFL
-    "americanfootball_ncaaf",         # College Football
+    # --- BASEBALL ---
+    "baseball_mlb",
 
-    # 🎾 Tennis
-    "tennis_atp",                     # ATP
-    "tennis_wta"                      # WTA
+    # --- TENNIS ---
+    "tennis_atp",
+    "tennis_wta",
+
+    # --- MOTORSPORT ---
+    "motorsport_formula1",
+
+    # --- MMA ---
+    "mma_ufc"
 ]
+
 
 
 
