@@ -35,7 +35,7 @@
   <div id="arbView" class="view"></div>
   <div id="matchView" class="view"></div>
   <nav id="bottomNav">
-    <button data-view="homeView" class="active">Etusivu</button>
+    <button data-view="homeView" class="active">Homepage</button>
     <button data-view="evView">+EV</button>
     <button data-view="arbView">Arbitraasit</button>
   </nav>
@@ -115,7 +115,7 @@
           html += '</div>';
         });
       }
-      html += '<h2>Parhaat +EV</h2>';
+      html += '<h2>Top EV's</h2>';
       if(evPreview.length === 0) html += '<p>Ei +EV-kohteita.</p>';
       else {
         evPreview.slice(0,5).forEach(item => {
@@ -129,7 +129,7 @@
           html += '</div>';
         });
       }
-      html += '<h2>Parhaat Arbitraasit</h2>';
+      html += '<h2>Top Arbitrages</h2>';
       if(arbPreview.length === 0) html += '<p>Ei arbitraaseja.</p>';
       else {
         arbPreview.forEach(item => {
@@ -219,7 +219,7 @@
           html += '<div class="card ev-item" data-match-id="'+item.match_id+'">';
           html += '<div><strong>'+item.home_team+' vs '+item.away_team+'</strong></div>';
           html += '<div>'+item.market_code+' / '+item.outcome+' – '+item.bookmaker_name+'</div>';
-          html += '<div>Kerroin '+item.odds.toFixed(2)+', Fair '+(1/item.fair_probability).toFixed(2)+'</div>';
+          html += '<div>Odd'+item.odds.toFixed(2)+', Fair '+(1/item.fair_probability).toFixed(2)+'</div>';
           html += '<div class="'+cls+'">EV '+(evPct>0?'+':'')+evPct+'%</div>';
           html += '</div>';
         });
