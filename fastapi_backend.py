@@ -362,23 +362,23 @@ async def get_top_ev(
     params.extend([limit, offset])
     rows = fetch_query(sql, tuple(params))
 
-dedup: Dict[tuple, Dict[str, Any]] = {}
-
-for row in rows:
-    key = (
-        row["match_id"],
-        row["market_code"],
-        row["outcome"],
-        row["bookmaker_name"],
-    )
-
-    # pidä uusin / paras
-    prev = dedup.get(key)
-    if prev is None or row["collected_at"] > prev["collected_at"]:
-        dedup[key] = row
-
-return list(dedup.values())
-
+   dedup: Dict[tuple, Dict[str, Any]] = {}
+   
+   for row in rows:
+       key = (
+           row["match_id"],
+           row["market_code"],
+           row["outcome"],
+           row["bookmaker_name"],
+       )
+   
+       # pidä uusin / paras
+       prev = dedup.get(key)
+       if prev is None or row["collected_at"] > prev["collected_at"]:
+           dedup[key] = row
+   
+   return list(dedup.values())
+   
 
 
 @app.get(
@@ -433,21 +433,21 @@ async def get_latest_arbs(
     sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
    rows = fetch_query(sql, tuple(params))
-
-dedup: Dict[tuple, Dict[str, Any]] = {}
-
-for row in rows:
-    key = (
-        row["match_id"],
-        row["market_code"],
-    )
-
-    prev = dedup.get(key)
-    if prev is None or row["found_at"] > prev["found_at"]:
-        dedup[key] = row
-
-# legs / stake_split JSON-parsing säilyy ennallaan
-rows = list(dedup.values())
+   
+   dedup: Dict[tuple, Dict[str, Any]] = {}
+   
+   for row in rows:
+       key = (
+           row["match_id"],
+           row["market_code"],
+       )
+   
+       prev = dedup.get(key)
+       if prev is None or row["found_at"] > prev["found_at"]:
+           dedup[key] = row
+   
+   # legs / stake_split JSON-parsing säilyy ennallaan
+   rows = list(dedup.values())
 
 
 @app.get(
