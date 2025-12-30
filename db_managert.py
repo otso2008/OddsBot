@@ -69,53 +69,7 @@ class OddsBankLoader:
 
 
 
-    # --------------------------------------------------
-    # INSERT CLOSING ODDS (only once per match/book/outcome)
-    # --------------------------------------------------
-    def insert_ev_closing_result(self, match_id, market_code, outcome,
-                                 offered_odds, fair_odds_closing,
-                                 ev_percent, beat_closing, timestamp):
-        with self.conn.cursor() as cur:
-            cur.execute("""
-                INSERT INTO ev_closing_results
-                (match_id, market_code, outcome,
-                 offered_odds, fair_odds_closing,
-                 ev_percent, beat_closing, evaluated_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-            """, (match_id, market_code, outcome,
-                  offered_odds, fair_odds_closing,
-                  ev_percent, beat_closing, timestamp))
-            self.conn.commit()
-
-    def insert_closing_odds(self, match_id: int, bookmaker_id: int, book_name: str, market_code: str,
-                            outcome: str, price: float, line: Any, timestamp: datetime) -> None:
-        implied_probability = (1.0 / price) if price > 0 else None
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT 1 FROM closing_odds
-                WHERE match_id=%s AND bookmaker_id=%s AND market_code=%s AND outcome=%s
-                """,
-                (match_id, bookmaker_id, market_code, outcome)
-            )
-            if cur.fetchone():
-                return  # Skip if already exists
-
-            cur.execute(
-                """
-                INSERT INTO closing_odds
-                (match_id, bookmaker_id, bookmaker_name,
-                 market_code, outcome, price, line, implied_probability, collected_at)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (
-                    match_id, bookmaker_id, book_name,
-                    market_code, outcome, price, line,
-                    implied_probability, timestamp
-                )
-            )
-            self.conn.commit()
+ 
     # --------------------------------------------------
     # MATCH HANDLING
     # --------------------------------------------------
