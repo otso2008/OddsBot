@@ -1,4 +1,3 @@
-
 """
 FastAPI backend for the Odds Analysis project.
 
@@ -55,7 +54,6 @@ from fastapi import (
     status,
 )
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 
@@ -360,8 +358,26 @@ async def get_top_ev(
     # Order by EV value descending and apply pagination
     sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
+    # Suorita kysely
     rows = fetch_query(sql, tuple(params))
-    return rows  # FastAPI + Pydantic konvertoi EvResult-malleiksi
+
+    # Poista duplikaattirivit: käytä samaa logiikkaa kuin vanhassa API:ssa.
+    # Yksi EV-rivi per (match_id, market_code, outcome, bookmaker_name).
+    dedup: Dict[tuple, Dict[str, Any]] = {}
+    for row in rows:
+        key = (
+            row["match_id"],
+            row["market_code"],
+            row["outcome"],
+            row["bookmaker_name"],
+        )
+        # Säilytä uusin rivi (suurin collected_at) tälle avaimelle
+        prev = dedup.get(key)
+        if prev is None or row["collected_at"] > prev["collected_at"]:
+            dedup[key] = row
+
+    # Palauta deduplikoitu lista (FastAPI + Pydantic konvertoi EvResult-malleiksi)
+    return list(dedup.values())
 
 
 @app.get(
@@ -415,7 +431,23 @@ async def get_latest_arbs(
         params.append(hours)
     sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
     params.extend([limit, offset])
+    # Suorita kysely
     rows = fetch_query(sql, tuple(params))
+
+    # Poista duplikaattirivit: yksi arbi per (match_id, market_code)
+    dedup: Dict[tuple, Dict[str, Any]] = {}
+    for row in rows:
+        key = (
+            row["match_id"],
+            row["market_code"],
+        )
+        # Säilytä uusin rivi (suurin found_at) tälle avaimelle
+        prev = dedup.get(key)
+        if prev is None or row["found_at"] > prev["found_at"]:
+            dedup[key] = row
+
+    # Deduplikoitu lista
+    rows = list(dedup.values())
 
     # legs ja stake_split voivat olla JSON stringejä → yritetään parse
     for row in rows:
@@ -608,39 +640,3 @@ async def get_filtered_matches(
     sql += " ORDER BY start_time;"
     rows = fetch_query(sql, tuple(params))
     return rows
-
-# ---------------------------------------------------------------------------
-# Frontend (SPA) serving
-# ---------------------------------------------------------------------------
-
-# Provide a simple route to serve a single-page application (SPA).  This route
-# reads the index.html file specified by the environment variable
-# `ODDSBANK_FRONTEND_FILE` (default "index.html"), performs simple string
-# substitutions to inject runtime configuration values from the environment,
-# and returns the processed HTML.  This allows the frontend to pick up
-# the API base URL, API key and affiliate map from environment variables at
-# runtime without bundling them in the static assets.
-@app.get("/app", response_class=HTMLResponse)
-async def serve_spa() -> HTMLResponse:
-    """Serve the compiled single-page application with environment injection."""
-    # Determine the path of the frontend file.  Allow overriding via env var.
-    index_file = os.getenv("ODDSBANK_FRONTEND_FILE", "index.html")
-    try:
-        with open(index_file, "r", encoding="utf-8") as fh:
-            html = fh.read()
-    except FileNotFoundError:
-        # If the file is not found, return a simple error page.
-        return HTMLResponse(
-            status_code=404,
-            content=f"<h1>Not Found</h1><p>Could not locate {index_file}</p>",
-        )
-    # Collect runtime configuration variables.  These will be replaced in the HTML.
-    api_base = os.getenv("ODDSBANK_PUBLIC_API_BASE", "")
-    api_key = os.getenv("API_KEY", "")
-    affiliate_map = os.getenv("ODDSBANK_AFFILIATE_MAP", "{}")
-    # Replace placeholder tokens with actual values.  Use double curly braces in the
-    # HTML template (e.g. {{API_BASE}}) to mark replacement points.
-    html = html.replace("{{API_BASE}}", api_base)
-    html = html.replace("{{API_KEY}}", api_key)
-    html = html.replace("{{AFFILIATE_MAP}}", affiliate_map)
-    return HTMLResponse(html)
