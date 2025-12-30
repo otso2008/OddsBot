@@ -94,6 +94,10 @@
         homeView.innerHTML = '<p>Virhe ladatessa otteluita.</p>';
         return;
       }
+      // Cache all matches globally so that match names and start times can be
+      // looked up later in showMatch() even if the match does not have EV or
+      // arbitrage data.  This mirrors how the league list shows match details.
+      matchesCache = matches;
       const leagues = {};
       matches.forEach(m => {
         if(!leagues[m.league]) leagues[m.league] = [];
@@ -182,6 +186,10 @@
       });
     }
     let evData = [];
+    // Cache for all matches loaded on the home page.  This allows showMatch() to
+    // look up match details (team names and start time) even when the match is
+    // not present in evData or arbData.  The cache is populated in loadHome().
+    let matchesCache = [];
     async function loadEv(){
       try {
         evData = await fetchJSON('/api/ev/top', { limit: 50 });
@@ -271,8 +279,15 @@
           fetchJSON('/api/fair/'+matchId)
         ]);
         // Find match info if available
+        // Attempt to locate the match in the globally cached list first.  This ensures
+        // that we always have access to the home/away team names and start time,
+        // even if the match is not present in the EV or arbitrage datasets.
         let matchInfo = null;
-        if(evData) matchInfo = evData.find(m => m.match_id == matchId);
+        if(matchesCache && matchesCache.length){
+          matchInfo = matchesCache.find(m => m.match_id == matchId);
+        }
+        // If not found in the cache, fall back to EV and arbitrage data (legacy behaviour).
+        if(!matchInfo && evData) matchInfo = evData.find(m => m.match_id == matchId);
         if(!matchInfo && arbData) matchInfo = arbData.find(m => m.match_id == matchId);
         // Build markets map
         const marketMap = {};
