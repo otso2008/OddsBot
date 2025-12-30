@@ -42,9 +42,6 @@ SPORT_KEYS: List[str]   = [
     "icehockey_liiga",
 
     # --- GLOBAL TOURNAMENTS ---
-    "soccer_fifa_world_cup",
-    "soccer_conmebol_copa_america",
-    "soccer_uefa_nations_league",
 
     # --- COMBAT / NICHE BUT POPULAR ---
     "mma_mixed_martial_arts"
