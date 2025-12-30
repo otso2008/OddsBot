@@ -12,49 +12,42 @@ import os
 from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
-SPORT_KEYS: List[str]  = [
-    # --- SOCCER ---
-    "soccer_epl",                     # Premier League
-    "soccer_uefa_champs_league",      # Champions League
-    "soccer_uefa_europa_league",      # Europa League
-    "soccer_germany_bundesliga",
+SPORT_KEYS: List[str]   = [
+    "soccer_epl",
+    "soccer_uefa_champs_league",
+    "soccer_uefa_europa_league",
     "soccer_spain_la_liga",
+    "soccer_germany_bundesliga",
     "soccer_italy_serie_a",
     "soccer_france_ligue_one",
     "soccer_netherlands_eredivisie",
     "soccer_portugal_primeira_liga",
     "soccer_usa_mls",
-    "soccer_sweden_allsvenskan",
+    ,
     "soccer_finland_veikkausliiga",
-    "soccer_denmark_superliga",
-    "soccer_norway_eliteserien",
 
-    # --- BASKETBALL ---
-    "basketball_nba",
-    "basketball_euroleague",
-    "basketball_wnba",
-
-    # --- ICE HOCKEY ---
-    "icehockey_nhl",
-    "icehockey_sweden_shl",
-    "icehockey_finland_liiga",
-
-    # --- AMERICAN FOOTBALL ---
+    # --- AMERICAN SPORTS ---
     "americanfootball_nfl",
     "americanfootball_ncaaf",
-
-    # --- BASEBALL ---
+    "basketball_nba",
+    "basketball_ncaab",
+    "icehockey_nhl",
     "baseball_mlb",
 
-    # --- TENNIS ---
-    "tennis_atp",
-    "tennis_wta",
+    # --- OTHER MAJOR LEAGUES ---
+    "basketball_euroleague",
+    "basketball_wnba",
+    "basketball_nbl",
+    "icehockey_sweden_hockey_league",
+    "icehockey_liiga",
 
-    # --- MOTORSPORT ---
-    "motorsport_formula1",
+    # --- GLOBAL TOURNAMENTS ---
+    "soccer_fifa_world_cup",
+    "soccer_conmebol_copa_america",
+    "soccer_uefa_nations_league",
 
-    # --- MMA ---
-    "mma_ufc"
+    # --- COMBAT / NICHE BUT POPULAR ---
+    "mma_mixed_martial_arts"
 ]
 
 
