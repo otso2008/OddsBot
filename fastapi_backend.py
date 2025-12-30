@@ -355,15 +355,15 @@ async def get_top_ev(
           ) - INTERVAL '2 seconds'
     """
    if hours is not None:
-     sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
-     params.append(hours)
+      sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+      params.append(hours)
     # Order by EV value descending and apply pagination
    sql += " ORDER BY ev.ev_value DESC LIMIT %s OFFSET %s;"
    params.extend([limit, offset])
    rows = fetch_query(sql, tuple(params))
-
-   dedup: Dict[tuple, Dict[str, Any]] = {}
    
+   dedup: Dict[tuple, Dict[str, Any]] = {}
+
    for row in rows:
        key = (
            row["match_id"],
@@ -427,13 +427,13 @@ async def get_latest_arbs(
               SELECT MAX(found_at) FROM arb_results
           ) - INTERVAL '2 seconds'
     """
-    if hours is not None:
-        sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
-        params.append(hours)
+   if hours is not None:
+      sql += " AND m.start_time < NOW() + (%s || ' hours')::interval"
+      params.append(hours)
    sql += " ORDER BY arb.found_at DESC LIMIT %s OFFSET %s;"
    params.extend([limit, offset])
    rows = fetch_query(sql, tuple(params))
-   
+
    dedup: Dict[tuple, Dict[str, Any]] = {}
    
    for row in rows:
