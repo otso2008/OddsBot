@@ -243,18 +243,32 @@
         return;
       }
       let html = '';
-      arbData.forEach(item => {
-        const roiPct = (item.roi_fraction * 100).toFixed(2);
-        html += '<div class="card arb-item" data-match-id="'+item.match_id+'">';
-        html += '<div><strong>'+item.home_team+' vs '+item.away_team+'</strong></div>';
-        html += '<div>ROI '+(roiPct>0?'+':'')+roiPct+'%</div>';
-        const legs = Object.keys(item.legs).map(o => {
-          const leg = item.legs[o];
-          return o+': '+leg.book+' '+leg.odds.toFixed(2);
-        }).join(' | ');
-        html += '<div>'+legs+'</div>';
-        html += '</div>';
-      });
+arbData.forEach(item => {
+  const roiPct = (item.roi_fraction * 100).toFixed(2);
+
+  html += '<div class="card arb-item" data-match-id="'+item.match_id+'">';
+  html += '<div><strong>'+item.home_team+' vs '+item.away_team+'</strong></div>';
+
+  // ROI + stake split yhdellä rivillä
+  let line = 'ROI ' + (roiPct > 0 ? '+' : '') + roiPct + '%';
+  if (item.stake_split) {
+    const split = Object.keys(item.stake_split)
+      .map(o => o + ' ' + item.stake_split[o].toFixed(1) + '%')
+      .join(' | ');
+    line += ' · Stake: ' + split;
+  }
+  html += '<div>' + line + '</div>';
+
+  // legs
+  const legs = Object.keys(item.legs).map(o => {
+    const leg = item.legs[o];
+    return o + ': ' + leg.book + ' ' + leg.odds.toFixed(2);
+  }).join(' | ');
+  html += '<div>' + legs + '</div>';
+
+  html += '</div>';
+});
+
       arbView.innerHTML = html;
       arbView.querySelectorAll('.arb-item').forEach(div => {
         div.addEventListener('click', () => {
