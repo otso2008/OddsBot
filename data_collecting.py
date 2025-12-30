@@ -12,14 +12,46 @@ import os
 from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
-SPORT_KEYS: List[str] = [
-    "soccer_epl",
-    "soccer_spain_la_liga"
+SPORT_KEYS: List[str] = SPORT_KEYS = [
+    # ⚽ Jalkapallo – Eurooppa (isoimmat)
+    "soccer_epl",                    # Premier League
+    "soccer_spain_la_liga",           # La Liga
+    "soccer_germany_bundesliga",      # Bundesliga
+    "soccer_italy_serie_a",           # Serie A
+    "soccer_france_ligue_one",        # Ligue 1
+
+    # ⚽ Kansainväliset
+    "soccer_uefa_champs_league",      # Champions League
+    "soccer_uefa_europa_league",      # Europa League
+    "soccer_uefa_europa_conference_league",
+
+    # ⚽ Muut isot jalkapallot
+    "soccer_usa_mls",                 # MLS
+    "soccer_brazil_campeonato",       # Brasileirão
+
+    # 🏀 Koripallo
+    "basketball_nba",                 # NBA
+    "basketball_euroleague",          # EuroLeague
+    "basketball_ncaab",               # NCAA
+
+    # 🏒 Jääkiekko
+    "icehockey_nhl",                  # NHL
+    "icehockey_finland_liiga",        # Liiga
+    "icehockey_sweden_shl",           # SHL
+
+    # 🏈 Amerikkalainen jalkapallo
+    "americanfootball_nfl",           # NFL
+    "americanfootball_ncaaf",         # College Football
+
+    # 🎾 Tennis
+    "tennis_atp",                     # ATP
+    "tennis_wta"                      # WTA
 ]
 
 
+
 API_KEY: str = os.environ.get("ODDS_API_KEY", os.getenv('ODDS_API_KEY'))
-REGIONS: str = os.environ.get("Regions", "eu",)
+REGIONS: str = os.environ.get("Regions", "eu","us")
 BASE_MARKETS: str = os.environ.get("BASE_MARKETS", "h2h,totals,spreads")
 
 # ---------- BAD BOOKMAKERS (POISTETAAN KOKONAAN) ----------
