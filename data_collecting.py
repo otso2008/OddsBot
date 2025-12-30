@@ -12,7 +12,7 @@ import os
 from fastapi_backend import API_KEY
 
 load_dotenv()  # lataa .env-tiedoston sisällön
-SPORT_KEYS: List[str] = POPULAR_LEAGUES_ODDSAPI = [
+SPORT_KEYS: List[str]  = [
     # --- SOCCER ---
     "soccer_epl",                     # Premier League
     "soccer_uefa_champs_league",      # Champions League
