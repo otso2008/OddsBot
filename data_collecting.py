@@ -35,16 +35,12 @@ SPORT_KEYS: List[str]   = [
     "baseball_mlb",
 
     # --- OTHER MAJOR LEAGUES ---
-    "basketball_euroleague",
-    "basketball_wnba",
-    "basketball_nbl",
     "icehockey_sweden_hockey_league",
     "icehockey_liiga",
 
     # --- GLOBAL TOURNAMENTS ---
 
     # --- COMBAT / NICHE BUT POPULAR ---
-    "mma_mixed_martial_arts"
 ]
 
 
