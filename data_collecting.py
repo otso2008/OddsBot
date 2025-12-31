@@ -20,7 +20,7 @@ SPORT_KEYS: List[str]      = [
     # --- AMERICAN SPORTS ---
     "baseball_mlb",
 
-    "icehockey_sweden_hockey_league",
+    "icehockey_sweden_allsvenskan",
 
 ]
 
